@@ -1,0 +1,48 @@
+# assuming you run this from a folder with sub gazpar_2_mqtt
+version: '3.5'
+services:
+  gazpar2mqtt:
+    container_name: gazpar_2_mqtt
+    image: vingerha/gazpar_2_mqtt:latest
+    tty: true
+    restart: unless-stopped
+    environment:
+      GRDF_USERNAME: gazou@email.com
+      GRDF_PASSWORD: password
+      MQTT_HOST: host
+      TZ: Europe/Paris
+      DEBUG: 'True'      
+      # Optional:
+      #SCHEDULE_TIME: '06:30'
+      #MQTT_PORT: '1883'
+      #MQTT_TOPIC: 'gazpar'
+      #MQTT_CLIENTID: 'gazou'
+      #MQTT_USERNAME: 'myMqttUsername'
+      #MQTT_PASSWORD: 'myMqttPassword'
+      #MQTT_QOS: '1'
+      #MQTT_RETAIN: 'True'
+      #MQTT_SSL: 'False'
+      #STANDALONE_MODE: 'False'
+      #HASS_DISCOVERY: 'False'
+      #HASS_PREFIX: 'homeassistant'
+      #HASS_DEVICE_NAME: 'gazpar'
+      #THRESOLD_PERCENTAGE: 80 # warn when consumptions is above this percentage of the thresold
+      #INFLUXDB_ENABLE: 'True'
+      #INFLUXDB_HOST: 'influxdb'
+      #INFLUXDB_PORT: '8086'
+      #INFLUXDB_ORG: 'myOrg'
+      #INFLUXDB_BUCKET: 'gazpar'
+      #INFLUXDB_TOKEN: 'myToken'
+      #INFLUXDB_HORIZON: '0' # Number of days in the past to write to influx
+      #PRICE_PATH: '/data'
+      #PRICE_KWH_DEFAULT: '0.04' # price in € per kWh
+      #PRICE_FIX_DEFAULT: '0.5' # fix price in € per day
+      #DB_INIT: 'False' # force the reinitialization of the database
+      #DB_PATH: '/data' # database path
+    # Optional :
+    volumes:     # assuming you run this from [your_docker], with sub gazpar_2_mqtt
+      - ./gazpar_2_mqtt:/data
+      - ./gazpar_2_mqtt/app:/app
+    #depends_on:  # to link influxdb
+    #  - mqtt     # name of your mqtt container
+    #  - influxdb # name of your influxdb container
