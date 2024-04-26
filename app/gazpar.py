@@ -470,11 +470,11 @@ class Grdf:
             content = self.__browser.find_element(By.TAG_NAME, "pre").text
             resp = json.loads(content)
         except selenium.common.exceptions.NoSuchElementException:
-            logging.info("ERROR")
+            logging.error("ERROR geting Whoami")
             time.sleep(5)
         
 
-        logging.info("Whoami result %s", resp)
+        logging.debug("Whoami result %s", resp)
         
         # Check returned JSON format
         try:
@@ -482,20 +482,20 @@ class Grdf:
         except Exception as e:
             logging.error("Whoami returned invalid JSON:")
             logging.error(str(e))
-            logging.info(resp)
+            logging.debug(resp)
             self.isConnected = False
             return None
         
         # Check Whoami content
         if 'code' in account:
-            logging.info(resp)
+            logging.debug(resp)
             logging.info("Whoami unsuccessful. Invalid returned information: %s", resp)
             self.isConnected = False
             return None
 
         # Check that id is in account
         if not 'id' in account or account['id'] <= 0:
-            logging.info(resp)
+            logging.debug(resp)
             logging.info("Whoami unsuccessful. Invalid returned information: %s", resp)
             self.isConnected = False
             return None
@@ -516,7 +516,7 @@ class Grdf:
             content = self.__browser.find_element(By.TAG_NAME, "pre").text
             resp = json.loads(content)
         except selenium.common.exceptions.NoSuchElementException:
-            logging.info("ERROR")
+            logging.info("ERROR in getting PCE")
             time.sleep(5)
             
         logging.debug("Get PCEs list result : %s",resp)
@@ -527,12 +527,12 @@ class Grdf:
         except Exception as e:
             logging.error("PCEs returned invalid JSON:")
             logging.error(str(e))
-            logging.info(resp)
+            logging.debug(resp)
             self.isConnected = False
             return None
         
         if 'code' in pceList:
-            logging.info(resp)
+            logging.debug(resp)
             logging.info("PCEs unsuccessful. Invalid returned information: %s", resp)
             self.isConnected = False
             return None
@@ -579,7 +579,7 @@ class Grdf:
             content = self.__browser.find_element(By.TAG_NAME, "pre").text
             resp = json.loads(content)
         except selenium.common.exceptions.NoSuchElementException:
-            logging.info("ERROR")
+            logging.debug("ERROR in getting Measures")
             time.sleep(5)
             
         measureList = resp
@@ -611,7 +611,7 @@ class Grdf:
             content = self.__browser.find_element(By.TAG_NAME, "pre").text
             resp = json.loads(content)
         except selenium.common.exceptions.NoSuchElementException:
-            logging.info("ERROR")
+            logging.debug("ERROR in getting Threshold")
             time.sleep(5)        
         thresoldList = resp
         

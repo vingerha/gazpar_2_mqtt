@@ -34,18 +34,20 @@ class Params:
     self.mqttTopic = 'gazpar'
     self.mqttRetain = True
     self.mqttSsl = False
-    
-    
+ 
     # Run params
     self.scheduleTime = None
     
     # Publication params
     self.standalone = False
-    self.hassDiscovery = True
+    self.hassDiscovery = False
     self.hassPrefix = 'homeassistant'
     self.hassDeviceName = 'gazpar'
-    self.hassPeriodSensor = True
-    self.hassPeriodSensorCount = 10
+    
+    # Publication in HA long term statistics 
+    self.hassLTS = False    
+    self.hassToken = ""  # Long-Lived Access Token
+    self.hassHost = "192.168.x.y"  
     
     # chromium / selenium
     self.chromedriver = "/usr/bin/chromedriver"
@@ -54,8 +56,7 @@ class Params:
     self.screenshots = False
     self.verbose = False
     
-    
-    # Databse params
+    # Database params
     self.dbInit = False
     self.dbPath = '/data'
     

@@ -126,12 +126,9 @@ def run(myParams):
 
         logging.info("Connect to Mqtt broker...")
         
-        # Create mqtt client
-        logging.info("Connecting with: %s, %s, %s, %s, %s, %s ", myParams.mqttClientId,myParams.mqttUsername,myParams.mqttPassword,myParams.mqttSsl,myParams.mqttQos,myParams.mqttRetain)
-        
+        # Create mqtt client      
         myMqtt = mqtt.Mqtt(myParams.mqttClientId,myParams.mqttUsername,myParams.mqttPassword,myParams.mqttSsl,myParams.mqttQos,myParams.mqttRetain)   
         
-        logging.info("Connect to Mqtt broker 2 with: %s, %s", myParams.mqttHost,myParams.mqttPort)
         # Connect mqtt broker
         myMqtt.connect(myParams.mqttHost,myParams.mqttPort)
 
@@ -144,13 +141,9 @@ def run(myParams):
     except:
         logging.error("Unable to connect to Mqtt broker. Please check that broker is running, or check broker configuration.")
 
-
-
     # STEP 3 : Get data from GRDF website
     ####################################################################################################################
-    #if myMqtt.isConnected:
-    if 1==1:
-
+    if myMqtt.isConnected:
 
         logging.info("-----------------------------------------------------------")
         logging.info("#            Get data from GRDF website                   #")
@@ -669,6 +662,28 @@ def run(myParams):
 
         except:
             logging.error("Home Assistant discovery mode : unable to publish value to mqtt broker")
+            
+    ####################################################################################################################
+    # STEP 5C : Home Assistant Long Term statistics
+    ####################################################################################################################
+    if myParams.hassLTS \
+        and myGrdf.isConnected:
+
+        try:
+
+            logging.info("-----------------------------------------------------------")
+            logging.info("#           Home assistant Long Term Statistics           #")
+            logging.info("-----------------------------------------------------------")
+
+            # Load database in cache
+            myDb.load()
+
+            # Loop on PCEs
+            for myPce in myDb.pceList:
+
+                
+
+            
 
     ####################################################################################################################
     # STEP 6 : Disconnect mqtt broker
