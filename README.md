@@ -147,9 +147,19 @@ Example of docker run command, assuming param.py having the credentials:
 docker run --name gazpar_2_mqtt -v [yourdocker_dir]/gazpar_2_mqtt/app:/app -v [yourdocker_dir/gazpar_2_mqtt:/data --tty vingerha/gazpar_2_mqtt:latest
 ```
 
-## Manual
+## Docker compose
 
-to be added in near future
+create a folder and place the docker-compose.yml
+edit the file to match your setup
+execute the docker compose run applicable for your OS
+e.q. on ubuntu this is
+```
+docker-compose run --rm gazpar2mqtt
+```
+
+## Manual wihtout container
+
+to be added in near future (requires a.o. chromium to be pre-installed)
 
 ## Standalone mode
 
