@@ -4,11 +4,11 @@ Reworked from yukulehe/gazpar2mqtt now that GRDF is again without Captcha
 
 Important (25/May/2024): 
 - working to collect data in SQLite and MQTT but under development, various functions may disappear or be modified.
-- no verification if the code from yukulehe/gazpar2mqtt is valid in its entirety
+- no verification if the now 2-year old code from yukulehe/gazpar2mqtt is still valid in its entirety
 - code still contains a lot of debug/info messages...will be cleaned over time
-- for now only tested via docker, see [INSTALLATION](https://github.com/vingerha/gazpar_2_mqtt?tab=readme-ov-file#installation-and-usage)
+- only tested via docker, see [INSTALLATION](https://github.com/vingerha/gazpar_2_mqtt?tab=readme-ov-file#installation-and-usage)
 
-For now: USE AT YOUR OWN DISCRETION 
+For now: **USE AT YOUR OWN DISCRETION**
 
 # gazpar2mqtt
 Python script to fetch GRDF's website data and publish data to a mqtt broker
@@ -147,9 +147,19 @@ Example of docker run command, assuming param.py having the credentials:
 docker run --name gazpar_2_mqtt -v [yourdocker_dir]/gazpar_2_mqtt/app:/app -v [yourdocker_dir/gazpar_2_mqtt:/data --tty vingerha/gazpar_2_mqtt:latest
 ```
 
-## Manual
+## Docker compose
 
-to be added in near future
+create a folder and place the docker-compose.yml
+edit the file to match your setup
+execute the docker compose run applicable for your OS
+e.q. on ubuntu this is
+```
+docker-compose run --rm gazpar2mqtt
+```
+
+## Manual without container
+
+to be added in near future (requires a.o. chromium to be pre-installed)
 
 ## Standalone mode
 
