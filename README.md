@@ -157,7 +157,7 @@ e.q. on ubuntu this is
 docker-compose run --rm gazpar2mqtt
 ```
 
-## Manual wihtout container
+## Manual without container
 
 to be added in near future (requires a.o. chromium to be pre-installed)
 
