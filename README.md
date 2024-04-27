@@ -2,11 +2,10 @@
 
 Reworked from yukulehe/gazpar2mqtt now that GRDF is again without Captcha
 
-Important (25/May/2024): 
+Important (27/May/2024): 
 - working to collect data in SQLite and MQTT but under development, various functions may disappear or be modified.
-- no verification if the now 2-year old code from yukulehe/gazpar2mqtt is still valid in its entirety
-- code still contains a lot of debug/info messages...will be cleaned over time
-- only tested via docker, see [INSTALLATION](https://github.com/vingerha/gazpar_2_mqtt?tab=readme-ov-file#installation-and-usage)
+- no verification if the now 2-year old code from yukulehe/gazpar2mqtt is still valid **in its entirety**
+- only tested via docker image and docker-compose, see [INSTALLATION](https://github.com/vingerha/gazpar_2_mqtt?tab=readme-ov-file#installation-and-usage)
 
 For now: **USE AT YOUR OWN DISCRETION**
 
