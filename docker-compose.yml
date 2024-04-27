@@ -1,4 +1,4 @@
-# assuming you run this from a folder with sub gazpar_2_mqtt
+# assuming that you run this from a folder with sub gazpar_2_mqtt
 version: '3.5'
 services:
   gazpar2mqtt:
