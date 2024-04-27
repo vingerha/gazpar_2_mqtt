@@ -25,6 +25,7 @@ class Params:
     self.grdfPassword = 'xxx'
     
     # Mqtt params
+    self.mqttEnable = True
     self.mqttHost = '192.168.x.y'
     self.mqttPort = 1883
     self.mqttClientId = 'gazpar2mqtt'
@@ -45,9 +46,11 @@ class Params:
     self.hassDeviceName = 'gazpar'
     
     # Publication in HA long term statistics 
-    self.hassLTS = False    
+    self.hassLts = False    
+    self.hassLtsSensorName = "sensor.gazpar2mqtt_total"
     self.hassToken = ""  # Long-Lived Access Token
-    self.hassHost = "192.168.x.y"  
+    self.hassStatisticsUri = "/api/services/recorder/import_statistics"
+    self.hassHost = "http://192.168.x.y:8213"  
     
     # chromium / selenium
     self.chromedriver = "/usr/bin/chromedriver"
@@ -63,8 +66,8 @@ class Params:
     # Debug param
     self.debug = False
     
-    # Thresold param
-    self.thresoldPercentage = 80
+    # Threshold param
+    self.thresholdPercentage = 80
     
     # Influx db
     self.influxEnable = False
@@ -128,7 +131,7 @@ class Params:
     self.parser.add_argument(
         "--hass_device_name", help="Home Assistant device name")
     self.parser.add_argument(
-        "--thresold_percentage", help="Thresold percentage")
+        "--threshold_percentage", help="Threshold percentage")
     self.parser.add_argument(
         "--db_init", help="Force database reinitialization : True or False")
     self.parser.add_argument(
@@ -163,7 +166,7 @@ class Params:
     if "HASS_PREFIX" in os.environ: self.hassPrefix = os.environ["HASS_PREFIX"]
     if "HASS_DEVICE_NAME" in os.environ: self.hassDeviceName = os.environ["HASS_DEVICE_NAME"]
     
-    if "THRESOLD_PERCENTAGE" in os.environ: self.thresoldPercentage = int(os.environ["THRESOLD_PERCENTAGE"])
+    if "THRESHOLD_PERCENTAGE" in os.environ: self.thresholdPercentage = int(os.environ["THRESHOLD_PERCENTAGE"])
     
     if "DB_INIT" in os.environ: self.dbInit = _isItTrue(os.environ["DB_INIT"])
     if "DB_PATH" in os.environ: self.dbPath = os.environ["DB_PATH"]
@@ -194,7 +197,7 @@ class Params:
     if self.args.hass_prefix is not None: self.hassPrefix = self.args.hass_prefix
     if self.args.hass_device_name is not None: self.hassDeviceName = self.args.hass_device_name
       
-    if self.args.thresold_percentage is not None: self.thresoldPercentage = int(self.args.thresold_percentage)
+    if self.args.threshold_percentage is not None: self.thresholdPercentage = int(self.args.threshold_percentage)
       
     if self.args.db_init is not None: self.dbInit = _isItTrue(self.args.db_init)
     if self.args.db_path is not None: self.db_path = self.args.db_path
@@ -234,6 +237,6 @@ class Params:
     logging.info("Standlone mode : Enable = %s", self.standalone)
     logging.info("Home Assistant discovery : Enable = %s, Topic prefix = %s, Device name = %s",
                  self.hassDiscovery, self.hassPrefix, self.hassDeviceName)
-    logging.info("Thresold options : Warning percentage = %s", self.thresoldPercentage)
+    logging.info("Threshold options : Warning percentage = %s", self.thresholdPercentage)
     logging.info("Database options : Force reinitialization = %s, Path = %s", self.dbInit, self.dbPath)
     logging.info("Debug mode : Enable = %s", self.debug)

@@ -19,12 +19,13 @@ import param
 import database
 import influxdb
 import price
+import datetime as dt
 
 
 # gazpar2mqtt constants
-G2M_VERSION = '0.0.1'
-G2M_DB_VERSION = '0.0.0'
-G2M_INFLUXDB_VERSION = '0.0.1'
+G2M_VERSION = '0.1.0'
+G2M_DB_VERSION = '0.1.0'
+G2M_INFLUXDB_VERSION = '0.1.0'
 
 #######################################################################
 #### Functions
@@ -315,25 +316,25 @@ def run(myParams):
                         logging.info("Unable to store any measure for PCE %s to database !",myPce.pceId)
 
 
-                    # Sub-step 3D : Get thresolds of the PCE
+                    # Sub-step 3D : Get thresholds of the PCE
 
-                    # Get thresold
+                    # Get threshold
                     logging.info("---------------")
-                    logging.info("Retrieve PCE's thresolds from GRDF...")
+                    logging.info("Retrieve PCE's thresholds from GRDF...")
                     try:
-                        myGrdf.getPceThresold(myPce)
-                        thresoldCount = myPce.countThresold()
-                        logging.info("%s thresolds found !",thresoldCount)
+                        myGrdf.getPceThreshold(myPce)
+                        thresholdCount = myPce.countThreshold()
+                        logging.info("%s thresholds found !",thresholdCount)
 
                     except:
-                        logging.error("Error to get PCE's thresolds from GRDF")
+                        logging.error("Error to get PCE's thresholds from GRDF")
 
                     # Update database
-                    if myPce.thresoldList:
-                        # Store thresolds into database
-                        logging.info("Update of database with retrieved thresolds...")
-                        for myThresold in myPce.thresoldList:
-                            myThresold.store(myDb)
+                    if myPce.thresholdList:
+                        # Store thresholds into database
+                        logging.info("Update of database with retrieved thresholds...")
+                        for myThreshold in myPce.thresholdList:
+                            myThreshold.store(myDb)
                         # Commmit database
                         myDb.commit()
                         logging.info("Database updated !")
@@ -343,7 +344,7 @@ def run(myParams):
 
                     # Calculate informative measures
                     try:
-                        myPce.calculateMeasures(myDb,myParams.thresoldPercentage,gazpar.TYPE_I)
+                        myPce.calculateMeasures(myDb,myParams.thresholdPercentage,gazpar.TYPE_I)
                     except:
                         logging.error("Unable to calculate informative measures")
 
@@ -482,13 +483,13 @@ def run(myParams):
                     myMqtt.publish(mySa.histoTopic+"rolling_week_last_year_gas", myPce.gasR1WY1)
                     myMqtt.publish(mySa.histoTopic+"rolling_week_last_2_year_gas", myPce.gasR1WY2)
 
-                    ### Thresolds
-                    myMqtt.publish(mySa.thresoldTopic+"current_month_treshold", myPce.tshM0)
-                    myMqtt.publish(mySa.thresoldTopic+"current_month_treshold_percentage", myPce.tshM0Pct)
-                    myMqtt.publish(mySa.thresoldTopic+"current_month_treshold_warning", myPce.tshM0Warn)
-                    myMqtt.publish(mySa.thresoldTopic+"previous_month_treshold", myPce.tshM1)
-                    myMqtt.publish(mySa.thresoldTopic+"previous_month_treshold_percentage", myPce.tshM1Pct)
-                    myMqtt.publish(mySa.thresoldTopic+"previous_month_treshold_warning", myPce.tshM1Warn)
+                    ### Thresholds
+                    myMqtt.publish(mySa.thresholdTopic+"current_month_threshold", myPce.tshM0)
+                    myMqtt.publish(mySa.thresholdTopic+"current_month_threshold_percentage", myPce.tshM0Pct)
+                    myMqtt.publish(mySa.thresholdTopic+"current_month_threshold_warning", myPce.tshM0Warn)
+                    myMqtt.publish(mySa.thresholdTopic+"previous_month_threshold", myPce.tshM1)
+                    myMqtt.publish(mySa.thresholdTopic+"previous_month_threshold_percentage", myPce.tshM1Pct)
+                    myMqtt.publish(mySa.thresholdTopic+"previous_month_threshold_warning", myPce.tshM1Warn)
 
                     logging.info("All measures published !")
 
@@ -637,13 +638,13 @@ def run(myParams):
                     myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_last_year_gas','rolling week of last year',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR1WY1)
                     myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_last_2_year_gas','rolling week of last 2 years',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR1WY2)
 
-                    ### Thresold
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_thresold','thresold of current month',hass.ENERGY_TYPE,hass.ST_MEAS,'kWh').setValue(myPce.tshM0)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_thresold_percentage','thresold of current month percentage',hass.NONE_TYPE,hass.ST_MEAS,'%').setValue(myPce.tshM0Pct)
-                    myEntity = hass.Entity(myDevice,hass.BINARY,'current_month_thresold_problem','thresold of current month problem',hass.PROBLEM_TYPE,None,None).setValue(myPce.tshM0Warn)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_month_thresold','thresold of previous month',hass.ENERGY_TYPE,hass.ST_MEAS,'kWh').setValue(myPce.tshM1)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_month_thresold_percentage','thresold of previous month percentage',hass.NONE_TYPE,hass.ST_MEAS,'%').setValue(myPce.tshM1Pct)
-                    myEntity = hass.Entity(myDevice,hass.BINARY,'previous_month_thresold_problem','thresold of previous month problem',hass.PROBLEM_TYPE,None,None).setValue(myPce.tshM1Warn)
+                    ### Threshold
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_threshold','threshold of current month',hass.ENERGY_TYPE,hass.ST_MEAS,'kWh').setValue(myPce.tshM0)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_threshold_percentage','threshold of current month percentage',hass.NONE_TYPE,hass.ST_MEAS,'%').setValue(myPce.tshM0Pct)
+                    myEntity = hass.Entity(myDevice,hass.BINARY,'current_month_threshold_problem','threshold of current month problem',hass.PROBLEM_TYPE,None,None).setValue(myPce.tshM0Warn)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_month_threshold','threshold of previous month',hass.ENERGY_TYPE,hass.ST_MEAS,'kWh').setValue(myPce.tshM1)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_month_threshold_percentage','threshold of previous month percentage',hass.NONE_TYPE,hass.ST_MEAS,'%').setValue(myPce.tshM1Pct)
+                    myEntity = hass.Entity(myDevice,hass.BINARY,'previous_month_threshold_problem','threshld of previous month problem',hass.PROBLEM_TYPE,None,None).setValue(myPce.tshM1Warn)
 
                     ## Other
                     logging.debug("Creation of other entities")
@@ -666,7 +667,7 @@ def run(myParams):
     ####################################################################################################################
     # STEP 5C : Home Assistant Long Term statistics
     ####################################################################################################################
-    if myParams.hassLTS \
+    if myParams.hassLts \
         and myGrdf.isConnected:
 
         try:
@@ -677,9 +678,44 @@ def run(myParams):
 
             # Load database in cache
             myDb.load()
-
+            
+            sensor_name = myParams.hassLtsSensorName
+            data = {}
             # Loop on PCEs
             for myPce in myDb.pceList:
+                logging.info("Writing informations of PCE %s alias %s...", myPce.pceId, myPce.alias)
+
+                stats_array = []
+                for myMeasure in myPce.measureList:
+                    date_with_timezone = myMeasure.date.replace(tzinfo=dt.timezone.utc)
+                    date_formatted = date_with_timezone.strftime(
+                        "%Y-%m-%dT%H:%M:%S%z"
+                    )
+                    stat = {
+                        "start": date_formatted,  # formatted date
+                        "state": myMeasure.volumeGross,
+                        "sum": myMeasure.endIndex,
+                    }
+                    # Add the stat to the array
+                    if myMeasure.type == 'informative':
+                        stats_array.append(stat)
+                
+                data = {
+                    "has_mean": False,
+                    "has_sum": True,
+                    "statistic_id": (
+                        sensor_name + "_" + myPce.pceId
+                            ),
+                    "unit_of_measurement": "m³",
+                    "source": "recorder",
+                    "stats": stats_array,
+                }
+                
+            logging.debug(f"Writing HA LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}, data: {data}")
+
+            myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data)
+        except Exception as e:
+            logging.error("Home Assistant Long Term Statistics : unable to publish LTS to HA with error: %s", e)
 
                 
 
@@ -795,14 +831,14 @@ def run(myParams):
             logging.info("%s measure(s) of PCE written successfully !",writeCount)
 
 
-            # Sub-step C : Write thresolds of the PCE
-            logging.info("Writing thresolds of PCE %s alias %s...", myPce.pceId, myPce.alias)
+            # Sub-step C : Write thresholds of the PCE
+            logging.info("Writing thresholds of PCE %s alias %s...", myPce.pceId, myPce.alias)
             errorCount = 0
             writeCount = 0
-            for myThresold in myPce.thresoldList:
+            for myThreshold in myPce.thresholdList:
 
                 # Set point
-                point = myInflux.setThresoldPoint(myThresold)
+                point = myInflux.setThresholdPoint(myThreshold)
 
                 # Write
                 if not myInflux.write(point):
@@ -814,7 +850,7 @@ def run(myParams):
                 if errorCount > influxdb.WRITE_MAX_ERROR:
                     logging.warning("Writing stopped because of too many errors.")
                     break
-            logging.info("%s thresold(s) of PCE written successfully !",writeCount)
+            logging.info("%s threshold(s) of PCE written successfully !",writeCount)
 
         # Disconnect
         logging.info("Disconnexion of influxdb...")

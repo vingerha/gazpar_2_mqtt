@@ -72,7 +72,6 @@ class Grdf:
     def __init__(self):
 
         # Initialize instance variables
-        logging.debug("__Init__")
         self.session = None
         self.auth_nonce = None
         self.pceList = []
@@ -91,7 +90,6 @@ class Grdf:
             'Accept':'application/json, */*',
             'Connection': 'keep-alive'
         }  
-        logging.debug("__Init__ END")
         
     def init(self):
         logging.debug("Try starting Chromium")
@@ -603,8 +601,8 @@ class Grdf:
 
 
 
-    # Get thresold
-    def getPceThresold(self,pce):
+    # Get threshold
+    def getPceThreshold(self,pce):
         
         self.__browser.get('https://monespace.grdf.fr/api/e-conso/pce/'+ pce.pceId + '/seuils?frequence=Mensuel')
         try:
@@ -613,15 +611,70 @@ class Grdf:
         except selenium.common.exceptions.NoSuchElementException:
             logging.debug("ERROR in getting Threshold")
             time.sleep(5)        
-        thresoldList = resp
+        thresholdList = resp
         
-        for thresold in thresoldList["seuils"]:
+        for threshold in thresholdList["seuils"]:
             
-            # Create the thresold
-            myThresold = Thresold(pce,thresold)
+            # Create the threshold
+            myThreshold = Threshold(pce,threshold)
             
-            # Append thresold to the PCE's thresold list
-            pce.addThresold(myThresold)
+            # Append threshold to the PCE's threshold list
+            pce.addThreshold(myThreshold)
+            
+    def open_url(self, host, uri, token, data=None):
+        """
+        GET or POST (if data) request from Home Assistant API.
+        """
+        # Generate URL
+        api_url = host + uri
+
+        headers = {
+            "Authorization": "Bearer {}".format(
+                token
+            ),
+            "Content-Type": "application/json",
+        }
+        logging.debug("URL %s, with headers: %s", api_url, headers)
+        try:
+            if data is None:
+                response = requests.get(
+                    api_url,
+                    headers=headers,
+                    verify=not False,
+                    timeout=30,
+                )
+
+            else:
+                response = requests.post(
+                    api_url,
+                    headers=headers,
+                    json=data,
+                    verify=not False,
+                    timeout=30,
+                )
+                logging.debug(f"URL POST response: {response}")
+        except Exception as e:
+            # HANDLE CONNECTIVITY ERROR
+            raise RuntimeError(f"url={api_url} : {e}")
+
+        # HANDLE SERVER ERROR CODE
+        if response.status_code not in (200, 201):
+            raise RuntimeError(
+                "url=%s - (code = %u)\ncontent=%r)"
+                % (
+                    api_url,
+                    response.status_code,
+                    response.content,
+                )
+            )
+
+        try:
+            j = json.loads(response.content.decode("utf-8"))
+        except Exception as e:
+            # Handle JSON ERROR
+            raise RuntimeError(f"Unable to parse JSON : {e}")
+
+        return j            
             
 
 #######################################################################
@@ -666,7 +719,7 @@ class Pce:
         self.postalCode = None
         self.alias = None
         self.measureList = []
-        self.thresoldList = []
+        self.thresholdList = []
         self.dailyMeasureStart = None
         self.dailyMeasureEnd = None
         
@@ -695,9 +748,9 @@ class Pce:
     def addMeasure(self, measure):
         self.measureList.append(measure)
         
-    # Add a thresold to the PCE    
-    def addThresold(self, thresold):
-        self.thresoldList.append(thresold)
+    # Add a threshold to the PCE    
+    def addThreshold(self, threshold):
+        self.thresholdList.append(threshold)
         
     # Return the number of measure for the PCE and a type
     def countMeasure(self,type):
@@ -709,9 +762,9 @@ class Pce:
                 i += 1
         return i
     
-    # Return the number of thresold for the PCE
-    def countThresold(self):
-        return len(self.thresoldList)
+    # Return the number of threshold for the PCE
+    def countThreshold(self):
+        return len(self.thresholdList)
     
     # Return the number of valid measure for the PCE
     def countMeasureOk(self,type):
@@ -746,7 +799,7 @@ class Pce:
         return measure
     
     # Calculated measures from database
-    def calculateMeasures(self,db,thresoldPercentage,type):
+    def calculateMeasures(self,db,thresholdPercentage,type):
         
         # Get last valid measure as reference
         myMeasure = self.getLastMeasureOk(type)
@@ -928,13 +981,13 @@ class Pce:
             logging.debug("R1WY2 gas : %s m3",self.gasR1WY2)
             
             
-            # Thresolds measures
+            # Thresholds measures
             
-            ## Get M0 thresold
+            ## Get M0 threshold
             startStr = f"'{dateNow}','start of month'"
             endStr = startStr
-            self.tshM0 = self._getThresold(db,startStr)
-            logging.debug("M0 thresold : %s m3",self.tshM0)
+            self.tshM0 = self._getThreshold(db,startStr)
+            logging.debug("M0 threshold : %s m3",self.tshM0)
             
             ## Get M0 conversion factor
             startStr = f"'{dateNow}','start of month'"
@@ -942,22 +995,22 @@ class Pce:
             self.convM0 = self._getConversion(db,startStr,endStr,type)
             logging.debug("M0 factor : %s kwh / m3",self.convM0)
             
-            ## M0 thresold percentage
+            ## M0 threshold percentage
             self.tshM0Pct = None
             self.tshM0Warn = None
             self.tshM0Pct = 0 # initial value
             self.tshM0Warn = "OFF" # initial value
-            if self.tshM0 and self.gasM0Y0 and self.convM0 and thresoldPercentage:
+            if self.tshM0 and self.gasM0Y0 and self.convM0 and thresholdPercentage:
                 if self.tshM0 > 0:
                     self.tshM0Pct = round(((self.gasM0Y0 * self.convM0) / self.tshM0)*100)
-                    if self.tshM0Pct > thresoldPercentage:
+                    if self.tshM0Pct > thresholdPercentage:
                         self.tshM0Warn = "ON"
             
-            ## Get M1 thresold
+            ## Get M1 threshold
             startStr = f"'{dateNow}','start of month','-1 month'"
             endStr = startStr
-            self.tshM1 = self._getThresold(db,startStr)
-            logging.debug("M1 thresold : %s m3",self.tshM1)
+            self.tshM1 = self._getThreshold(db,startStr)
+            logging.debug("M1 threshold : %s m3",self.tshM1)
             
             ## Get M1 conversion factor
             startStr = f"'{dateNow}','start of month','-1 month'"
@@ -966,13 +1019,13 @@ class Pce:
             logging.debug("M1 factor : %s kwh / m3",self.convM1)
             
             
-            ## M1 thresold percentage
+            ## M1 threshold percentage
             self.tshM1Pct = None
             self.tshM1Warn = None
-            if self.tshM1 and self.gasM1Y0 and self.convM1 and thresoldPercentage:
+            if self.tshM1 and self.gasM1Y0 and self.convM1 and thresholdPercentage:
                 if self.tshM1 > 0:
                     self.tshM1Pct = round(((self.gasM1Y0 * self.convM1) / self.tshM1)*100)
-                    if self.tshM1Pct > thresoldPercentage:
+                    if self.tshM1Pct > thresholdPercentage:
                         self.tshM1Warn = "ON"
                     else:
                         self.tshM1Warn = "OFF"
@@ -1026,12 +1079,12 @@ class Pce:
             logging.debug("Conversion factor could not be calculated.")
             return None
     
-    # Return the thresold for a particular month 
-    def _getThresold(self,db,startStr):
+    # Return the threshold for a particular month 
+    def _getThreshold(self,db,startStr):
         
-        logging.debug("Retrieve thresold at date %s",startStr)
+        logging.debug("Retrieve threshold at date %s",startStr)
         
-        query = f"SELECT energy FROM thresolds WHERE pce = '{self.pceId}' AND date = date({startStr})"
+        query = f"SELECT energy FROM thresholds WHERE pce = '{self.pceId}' AND date = date({startStr})"
         db.cur.execute(query)
         queryResult = db.cur.fetchone()
         if queryResult is not None:
@@ -1040,13 +1093,13 @@ class Pce:
                 if valueResult >= 0:
                     return valueResult
                 else:
-                    logging.debug("Thresold value is not valid : %s",valueResult)
+                    logging.debug("Threshold value is not valid : %s",valueResult)
                     return 0
             else:
-                logging.debug("Thresold could not be calculated.")
+                logging.debug("Threshold could not be calculated.")
                 return 0
         else:
-            logging.debug("Thresold could not be calculated")
+            logging.debug("Threshold could not be calculated")
             return 0
         
 #######################################################################
@@ -1065,6 +1118,7 @@ class Measure:
         self.startIndex = None
         self.endIndex = None
         self.volume = None
+        self.volumeGross = None
         self.volumeInitial = None
         self.energy = None
         self.temperature = None
@@ -1081,8 +1135,9 @@ class Measure:
         if measure["indexDebut"]: self.startIndex = int(measure["indexDebut"])
         if measure["indexFin"]: self.endIndex = int(measure["indexFin"])
         if measure["volumeBrutConsomme"]: 
-            self.volume = int(measure["volumeBrutConsomme"])
-            self.volumeInitial = self.volume
+            self.volumeGross = float(measure["volumeBrutConsomme"])
+        if measure["volumeConverti"]:
+            self.volume = int(measure["volumeConverti"])
         if measure["energieConsomme"]: self.energy = int(measure["energieConsomme"])
         if measure["temperature"]: self.temperature = float(measure["temperature"])
         if measure["coeffConversion"]: self.conversionFactor = float(measure["coeffConversion"])
@@ -1112,9 +1167,9 @@ class Measure:
             dbTable = "consumption_published"
 
         if self.isOk() and dbTable:
-            logging.debug("Store measure type %s, %s, %s, %s, %s m3, %s kWh, %s kwh/m3",self.type,str(self.gasDate),str(self.startIndex),str(self.endIndex), str(self.volume), str(self.energy), str(self.conversionFactor))
-            measure_query = f"INSERT OR REPLACE INTO measures VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-            db.cur.execute(measure_query, [self.pce.pceId, self.type, self.gasDate, self.startIndex, self.endIndex, self.volume, self.energy, self.conversionFactor])
+            logging.debug("Store measure type %s, %s, %s, %s, %s m3, %s m3, %s kWh, %s kwh/m3",self.type,str(self.gasDate),str(self.startIndex),str(self.endIndex), str(self.volume), str(self.volumeGross), str(self.energy), str(self.conversionFactor))
+            measure_query = f"INSERT OR REPLACE INTO measures VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            db.cur.execute(measure_query, [self.pce.pceId, self.type, self.gasDate, self.startIndex, self.endIndex, self.volume, self.volumeGross, self.energy, self.conversionFactor])
         
     
     # Return measure measure quality status
@@ -1129,12 +1184,12 @@ class Measure:
 
 
 #######################################################################
-#### Class Thresold
+#### Class Threshold
 #######################################################################   
-class Thresold:
+class Threshold:
     
     # Constructor
-    def __init__(self, pce, thresold):
+    def __init__(self, pce, threshold):
         
         # Init attributes
         self.year = None
@@ -1143,23 +1198,23 @@ class Thresold:
         self.date = None
         
         # Set attributes
-        if thresold["valeur"]: self.energy = int(thresold["valeur"])
-        if thresold["annee"]: self.year = int(thresold["annee"])
-        if thresold["mois"]: self.month = int(thresold["mois"])
+        if threshold["valeur"]: self.energy = int(threshold["valeur"])
+        if threshold["annee"]: self.year = int(threshold["annee"])
+        if threshold["mois"]: self.month = int(threshold["mois"])
         if self.year and self.month:
             # Set date to the first day of the month/year
             self.date = datetime.date(self.year,self.month,1)
         self.pce = pce
         
-    # Store thresold to database
+    # Store threshold to database
     def store(self,db):
         
         if self.isOk():
-            logging.debug("Store thresold %s, %s kWh",str(self.date), str(self.energy))
-            measure_query = f"INSERT OR REPLACE INTO thresolds VALUES (?, ?, ?)"
+            logging.debug("Store threshold %s, %s kWh",str(self.date), str(self.energy))
+            measure_query = f"INSERT OR REPLACE INTO thresholds VALUES (?, ?, ?)"
             db.cur.execute(measure_query, [self.pce.pceId, self.date, self.energy])
         
-    # Return thresold quality status
+    # Return threshold quality status
     def isOk(self):
         if self.date == None: return False
         elif self.energy == None: return False

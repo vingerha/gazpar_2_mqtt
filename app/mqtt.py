@@ -11,18 +11,13 @@ USE_VERSION2_CALLBACKS = not paho.mqtt.__version__.startswith("1.")
 class Mqtt:
 
     def __init__(self,clientId,username,password,isSsl,qos,retain):
-        logging.info("__init__")
-        logging.info("__init__ : %s, %s, %s, %s, %s, %s ", clientId,username,password,isSsl,qos,retain)
         self.isConnected = False
         self.isSsl = isSsl
         self.qos = qos
         self.retain = retain
-        logging.info("__init__2")
         # Create instance
         self.mqtt = mqtt.Client(client_id=clientId)
-        self.client = mqtt.Client(client_id="gazpar2mqtt")
-        # self.client = mqtt.Client("", True, None, mqtt.MQTTv31)
-        logging.info("__init__3")
+        self.client = mqtt.Client(client_id=clientId)
         # Set authentification
         if username != "" and password != "":
             self.client.username_pw_set(username, password)

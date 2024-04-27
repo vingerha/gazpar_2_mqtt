@@ -80,20 +80,21 @@ class Database:
                         , start_index INTEGER NOT NULL
                         , end_index INTEGER NOT NULL
                         , volume INTEGER NOT NULL
+                        , volumeGrossConsumed REAL NOT NULL
                         , energy INTEGER NOT NULL
                         , conversion REAL)''')
     self.cur.execute('''CREATE UNIQUE INDEX IF NOT EXISTS idx_measures_measure
                     ON measures (pce,type,date)''')
 
     
-    # Create table for thresolds
-    logging.debug("Creation of thresolds table")
-    self.cur.execute('''CREATE TABLE IF NOT EXISTS thresolds (
+    # Create table for thresholds
+    logging.debug("Creation of thresholds table")
+    self.cur.execute('''CREATE TABLE IF NOT EXISTS thresholds (
                         pce TEXT NOT NULL 
                         , date TEXT NOT NULL
                         , energy INTEGER NOT NULL)''')
-    self.cur.execute('''CREATE UNIQUE INDEX IF NOT EXISTS idx_tresholds_thresold
-                    ON thresolds (pce,date)''')
+    self.cur.execute('''CREATE UNIQUE INDEX IF NOT EXISTS idx_tresholds_threshold
+                    ON thresholds (pce,date)''')
 
     # Commit
     self.commit()
@@ -205,9 +206,9 @@ class Database:
     logging.debug("Drop daily consumptions table")
     self.cur.execute('''DROP TABLE IF EXISTS measures''')
     
-    logging.debug("Drop thresolds table")
-    self.cur.execute('''DROP TABLE IF EXISTS thresold''') # issue #59 on v0.7.0
-    self.cur.execute('''DROP TABLE IF EXISTS thresolds''')
+    logging.debug("Drop thresholds table")
+    self.cur.execute('''DROP TABLE IF EXISTS threshold''') # issue #59 on v0.7.0
+    self.cur.execute('''DROP TABLE IF EXISTS thresholds''')
     
     # Commit work
     self.commit()
@@ -241,9 +242,9 @@ class Database:
     for myPce in self.pceList:
       self._loadMeasures(myPce)
 
-    # Load thresolds
+    # Load thresholds
     for myPce in self.pceList:
-      self._loadThresolds(myPce)
+      self._loadThresholds(myPce)
 
   # Load PCEs
   def _loadPce(self):
@@ -276,17 +277,17 @@ class Database:
       myMeasure = Measure(pce,result)
       pce.measureList.append(myMeasure)
 
-  # Load thresolds
-  def _loadThresolds(self, pce):
+  # Load thresholds
+  def _loadThresholds(self, pce):
 
-    query = f"SELECT * FROM thresolds WHERE pce = '{pce.pceId}'"
+    query = f"SELECT * FROM thresholds WHERE pce = '{pce.pceId}'"
     self.cur.execute(query)
     queryResult = self.cur.fetchall()
 
     # Create object measure
     for result in queryResult:
-      myThresold = Thresold(pce, result)
-      pce.thresoldList.append(myThresold)
+      myThreshold = Threshold(pce, result)
+      pce.thresholdList.append(myThreshold)
 
 
 # Class PCE
@@ -302,7 +303,7 @@ class Pce():
     self.ownerName = result[5]
     self.postalCode = result[6]
     self.measureList = []
-    self.thresoldList = []
+    self.thresholdList = []
 
 # Class Measure
 class Measure():
@@ -315,11 +316,12 @@ class Measure():
     self.startIndex = result[3]
     self.endIndex = result[4]
     self.volume = result[5]
-    self.energy = result[6]
-    self.conversionFactor = result[7]
+    self.volumeGross = result[6]
+    self.energy = result[7]
+    self.conversionFactor = result[8]
 
 # Class Measure
-class Thresold():
+class Threshold():
 
   def __init__(self,pce,result):
 
