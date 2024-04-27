@@ -8,7 +8,7 @@ Reworked from the great work by yukulehe/gazpar2mqtt now that GRDF is again with
   - not tested (and maybe to be omitted): influx
 - only tested via docker image and docker-compose, see [INSTALLATION](https://github.com/vingerha/gazpar_2_mqtt?tab=readme-ov-file#installation-and-usage)
 - Malheueseuement je ne soutien pas HAOS, pas mon truc
-  - j'ai demandé le magicien @AlexBelgium si mon repo est acceptable et je ferais le mieux que possible pour l'acceptation
+  - j'ai demandé le magicien [@AlexBelgium](https://github.com/alexbelgium/alexbelgium/commits?author=alexbelgium) si mon repo est acceptable et je ferais le mieux que possible pour l'acceptation
 
 For now: **USE AT YOUR OWN DISCRETION**
 
