@@ -17,6 +17,9 @@ Python script to fetch GRDF's website data and publish data to a mqtt broker
 <img src="res/mqtt.png?raw=true" width="250" height="250">
 
 ## Changelogs :
+- 0.2.0 :
+  - add export to HA Long Term Statistic
+  - fixes/tuning/cleaning
 - 0.1.0 :
   - Basis from yukulehe/gazpar2mqtt
   - add login via selenium
@@ -109,7 +112,12 @@ Optional :
 | **STANDALONE_MODE**     | Enable standalone publication mode                    | True                 |
 | **HASS_DISCOVERY**      | Enable Home assistant dicovery mode                   | False                |
 | **HASS_PREFIX**         | Home assistant topic prefix                           | homeassistant        |
+| **HASS_LTS**            | enable export to HA long Term Stats                   | False                |
+| **HASS_LTS_TOKEN**      | HA Long Lived Access token from host below            | ""                   |
+| **HASS_LTS_URI**        | Home assistant uri for LTS                            |                      |
+| **HASS_LTS_HOST**       | Home assistant server/host                            | http://192.168.x.y:8123|
 | **HASS_DEVICE_NAME**    | Home assistant device name                            | gazpar               |
+
 | **THRESOLD_PERCENTAGE** | Percentage of the thresold to be reached              | 80                   |
 | **PRICE_PATH**          | Path to price.csv file                                | /data                |
 | **PRICE_KWH_DEFAULT**   | Energy price in € per kWh                             | 0.04                 |
