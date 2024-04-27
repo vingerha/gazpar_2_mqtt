@@ -112,12 +112,11 @@ Optional :
 | **STANDALONE_MODE**     | Enable standalone publication mode                    | True                 |
 | **HASS_DISCOVERY**      | Enable Home assistant dicovery mode                   | False                |
 | **HASS_PREFIX**         | Home assistant topic prefix                           | homeassistant        |
+| **HASS_DEVICE_NAME**    | Home assistant device name                            | gazpar               |
 | **HASS_LTS**            | enable export to HA long Term Stats                   | False                |
 | **HASS_LTS_TOKEN**      | HA Long Lived Access token from host below            | ""                   |
-| **HASS_LTS_URI**        | Home assistant uri for LTS                            |                      |
+| **HASS_LTS_URI**        | Home assistant uri for LTS                            |/api/services/recorder/import_statistics|
 | **HASS_LTS_HOST**       | Home assistant server/host                            | http://192.168.x.y:8123|
-| **HASS_DEVICE_NAME**    | Home assistant device name                            | gazpar               |
-
 | **THRESOLD_PERCENTAGE** | Percentage of the thresold to be reached              | 80                   |
 | **PRICE_PATH**          | Path to price.csv file                                | /data                |
 | **PRICE_KWH_DEFAULT**   | Energy price in € per kWh                             | 0.04                 |
