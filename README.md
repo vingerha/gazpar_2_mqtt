@@ -2,7 +2,7 @@
 
 Reworked from the great work by yukulehe/gazpar2mqtt now that GRDF is again without Captcha
 
-###Important (27/May/2024): 
+### Important (27/May/2024): 
 - working to collect data in SQLite and MQTT but under development, various functions may disappear or be modified.
 - no verification if the now 2-year old code from yukulehe/gazpar2mqtt is still valid **in its entirety**
   - not tested (and maybe to be omitted): influx
