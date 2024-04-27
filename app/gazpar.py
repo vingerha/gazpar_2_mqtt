@@ -397,9 +397,7 @@ class Grdf:
         
         logging.info("Get whoami...")
         self.__browser.get('https://monespace.grdf.fr/api/e-connexion/users/whoami')
-        #if screenshot:
-        self.get_screenshot("07_screenshot_after_data_url.png")
-                
+              
         try:
             content = self.__browser.find_element(By.TAG_NAME, "pre").text
             resp = json.loads(content)

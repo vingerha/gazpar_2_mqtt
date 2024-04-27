@@ -25,7 +25,6 @@ class Params:
     self.grdfPassword = 'xxx'
     
     # Mqtt params
-    self.mqttEnable = True
     self.mqttHost = '192.168.x.y'
     self.mqttPort = 1883
     self.mqttClientId = 'gazpar2mqtt'
