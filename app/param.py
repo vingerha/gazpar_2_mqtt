@@ -166,6 +166,11 @@ class Params:
     if "HASS_PREFIX" in os.environ: self.hassPrefix = os.environ["HASS_PREFIX"]
     if "HASS_DEVICE_NAME" in os.environ: self.hassDeviceName = os.environ["HASS_DEVICE_NAME"]
     
+    if "HASS_LTS" in os.environ: self.hassLts = os.environ["HASS_LTS"]
+    if "HASS_LTS_TOKEN" in os.environ: self.hassToken = os.environ["HASS_LTS_TOKEN"]
+    if "HASS_LTS_URI" in os.environ: self.hassStatisticsUri = os.environ["HASS_LTS_URI"]
+    if "HASS_LTS_HOST" in os.environ: self.hassHost = os.environ["HASS_LTS_HOST"]
+      
     if "THRESHOLD_PERCENTAGE" in os.environ: self.thresholdPercentage = int(os.environ["THRESHOLD_PERCENTAGE"])
     
     if "DB_INIT" in os.environ: self.dbInit = _isItTrue(os.environ["DB_INIT"])
