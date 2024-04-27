@@ -613,13 +613,17 @@ class Grdf:
             time.sleep(5)        
         thresholdList = resp
         
-        for threshold in thresholdList["seuils"]:
-            
-            # Create the threshold
-            myThreshold = Threshold(pce,threshold)
-            
-            # Append threshold to the PCE's threshold list
-            pce.addThreshold(myThreshold)
+        if thresholdList:
+            for threshold in thresholdList["seuils"]:
+                
+                # Create the threshold
+                myThreshold = Threshold(pce,threshold)
+                
+                # Append threshold to the PCE's threshold list
+                pce.addThreshold(myThreshold)
+        else:
+            logging.debug("Error in getting thresholds from GRDF")
+
             
     def open_url(self, host, uri, token, data=None):
         """
