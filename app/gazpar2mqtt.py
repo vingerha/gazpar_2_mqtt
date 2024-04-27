@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-# Work in progress...
-
-
 import sys
 import datetime
 import schedule
@@ -23,8 +19,8 @@ import datetime as dt
 
 
 # gazpar2mqtt constants
-G2M_VERSION = '0.1.0'
-G2M_DB_VERSION = '0.1.0'
+G2M_VERSION = '0.2.0'
+G2M_DB_VERSION = '0.2.0'
 G2M_INFLUXDB_VERSION = '0.1.0'
 
 #######################################################################

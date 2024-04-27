@@ -92,18 +92,14 @@ class Grdf:
         }  
         
     def init(self):
-        logging.debug("Try starting Chromium")
         self.init_chromium()
-        logging.debug("Past Init Chrome")
+        logging.debug("Chromium init done")
         return
 
      
         
     def init_chromium(self):
         options = webdriver.ChromeOptions()
-        logging.debug("init_chromium 1")
-        #log_level = self.get_log_level()
-
         # Set Chrome options
         if (
             sys.platform != "win32"
@@ -116,14 +112,12 @@ class Grdf:
             options.add_argument("--disable-login-animations")
             options.add_argument("--disable-renderer-backgrounding")
             options.add_argument("--disable-dev-shm-usage")
-        logging.debug("init_chromium 2")
         local_dir = "/app"
         # pylint: disable=condition-evals-to-constant
         datadir = os.path.expanduser(f"{local_dir}.config/google-chrome")
         os.makedirs(datadir, exist_ok=True)
         options.add_argument(f"--user-data-dir={datadir}")
         logging.debug(f"Use {datadir} for Google Chrome user data.")
-        logging.debug("init_chromium 3")
         # options.add_argument('--user-data-dir=~/.config/google-chrome')
         options.add_argument("--mute-audio")
         # if self._use_display:
@@ -156,9 +150,6 @@ class Grdf:
         options.add_argument("--log-level=0");
         options.add_argument("--output=/dev/null");
         
-        logging.debug("init_chromium 4")
-        
-        
         options.add_experimental_option("useAutomationExtension", False)
         options.add_experimental_option(
             "excludeSwitches", ["enable-automation"]
@@ -166,26 +157,11 @@ class Grdf:
 
         # always use headless
         options.add_argument("--headless")
-        #if getattr(options, "headless", "_DUMMY_") == "_DUMMY_":
-        #    # Workaround breaking change selenium 4.13.0
-        #    options.headless = True
-      
         options.add_argument("window-size=1280,1024")
-        
-        #if sys.platform != "win32":
-        #    try:
-        #        self.__display.start()
-        #    except Exception:
-        #        raise
 
         # No exception up to here, so ok
-        logging.debug("OK")
-        #options.add_argument("--enable-logging")
-        #options.add_argument("--log-level=0")
-        #options.add_argument("--v=0")
         chromium_service_args = ""
         LOGGER.setLevel(logging.WARNING)
-        logging.debug("Verbose output: %s", self._verbose)
         if self._verbose:
             logging.debug("Verbose output: %s", self._verbose)
             chromium_service_args = (
@@ -209,7 +185,6 @@ class Grdf:
 
         try:
             if "chromium" in inspect.getmembers(webdriver): 
-                logging.debug("chromium found in inspect")
                 chromeService = webdriver.chromium.service.ChromiumService(
                     executable_path="/usr/local/lib/python3.11/site-packages/chromedriver",
                     service_args=chromium_service_args,  # More debug info
@@ -221,47 +196,34 @@ class Grdf:
                     service_args=chromium_service_args,  # More debug info
                     log_output=chromedriver_log
                 )
-                #chromeService = webdriver.chrome.service.Service(
-                #    executable_path="/usr/local/lib/python3.11/site-packages/chromedriver",
-                #    service_args=chromium_service_args,  # More debug info
-                #    log_output=chromedriver_log
-                #)
-            logging.debug("init_chromium 5")
             logging.debug("init_chromium 5 chromes: %s", chromeService)
             logging.debug("init_chromium 5 options: %s", options)
-            
-
 
             browser = webdriver.Chrome(
                 service=chromeService,
                 options=options,
             )
-            logging.debug("init_chromium 6")
-            #browser.maximize_window()
-            logging.debug("init_chromium 7")
             timeout = 5 # type:ignore
             self.__wait = WebDriverWait(browser, timeout)
         except AttributeError:
             logging.debug("chromium unknown in selenium webdriver")
             raise
         except Exception:
-            logging.debug("Exception")
+            logging.debug("Exception in trying to start chromium browser")
             raise
         else:
             # Now we know the browser works
             self.__browser = browser
-            logging.debug("Browser: %s", browser)        
+            logging.debug("Browser works: %s", browser)        
 
     def get_screenshot(self, basename: str, dump_html: bool = False):
         """
         Get screenshot and save to file in logs_folder
         """
-        logging.debug("Trying to get screenshot in: ./")
         fn_img = os.path.join(self.location, basename)
         # Screenshots are only for debug, so errors are not blocking.
-        logging.debug("Trying to get screenshot as file: %s", fn_img)
         try:
-            logging.debug(f"Grab & Save: {fn_img}")
+            logging.debug(f"Grab screenshot and Save: {fn_img}")
             # img = self.__display.waitgrab()
             self.__browser.get_screenshot_as_file(fn_img)
         except Exception as e:
@@ -273,7 +235,7 @@ class Grdf:
             try:
                 fn_html = fn_img + ".html"
                 with open(fn_html, "w", encoding="utf_8") as html_file:
-                    logging.debug(f"Writing '{fn_html}'. ")
+                    logging.debug(f"Writing screenshot to htm: '{fn_html}'. ")
                     html_file.write(self.__browser.page_source)
             except Exception as e:
                 logging.debug(f"Could not dump html {fn_html}: {e}")
@@ -288,23 +250,16 @@ class Grdf:
         #site_grdf_url = "https://monespace.grdf.fr/client/particulier/consommation"
         site_grdf_url = "https://monespace.grdf.fr/client/particulier/accueil"
    
-        
-        logging.debug("Logging1")
         self._verbose = verbose
         self.init()
         self.location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        logging.debug("Location: %s", self.location)
-        #self.__browser.get(url)
         isLoggedIn = False
         logging.debug("Get url")
-        #self.__browser.get(self.__class__.site_grdf_url)
         self.__browser.get(site_grdf_url)
-        logging.debug("OK")   
 
         if screenshot:
             self.get_screenshot("00_screenshot_entry.png") 
 
-        
         deny_btn = None
         try:
             deny_btn = self.__browser.find_element(
@@ -325,7 +280,7 @@ class Grdf:
 
         
         # Wait for Connexion #####
-        logging.debug("Connexion au site GRDF")
+        logging.debug("Connection with site GRDF")
 
 
         if screenshot:
@@ -334,7 +289,6 @@ class Grdf:
         # Wait for Email #####
         logging.debug("Waiting for Email")
         ep = EC.presence_of_element_located((By.ID, "input27"))
-        logging.debug("Waiting for Email2: %s", ep)
         el_email = self.__wait.until(
             ep,
             message="failed, page timeout (timeout=30)",
@@ -342,23 +296,19 @@ class Grdf:
         logging.debug("OK")
         
         # Type Email #####
-        logging.debug("Type Email")
+        logging.debug("Enter Email")
         el_email.clear()
         el_email.send_keys(username)
-        logging.debug("OK") 
-        
+       
         if screenshot:
             self.get_screenshot("02_screenshot_after_user.png")          
-        #with open('/app/user.html', 'w') as f:
-        #   f.write(self.__browser.page_source)  
-        logging.debug("Finding button")
+ 
         re_btn = self.__browser.find_element(
             By.ID, "grdfButton"
         )
-        logging.debug("Button: %s", re_btn)
+        logging.debug("Using Button 1: %s", re_btn)
         re_btn.click()            
         time.sleep(2)
-        logging.debug("After button")
         
         if screenshot:
             self.get_screenshot("03_screenshot_after_button.png")
@@ -366,27 +316,21 @@ class Grdf:
  
         # Wait for Password #####
         logging.debug("Waiting for Password")
-   
-
-
-        # ep = EC.presence_of_element_located((By.ID, "input54")) # works in meters2ha, not here
         ep = EC.element_to_be_clickable((By.NAME,"credentials.passcode"))
-        
-        logging.debug("Waiting for Password2: %s", ep)
         el_password = self.__wait.until(
             ep,
             message="failed, page timeout (timeout=30)",
         )
-        logging.debug("OK")
 
         # Type Password #####
-        logging.debug("Type Password")
+        logging.debug("Enter Password")
         el_password.send_keys(password)
-        logging.debug("OK")
+
         
         re_btn = self.__browser.find_element(
             By.ID, "grdfButton"
         )
+        logging.debug("Using Button 2: %s", re_btn)
         re_btn.click()   
         time.sleep(3)   
 
@@ -407,16 +351,8 @@ class Grdf:
                 ).click()
             except Exception:
                 pass
-            logging.debug("deny_btn: %s", deny_btn)
+            logging.debug("Using deny_btn: %s", deny_btn)
 
-            #if deny_btn is not None:
-            #    self.click_in_view(
-            #        By.ID,
-            #        "btn_option_deny_banner",
-            #        wait_message="Waiting for cookie popup",
-            #        click_message="Click on deny",
-            #        delay=0,  # random.uniform(1, 2),
-            #    )
             if screenshot:
                 self.get_screenshot("05_screenshot_after_deny_button.png")                    
                 
@@ -480,20 +416,17 @@ class Grdf:
         except Exception as e:
             logging.error("Whoami returned invalid JSON:")
             logging.error(str(e))
-            logging.debug(resp)
             self.isConnected = False
             return None
         
         # Check Whoami content
         if 'code' in account:
-            logging.debug(resp)
             logging.info("Whoami unsuccessful. Invalid returned information: %s", resp)
             self.isConnected = False
             return None
 
         # Check that id is in account
         if not 'id' in account or account['id'] <= 0:
-            logging.debug(resp)
             logging.info("Whoami unsuccessful. Invalid returned information: %s", resp)
             self.isConnected = False
             return None
@@ -525,12 +458,10 @@ class Grdf:
         except Exception as e:
             logging.error("PCEs returned invalid JSON:")
             logging.error(str(e))
-            logging.debug(resp)
             self.isConnected = False
             return None
         
         if 'code' in pceList:
-            logging.debug(resp)
             logging.info("PCEs unsuccessful. Invalid returned information: %s", resp)
             self.isConnected = False
             return None
@@ -638,7 +569,7 @@ class Grdf:
             ),
             "Content-Type": "application/json",
         }
-        logging.debug("URL %s, with headers: %s", api_url, headers)
+        logging.debug("GET/POST for URL %s, with headers: %s", api_url, headers)
         try:
             if data is None:
                 response = requests.get(
