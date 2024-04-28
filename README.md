@@ -177,7 +177,7 @@ e.q. on ubuntu this is
 ```
 docker-compose run --rm gazpar2mqtt
 ```
-After that it will have created the db
+After that it will have created the db and you should have data in MQTT
 ```
 me@ha-nuc:~/docker/gazpar_2_mqtt_2$ ls -la
 total 112
@@ -186,7 +186,7 @@ drwxrwxrwx 1 root root   4096 Apr 25 18:23 ..
 -rwxrwxrwx 1 root root   1909 Apr 28 17:42 docker-compose.yml
 -rwxrwxrwx 1 root root 102400 Apr 27 16:25 gazpar2mqtt.db
 ```
-
+From here on you can extend the docker-compose.yml e.g. to HA Long Term Statistics
 
 ## Manual without container
 
