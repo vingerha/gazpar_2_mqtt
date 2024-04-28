@@ -159,12 +159,34 @@ docker run --name gazpar_2_mqtt -v [yourdocker_dir]/gazpar_2_mqtt/app:/app -v [y
 ## Docker compose
 
 create a folder and place the docker-compose.yml
-edit the file to match your setup
-execute the docker compose run applicable for your OS
+example:
+```
+/home/docker/gazpar_2_mqt
+me@ha-nuc:~/docker/gazpar_2_mqtt_2$ ls -la
+total 112
+drwxrwxrwx 1 root root   4096 Apr 28 17:47 .
+drwxrwxrwx 1 root root   4096 Apr 25 18:23 ..
+-rwxrwxrwx 1 root root   1909 Apr 28 17:42 docker-compose.yml
+
+```
+edit the docker-compose.yml to match your setup
+Unles you are pretty sure what you are doing, it is recommend to do this in steps. so only the mandatory ones first with the connection to MQTT
+
+Then, execute the docker compose run applicable for your OS
 e.q. on ubuntu this is
 ```
 docker-compose run --rm gazpar2mqtt
 ```
+After that it will have created the db
+```
+me@ha-nuc:~/docker/gazpar_2_mqtt_2$ ls -la
+total 112
+drwxrwxrwx 1 root root   4096 Apr 28 17:47 .
+drwxrwxrwx 1 root root   4096 Apr 25 18:23 ..
+-rwxrwxrwx 1 root root   1909 Apr 28 17:42 docker-compose.yml
+-rwxrwxrwx 1 root root 102400 Apr 27 16:25 gazpar2mqtt.db
+```
+
 
 ## Manual without container
 
