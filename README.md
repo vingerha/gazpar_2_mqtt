@@ -13,7 +13,7 @@ Main differences are in the login method, now using virtual browser (old method 
 
 For now: **USE AT YOUR OWN DISCRETION**
 
-# gazpar2mqtt
+# What is gazpar_2_mqtt
 Python script to fetch GRDF's website data and publish data to a mqtt broker
 
 ## Changelogs :
