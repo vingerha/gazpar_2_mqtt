@@ -32,7 +32,7 @@ Python script to fetch GRDF's website data and publish data to a mqtt broker
 
 ## Roadmap :
 
-- Home assistant custom entity card
+- Home assistant custom entity card (low prio)
 
 # Requirements
 
@@ -55,13 +55,13 @@ GRDF provides informative measures at day level. The tool returns the last measu
 
 GRDF provides published measures. It corresponds to consumptions measured by GRDF and transmitted to your gas supplier. Consequently, it should correspond to the consumption that the supplier invoices to the consumer.
 
-### Thresolds
+### Thresholds
 
-Thresolds (Seuil) can be set on GRDF website for current and future months.
+Thresholds (Seuil) can be set on GRDF website for current and future months.
 ![image](https://user-images.githubusercontent.com/31646663/147261711-e74beca2-aa2c-49f9-b994-2dc3f013eaa2.png)
 ![image](https://user-images.githubusercontent.com/31646663/147261741-5a45c17c-f621-4e1e-86e0-964eef81b435.png)
 
-The script can retrieve those informations and publish a warn when the thresold is close to being reached.
+The script can retrieve those informations and publish a warn when the threshold is close to being reached.
 
 ## Prices
 
