@@ -47,8 +47,8 @@ services:
     # volumes are used to get to the data/code/settings outside of the container
     # put this docker-comose in a folder and it will aut0 create/use this 
     volumes:     
-      - ./gazpar_2_mqtt:/data
-      - ./gazpar_2_mqtt/app:/app
+      - ./:/data
+      - ./app:/app
     #depends_on:  # to link influxdb
     #  - mqtt     # name of your mqtt container
     #  - influxdb # name of your influxdb container
