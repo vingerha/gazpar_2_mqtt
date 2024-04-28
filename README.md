@@ -16,9 +16,6 @@ For now: **USE AT YOUR OWN DISCRETION**
 # gazpar2mqtt
 Python script to fetch GRDF's website data and publish data to a mqtt broker
 
-![Gazpar logo](res/gazpar.png)
-<img src="res/mqtt.png?raw=true" width="250" height="250">
-
 ## Changelogs :
 - 0.2.0 :
   - add export to HA Long Term Statistic
