@@ -96,7 +96,7 @@ Optional :
 
 | Variable                | Description                                           | Default value        |
 |-------------------------|-------------------------------------------------------|----------------------|
-| **SCHEDULE_TIME**       | Time for refreshing data everyday                     | None (format : 14:30) |
+| **SCHEDULE_TIME**       | Time for refreshing data everyday                     | None (format: HH:MM) |
 | **MQTT_PORT**           | Port of the MQTT broker                               | 1883                 |
 | **MQTT_TOPIC**          | Topic used as prefix                                  | gazpar               |
 | **MQTT_CLIENTID**       | Client id to be used for connexion to the MQTT broker | gazou                |
@@ -177,16 +177,13 @@ drwxrwxrwx 1 root root   4096 Apr 25 18:23 ..
 ```
 From here on you can extend the docker-compose.yml e.g. to HA Long Term Statistics
 
-## Manual without container
-
-to be added in near future (requires a.o. chromium to be pre-installed)
-
-## Standalone mode
+## Standalone mode (not tested)
 
 Default mode, gazpar2mqtt is autonomous and is not dependent of any third-party tool.
 You can replace the default topic prefix *gazpar* (see mqtt broker requirements chapter)
 
-## Add-on
+## Add-on (awaiting acceptance)
+
 For Hass.io users, gazpar_2_mqtt is not (yet) available as add-on, request outstanding
 
 # Output
