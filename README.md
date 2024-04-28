@@ -1,6 +1,7 @@
 # IMPORTANT NOTE
 
-Reworked from the great repo by yukulehe/gazpar2mqtt, now that GRDF is again without Captcha
+Reworked from the great repo by yukulehe/gazpar2mqtt, now that GRDF is again without Captcha.
+Main differences are in the login method, now using virtual browser (old method still does not work), and allowing to export to HA Long Term Statistics
 
 ### Important (27/May/2024): 
 - working to collect data in SQLite and MQTT but under development, various functions may disappear or be modified.
