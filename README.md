@@ -189,6 +189,13 @@ to be added in near future (requires a.o. chromium to be pre-installed)
 Default mode, gazpar2mqtt is autonomous and is not dependent of any third-party tool.
 You can replace the default topic prefix *gazpar* (see mqtt broker requirements chapter)
 
+## Add-on
+For Hass.io users, gazpar_2_mqtt is not (yet) available as add-on, request outstanding
+
+# Output
+
+## MQTT
+
 ### Measures :
 
 Last measures :
@@ -355,11 +362,7 @@ Calculated thresold measures :
 
 Note : thresold percentage can be editable in environment variable. 
 
-### Add-on
-For Hass.io users, gazpar2mqtt is also available as an add-on provided by [alexbelgium](https://github.com/alexbelgium) (thanks you to him). Please visit the dedicated [repository](https://github.com/alexbelgium/hassio-addons/tree/master/gazpar2mqtt).
-
-
-## InfluxDb & Grafana
+### InfluxDb & Grafana (not yet tested)
 
 You can activate export of data to your InfluxDb v2 database. InfluxDb v1 is currently not supported.
 
