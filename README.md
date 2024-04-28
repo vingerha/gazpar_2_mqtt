@@ -40,13 +40,16 @@ Remember, kWh provided is conversion factor dependant. Please verify it's cohere
 
 Gazpar2mqtt request the API and retrieve 4 groups of data :
 
-### Account informations: the list of PCE (Point de Comptage et d'Estimation) and its attributes (address, state, activation date)  
+### 1. Account informations: 
+the list of PCE (Point de Comptage et d'Estimation) and its attributes (address, state, activation date)  
 
-### Informative measures: consumption at day level. The tool returns the last measure and several calculated indicators. 
+### 2. Informative measures: 
+consumption at day level. The tool returns the last measure and several calculated indicators. 
 
-### Published measures: consumptions measured by GRDF, usually aggregated and transmitted to your gas supplier. 
+### 3. Published measures: 
+consumptions measured by GRDF, usually aggregated and transmitted to your gas supplier. 
 
-### Thresholds
+### 4. Thresholds
 
 Thresholds (Seuil) can be set on GRDF website for current and future months.
 ![image](https://user-images.githubusercontent.com/31646663/147261711-e74beca2-aa2c-49f9-b994-2dc3f013eaa2.png)
