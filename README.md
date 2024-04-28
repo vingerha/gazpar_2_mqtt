@@ -137,17 +137,13 @@ Optional :
 
 # Installation and Usage
 
-At the moment I have only tested the docker setup
+## Docker
 - create a folder ([yourdocker_dir]/gazpar_2_mqtt) to map to the container volume
 - in that folder, create a folder app ([yourdocker_dir]/gazpar_2_mqtt/app)
 - run docker command below, the very first time it will copy all necessary files into [yourdocker_dir]/gazpar_2_mqtt/app
 - it will then CRASH as it does not have the credentials
 - modify the param.py to match grdf and mqtt ip/port and (if needed) mqtt credentials
 - restart the container
-
-
-## Docker
-
 [Docker location](https://hub.docker.com/repository/docker/vingerha/gazpar_2_mqtt/general)
 
 Example of docker run command, assuming param.py having the credentials:
@@ -167,8 +163,9 @@ drwxrwxrwx 1 root root   4096 Apr 28 17:47 .
 drwxrwxrwx 1 root root   4096 Apr 25 18:23 ..
 -rwxrwxrwx 1 root root   1909 Apr 28 17:42 docker-compose.yml
 ```
-edit the docker-compose.yml to match your setup, see [parameter](https://github.com/vingerha/gazpar_2_mqtt?tab=readme-ov-file#parameters)
-Unles you are pretty sure what you are doing, it is recommend to do this in steps. so only the mandatory ones first with the connection to MQTT
+Edit the docker-compose.yml to match your setup, see [parameter](https://github.com/vingerha/gazpar_2_mqtt?tab=readme-ov-file#parameters)
+
+Unles you are pretty sure what you are doing, it is recommend to do this in steps, start with the mandatory ones first and any connection credentials to MQTT
 
 Then, execute the docker compose run applicable for your OS
 e.q. on ubuntu this is
