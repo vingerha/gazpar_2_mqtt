@@ -8,8 +8,7 @@ Main differences are in the login method, now using virtual browser (old method 
 - no verification if the now 2-year old code from yukulehe/gazpar2mqtt is still valid **in its entirety**
   - not tested (and maybe to be omitted): influx
 - only tested via docker image and docker-compose, see [INSTALLATION](https://github.com/vingerha/gazpar_2_mqtt?tab=readme-ov-file#installation-and-usage)
-- This repo does not support add-ons for HAOS, I donot run that and have not (yet) the knowledge on how to accomplish this
-  - I did ask [@AlexBelgium](https://github.com/alexbelgium/alexbelgium/commits?author=alexbelgium) sif he would consider this repo to be part of his library....
+- This repo does not support add-ons for HAOS, a request is outstanding with [@AlexBelgium](https://github.com/alexbelgium/alexbelgium/commits?author=alexbelgium) to consider this repo as part of his library....
 
 For now: **USE AT YOUR OWN DISCRETION**
 
