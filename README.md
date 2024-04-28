@@ -33,7 +33,6 @@ Python script to fetch GRDF's website data and publish data to a mqtt broker
 ## Roadmap :
 
 - Home assistant custom entity card
-- Load data directly into HA Long Term Statistics, via HA webservice
 
 # Requirements
 
