@@ -7,8 +7,8 @@ Reworked from the great work by yukulehe/gazpar2mqtt now that GRDF is again with
 - no verification if the now 2-year old code from yukulehe/gazpar2mqtt is still valid **in its entirety**
   - not tested (and maybe to be omitted): influx
 - only tested via docker image and docker-compose, see [INSTALLATION](https://github.com/vingerha/gazpar_2_mqtt?tab=readme-ov-file#installation-and-usage)
-- Malheuereusement je ne soutien pas HAOS, pas mon truc
-  - j'ai demandé le magicien [@AlexBelgium](https://github.com/alexbelgium/alexbelgium/commits?author=alexbelgium) si mon repo est acceptable et je essaie le mieux que possible pour l'acceptation
+- This repo does not support add-ons for HAOS, I donot run that and have not (yet) the knowledge on how to accomplish this
+  - I did ask [@AlexBelgium](https://github.com/alexbelgium/alexbelgium/commits?author=alexbelgium) sif he would consider this repo to be part of his library....
 
 For now: **USE AT YOUR OWN DISCRETION**
 
