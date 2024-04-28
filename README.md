@@ -35,22 +35,16 @@ Python script to fetch GRDF's website data and publish data to a mqtt broker
 
 ## GRDF Gazpar API
 
-Verify you have gazpar data available on [GRDF Portal](https://monespace.grdf.fr/monespace/connexion)
+Verify you have gazpar data available on [GRDF Portal]https://monespace.grdf.fr/client/particulier/consommation)
 Remember, kWh provided is conversion factor dependant. Please verify it's coherent with your provider bills.
 
 Gazpar2mqtt request the API and retrieve 4 groups of data :
 
-### Account informations
+### Account informations: the list of PCE (Point de Comptage et d'Estimation) and its attributes (address, state, activation date)  
 
-It corresponds to the customer profile, the list of PCE (Point de Comptage et d'Estimation) and its attributes (address, state, activation date)  
+### Informative measures: consumption at day level. The tool returns the last measure and several calculated indicators. 
 
-### Informative measures
-
-GRDF provides informative measures at day level. The tool returns the last measure and several calculated indicators. 
-
-### Published measures
-
-GRDF provides published measures. It corresponds to consumptions measured by GRDF and transmitted to your gas supplier. Consequently, it should correspond to the consumption that the supplier invoices to the consumer.
+### Published measures: consumptions measured by GRDF, usually aggregated and transmitted to your gas supplier. 
 
 ### Thresholds
 
