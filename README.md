@@ -130,6 +130,9 @@ Optional :
 
 # Installation and Usage
 
+Imperative to have credentials that are proven working via www.grdf.fr > Espace Client (or https://monespace.grdf.fr/client/particulier/accueil)
+There are multiple other links that still seem to work but not all have the same end-result.
+
 ## Docker
 - create a folder ([yourdocker_dir]/gazpar_2_mqtt) to map to the container volume
 - in that folder, create a folder app ([yourdocker_dir]/gazpar_2_mqtt/app)
