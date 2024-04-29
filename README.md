@@ -27,4 +27,4 @@ For installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_m
 - Home assistan load of monthly GRDG figures as long term statistics
 
 ### Thanks
-The vast majority of the work was done by @yukulehe ... for which masisve thanks goes out !
+The vast majority of the work was done by @yukulehe ... to which masisve thanks goes out !
