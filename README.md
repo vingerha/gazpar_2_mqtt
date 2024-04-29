@@ -174,8 +174,9 @@ me@ha-nuc:~/docker/gazpar_2_mqtt_2$ ls -la
 total 112
 drwxrwxrwx 1 root root   4096 Apr 28 17:47 .
 drwxrwxrwx 1 root root   4096 Apr 25 18:23 ..
+drwxrwxrwx 1 root root  4096 Apr 28 16:24 app
 -rwxrwxrwx 1 root root   1909 Apr 28 17:42 docker-compose.yml
--rwxrwxrwx 1 root root 102400 Apr 27 16:25 gazpar2mqtt.db
+-rwxrwxrwx 1 root root 102400 Apr 28 16:25 gazpar2mqtt.db
 ```
 From here on you can extend the docker-compose.yml e.g. to HA Long Term Statistics
 
