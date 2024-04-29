@@ -1,4 +1,6 @@
-# Home assistant add-on: gazpar_2_mqtt
+# NOT WORKING NOT WORKING ... in process of being reviewed
+
+Home assistant add-on: gazpar_2_mqtt
 
 
 ## About
