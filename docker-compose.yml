@@ -13,6 +13,9 @@ services:
       MQTT_HOST: host
       TZ: Europe/Paris
       # Optional:
+      # Note that either STANDALONE_MODE ot HASS_DISCOVERY must be turned True to export to MQTT
+      # Even though this is optional, recommend to start STANDALONE_MODE True
+      STANDALONE_MODE: 'True'
       #DEBUG: 'True'  
       #SCHEDULE_TIME: '06:30'
       #MQTT_PORT: '1883'
@@ -23,7 +26,7 @@ services:
       #MQTT_QOS: '1'
       #MQTT_RETAIN: 'True'
       #MQTT_SSL: 'False'
-      #STANDALONE_MODE: 'False'
+
       #HASS_DISCOVERY: 'False'
       #HASS_PREFIX: 'homeassistant'
       #HASS_DEVICE_NAME: 'gazpar'
