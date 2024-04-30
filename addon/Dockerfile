@@ -12,24 +12,6 @@ COPY rootfs/ /
 COPY ./app /app
 COPY ./app /app_temp
 
-RUN apt-get update && \ 
-	apt-get install -y curl unzip xvfb libxi6 libgconf-2-4  && \ 
-    apt-get update && \
-    apt-get install -y chromium -y  && \
-    apt-get update && \	
-    rm -rf /var/lib/apt/lists/*
-	    
-RUN mkdir -p /data
-
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
-ENV TZ=Europe/Paris
-
-# Install python requirements
-RUN pip3 install --upgrade pip && \
-    pip3 install --no-cache-dir -r /app/requirement.txt
-
-
 ################
 # 4 Entrypoint #
 ################
@@ -44,8 +26,8 @@ CMD ["python3", "app/gazpar2mqtt.py"]
 ############
 
 LABEL \
-  io.hass.version="0.2.2" \
+  io.hass.version="0.2.0" \
   io.hass.type="addon" \
-  io.hass.arch="armhf|aarch64|i386|amd64"
+  io.hass.arch="armv7|amd64|arm64"
 
 

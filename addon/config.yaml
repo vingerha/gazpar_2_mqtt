@@ -1,0 +1,40 @@
+---
+name: Gazpar_2_mqtt
+version: dev
+slug: gazpar_2_mqtt
+description: MetersToHA add-on for Home Assistant
+url: https://github.com/vingerha/gazpar_2_mqtt
+homeassistant_api: true
+map:
+  - addon_config:rw
+# codenotary: dummyaddress@example.com
+init: false
+host_dbus: true
+arch:
+  - arm64
+  - amd64
+  - armv7
+options:
+  log_level: info
+  timeout: "30"
+  type: ha
+  # logs_folder: /config/MetersToHA
+  # download_folder: /config/MetersToHA
+  logs_folder: /config
+  download_folder: /config
+  screenshot: false
+schema:
+  log_level: list(error|warning|info|debug|trace)?
+  grdf_login: email?
+  grdf_password: password?
+  has_server: url?
+  ha_token: password?
+  logs_folder: str?
+  keep_output: bool?
+  screenshot: bool?
+  display: bool?
+  mqtt_login: str?
+  mqtt_password: password?
+  mqtt_server: url?
+  mqtt_port: port?
+image: vingerha/gazpar_2_mqtt:0.2.0
