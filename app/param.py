@@ -172,7 +172,7 @@ class Params:
       
     if "THRESHOLD_PERCENTAGE" in os.environ: self.thresholdPercentage = int(os.environ["THRESHOLD_PERCENTAGE"])
     
-    if "INFLUXDB_ENABLE" in os.environ: self.influxEnable = os.environ["INFLUXDB_ENABLE"]
+    if "INFLUXDB_ENABLE" in os.environ: self.influxEnable = _isItTrue(os.environ["INFLUXDB_ENABLE"])
     if "INFLUXDB_HOST" in os.environ: self.influxHost = os.environ["INFLUXDB_HOST"]
     if "INFLUXDB_PORT" in os.environ: self.influxPort = os.environ["INFLUXDB_PORT"]
     if "INFLUXDB_ORG" in os.environ: self.influxOrg = os.environ["INFLUXDB_ORG"]
