@@ -6,6 +6,8 @@ services:
     image: vingerha/gazpar_2_mqtt:latest
     tty: true
     restart: unless-stopped
+    # network_mode can be used then you have connectivity issues, e.g. with Influx
+    #network_mode: "host" 
     environment:
       # mandatory:
       GRDF_USERNAME: gazou@email.com
