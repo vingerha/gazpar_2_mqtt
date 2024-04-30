@@ -18,4 +18,4 @@ schema:
   GRDF_USERNAME: str
   GRDF_PASSWORD: str
   MQTT_HOST: str
-image: ghcr.io/vingerha/gazpar_2_mqtt/{arch}  
+image: vingerha/gazpar_2_mqtt

@@ -1,16 +1,8 @@
-ARG BUILD_FROM
-ARG BUILD_UPSTREAM="0.2.0"
-FROM vingerha/gazpar_2_mqtt:$BUILD_UPSTREAM
+FROM vingerha/gazpar_2_mqtt
 
 ##################
 #  Install apps  #
 ##################
-
-# Add rootfs
-COPY rootfs/ /
-
-RUN if [ ! -f /bin/sh ] && [ -f /usr/bin/sh ]; then ln -s /usr/bin/sh /bin/sh; fi && \
-    if [ ! -f /bin/bash ] && [ -f /usr/bin/bash ]; then ln -s /usr/bin/bash /bin/bash; fi
 
 COPY ./app /app
 COPY ./app /app_temp
