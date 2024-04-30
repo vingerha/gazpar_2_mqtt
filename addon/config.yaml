@@ -4,30 +4,20 @@ version: dev
 slug: meterstoha
 description: MetersToHA add-on for Home Assistant
 url: https://github.com/vingerha/gazpar_2_mqtt
-GRDF_USERNAME: username #your GRDF login (ex : myemail@email.com)
-GRDF_PASSWORD: password #your GRDF password
-MQTT_HOST: 127.0.0.1 #hostname or ip adress of the MQTT broker.
-# OPTIONAL VARIABLES : see https://github.com/vingerha/gazpar_2_mqtt
 homeassistant_api: true
 map:
   - addon_config:rw
-# codenotary: dummyaddress@example.com
 init: false
-host_dbus: true
+host_dbus: false
 arch:
-  - aarch64
+  - arm64
   - amd64
   - armv7
-  # Next architectures are missing the chromium-browser
-  # Need to check for firefox availability
-  # - armhf
-  # - i386
 options:
   log_level: info
 schema:
-  log_level: list(error|warning|info|debug|trace)?
-  type: list(ha|mqtt|url|domoticz)
-  captchaservice: list(2captcha|capmonster|captchaai)?
-  token_captchaservice: password?
-  grdf_login: email?
-  grdf_password: password?
+  GRDF_USERNAME: username #your GRDF login (ex : myemail@email.com)
+  GRDF_PASSWORD: password #your GRDF password
+  MQTT_HOST: 127.0.0.1 #hostname or ip adress of the MQTT broker.
+  # OPTIONAL VARIABLES : see https://github.com/vingerha/gazpar_2_mqtt
+image: ghcr.io/mdeweerd/vingerha/gazpar_2_mqtt/{arch}  
