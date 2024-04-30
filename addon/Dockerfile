@@ -9,6 +9,9 @@ FROM vingerha/gazpar_2_mqtt:$BUILD_UPSTREAM
 # Add rootfs
 COPY rootfs/ /
 
+RUN if [ ! -f /bin/sh ] && [ -f /usr/bin/sh ]; then ln -s /usr/bin/sh /bin/sh; fi && \
+    if [ ! -f /bin/bash ] && [ -f /usr/bin/bash ]; then ln -s /usr/bin/bash /bin/bash; fi
+
 COPY ./app /app
 COPY ./app /app_temp
 
@@ -19,6 +22,9 @@ COPY ./app /app_temp
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
+CMD ["entrypoint.sh"]
+VOLUME [ "/data" ]
+VOLUME [ "/app" ]
 CMD ["python3", "app/gazpar2mqtt.py"]
 
 ############
