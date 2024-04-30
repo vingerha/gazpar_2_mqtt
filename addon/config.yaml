@@ -1,4 +1,23 @@
-GRDF_USERNAME: username #your GRDF login (ex : myemail@email.com)
-GRDF_PASSWORD: password #your GRDF password
-MQTT_HOST: 127.0.0.1 #hostname or ip adress of the MQTT broker.
-# OPTIONAL VARIABLES : see https://github.com/yukulehe/gazpar2mqtt
+---
+name: Gazpar_2_Mqtt
+version: dev
+slug: meterstoha
+description: MetersToHA add-on for Home Assistant
+url: https://github.com/vingerha/gazpar_2_mqtt
+homeassistant_api: true
+map:
+  - addon_config:rw
+init: false
+host_dbus: false
+arch:
+  - arm64
+  - amd64
+  - armv7
+options:
+  log_level: info
+schema:
+  GRDF_USERNAME: username #your GRDF login (ex : myemail@email.com)
+  GRDF_PASSWORD: password #your GRDF password
+  MQTT_HOST: 127.0.0.1 #hostname or ip adress of the MQTT broker.
+  # OPTIONAL VARIABLES : see https://github.com/vingerha/gazpar_2_mqtt
+image: ghcr.io/vingerha/gazpar_2_mqtt/{arch}  
