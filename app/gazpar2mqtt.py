@@ -19,7 +19,7 @@ import datetime as dt
 
 
 # gazpar2mqtt constants
-G2M_VERSION = '0.2.0'
+G2M_VERSION = '0.3.0'
 G2M_DB_VERSION = '0.2.0'
 G2M_INFLUXDB_VERSION = '0.1.0'
 
@@ -358,10 +358,10 @@ def run(myParams):
     logging.info("-----------------------------------------------------------")
 
     # Load data from prices file
-    #logging.info("Loading prices from file %s of directory %s", price.FILE_NAME, myParams.pricePath)
-    #myPrices = price.Prices(myParams.pricePath, myParams.priceKwhDefault, myParams.priceFixDefault)
-    #if len(myPrices.pricesList):
-    #    logging.info("%s range(s) of prices found !", len(myPrices.pricesList))
+    logging.info("Loading prices from file %s of directory %s", price.FILE_NAME, myParams.pricePath)
+    myPrices = price.Prices(myParams.pricePath, myParams.priceKwhDefault, myParams.priceFixDefault)
+    if len(myPrices.pricesList):
+        logging.info("%s range(s) of prices found !", len(myPrices.pricesList))
 
 
     ####################################################################################################################

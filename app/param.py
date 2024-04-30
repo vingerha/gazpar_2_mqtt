@@ -53,7 +53,7 @@ class Params:
     
     # chromium / selenium
     self.chromedriver = "/usr/bin/chromedriver"
-    self.download_folder = "./app"
+    self.download_folder = "./"
     self.logs_folder = "./"
     self.screenshots = False
     self.verbose = False
@@ -172,6 +172,14 @@ class Params:
       
     if "THRESHOLD_PERCENTAGE" in os.environ: self.thresholdPercentage = int(os.environ["THRESHOLD_PERCENTAGE"])
     
+    if "INFLUXDB_ENABLE" in os.environ: self.influxEnable = os.environ["INFLUXDB_ENABLE"]
+    if "INFLUXDB_HOST" in os.environ: self.influxHost = os.environ["INFLUXDB_HOST"]
+    if "INFLUXDB_PORT" in os.environ: self.influxPort = os.environ["INFLUXDB_PORT"]
+    if "INFLUXDB_ORG" in os.environ: self.influxOrg = os.environ["INFLUXDB_ORG"]
+    if "INFLUXDB_BUCKET" in os.environ: self.influxBucket = os.environ["INFLUXDB_BUCKET"]
+    if "INFLUXDB_TOKEN" in os.environ: self.influxToken = os.environ["INFLUXDB_TOKEN"]
+    if "INFLUXDB_HORIZON" in os.environ: self.influxHorizon = os.environ["INFLUXDB_HORIZON"]
+      
     if "DB_INIT" in os.environ: self.dbInit = _isItTrue(os.environ["DB_INIT"])
     if "DB_PATH" in os.environ: self.dbPath = os.environ["DB_PATH"]
     
