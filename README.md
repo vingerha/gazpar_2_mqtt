@@ -15,6 +15,9 @@ Main differences are in the login method, now using virtual browser (old method 
 For installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
+- 0.3.0
+  - enable Influx also from docker-compose parameters
+  - set log directory one step higher to avoid adding logs into /app
 - 0.2.0 :
   - add export to HA Long Term Statistic
 - 0.1.0 :
