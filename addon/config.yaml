@@ -24,3 +24,10 @@ arch:
   # - i386
 options:
   log_level: info
+schema:
+  log_level: list(error|warning|info|debug|trace)?
+  type: list(ha|mqtt|url|domoticz)
+  captchaservice: list(2captcha|capmonster|captchaai)?
+  token_captchaservice: password?
+  grdf_login: email?
+  grdf_password: password?
