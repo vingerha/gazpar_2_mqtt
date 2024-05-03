@@ -6,8 +6,8 @@ FROM vingerha/gazpar_2_mqtt
 #  Install apps  #
 ##################
 
-COPY ./app /app
-COPY ./app /app_temp
+#COPY ./app /app
+#COPY ./app /app_temp
 COPY rootfs/ /
 
 # Uses /bin for compatibility purposes
