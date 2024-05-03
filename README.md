@@ -5,10 +5,9 @@ Reworked from the great repo by yukulehe/gazpar2mqtt (also large part of the doc
 Main differences are in the login method, now using virtual browser (old method still does not work), and allowing to export to HA Long Term Statistics
 
 ### Important: 
-- This **repo does not support add-ons** for HAOS, a request is outstanding with [@AlexBelgium](https://github.com/alexbelgium/alexbelgium/commits?author=alexbelgium) to consider this repo as part of his library....
 - It is working (tested by 3 people) on collecting data in SQLite and MQTT and displayed in Home Assistant
+- It is working as an add on (tested by myself and 1 other person)
 - no verification if the now 2+-year old code from yukulehe/gazpar2mqtt is still valid **in its entirety**, bits and pieces may not work perfectly anylonger
-- only tested via docker image and docker-compose
 - Not yet tested
   - Grafana dashboard template
   - Cost calculation from prices file
