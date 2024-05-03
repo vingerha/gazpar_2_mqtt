@@ -1,24 +1,28 @@
----
-name: Gazpar 2 Mqtt
-version: dev
-slug: gazpar_2_mqtt
-description: Gazpar_2_Mqtt add-on for Home Assistant
-url: https://github.com/vingerha/gazpar_2_mqtt
+name: "Gazpar 2 MQTT"
+description: "Extracts GRDF data into MQTT a.o."
+version: "0.3.0"
+slug: "gazpar_2_mqtt"
+init: false
 homeassistant_api: true
+host_network: true
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
 map:
   - addon_config:rw
-  - homeassistant_config
-init: false
-arch:
-  - arm64
-  - amd64
-  - armv7
+  - addon_configs:rw
+  - homeassistant_config:rw  
+  - all_addon_configs:rw
+services:
+  - mqtt:need  
 options:
-  log_level: info
-  screenshot: true
+  verbose: true
+  mqtt_autodiscover: true
 schema:
-  GRDF_USERNAME: str
-  GRDF_PASSWORD: str
-  MQTT_HOST: str
-  hass_host: str
-image: vingerha/gazpar_2_mqtt
+  verbose: bool?
+  mqtt_autodiscover: bool?
+  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+
