@@ -159,7 +159,7 @@ def run(myParams):
                 logging.debug("After myGrdf...")
                 # Connect to Grdf website
 
-                myGrdf.login(myParams.grdfUsername,myParams.grdfPassword, myParams.screenshots, myParams.verbose)
+                myGrdf.login(myParams.grdfUsername,myParams.grdfPassword, myParams.download_folder, myParams.screenshots, myParams.verbose)
 
 
                 # Check connexion

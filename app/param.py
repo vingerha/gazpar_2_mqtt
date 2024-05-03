@@ -139,9 +139,7 @@ class Params:
         "--debug",            help="Enable debug mode")
     
     return self.parser.parse_args()
-  
-  
-      
+
   # Load params from Os environment variables 
   def getFromOs(self):
     
@@ -165,7 +163,12 @@ class Params:
     if "HASS_PREFIX" in os.environ: self.hassPrefix = os.environ["HASS_PREFIX"]
     if "HASS_DEVICE_NAME" in os.environ: self.hassDeviceName = os.environ["HASS_DEVICE_NAME"]
     
-    if "HASS_LTS" in os.environ: self.hassLts = os.environ["HASS_LTS"]
+    if "BROWSER_LOGS_FOLDER" in os.environ: self.logs_folder = os.environ["BROWSER_LOGS_FOLDER"]
+    if "BROWSER_DOWNLOAD_FOLDER" in os.environ: self.download_folder = os.environ["BROWSER_DOWNLOAD_FOLDER"]
+    if "BROWSER_SCREENSHOTS" in os.environ: self.screenshots = _isItTrue(os.environ["BROWSER_SCREENSHOTS"])
+    if "BROWSER_VERBOSE" in os.environ: self.verbose = _isItTrue(os.environ["BROWSER_VERBOSE"])
+   
+    if "HASS_LTS" in os.environ: self.hassLts = _isItTrue(os.environ["HASS_LTS"])
     if "HASS_LTS_TOKEN" in os.environ: self.hassToken = os.environ["HASS_LTS_TOKEN"]
     if "HASS_LTS_URI" in os.environ: self.hassStatisticsUri = os.environ["HASS_LTS_URI"]
     if "HASS_LTS_HOST" in os.environ: self.hassHost = os.environ["HASS_LTS_HOST"]
@@ -183,8 +186,7 @@ class Params:
     if "DB_INIT" in os.environ: self.dbInit = _isItTrue(os.environ["DB_INIT"])
     if "DB_PATH" in os.environ: self.dbPath = os.environ["DB_PATH"]
     
-    if "DEBUG" in os.environ: self.debug = _isItTrue(os.environ["DEBUG"])
-  
+    if "DEBUG_MODE" in os.environ: self.debug = _isItTrue(os.environ["DEBUG_MODE"]) 
   
   # Get params from arguments in command line
   def getFromArgs(self):
@@ -215,8 +217,7 @@ class Params:
     if self.args.db_path is not None: self.db_path = self.args.db_path
       
     if self.args.debug is not None: self.debug = _isItTrue(self.args.debug)
-    
-    
+       
   # Check parameters
   def checkParams(self):
     
@@ -240,12 +241,12 @@ class Params:
   def logParams(self):
     
     logging.info("GRDF config : username = %s, password = %s", "******@****.**", "******")
-    logging.debug("GRDF config : username = %s, password = %s", self.grdfUsername, self.grdfPassword)
+    logging.info("GRDF config : username = %s, password = %s", self.grdfUsername, self.grdfPassword)
     logging.info("MQTT broker config : host = %s, port = %s, clientId = %s, qos = %s, topic = %s, retain = %s, ssl = %s",
                  self.mqttHost, self.mqttPort, self.mqttClientId,
                  self.mqttQos,self.mqttTopic,self.mqttRetain,
                  self.mqttSsl),
-    logging.info("Logs folder: %s, download_folder: %s, chomedriver: %s", self.download_folder, self.logs_folder, self.chromedriver)
+    logging.info("Browser Logs folder: %s, download_folder: %s, chomedriver: %s, screenshots: %s", self.download_folder, self.logs_folder, self.chromedriver, self.screenshots)
     logging.info("Standlone mode : Enable = %s", self.standalone)
     logging.info("Home Assistant discovery : Enable = %s, Topic prefix = %s, Device name = %s",
                  self.hassDiscovery, self.hassPrefix, self.hassDeviceName)

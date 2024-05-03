@@ -241,7 +241,7 @@ class Grdf:
                 logging.debug(f"Could not dump html {fn_html}: {e}")
                 
     # Login
-    def login(self,username,password, screenshot: bool = False, verbose: bool = False):
+    def login(self,username,password, download_folder, screenshot: bool = False, verbose: bool = False):
         HEADERS = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/111.0",
             "Accept": "application/json, text/plain, */*",
@@ -252,7 +252,7 @@ class Grdf:
    
         self._verbose = verbose
         self.init()
-        self.location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        self.location = download_folder #was: os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         isLoggedIn = False
         logging.debug("Get url")
         self.__browser.get(site_grdf_url)
