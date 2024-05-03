@@ -12,7 +12,7 @@ if [ ! -d /config ]; then
 fi
 
 # Default location
-CONFIGTEMPLATE="/config/templates/config.yaml"
+CONFIGTEMPLATE="/templates/config.yaml"
 CONFIGSOURCE="/config/gazpar_2_mqtt/config.yaml"
 CONFIGUSER="/homeassistant/gazpar_2_mqtt/config.yaml"
 
