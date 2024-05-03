@@ -14,12 +14,15 @@ fi
 # Default location
 CONFIGTEMPLATE="/templates/config.yaml"
 CONFIGSOURCE="/config/gazpar_2_mqtt/config.yaml"
+CONFIGUSERDIR="/homeassistant/gazpar_2_mqtt"
 CONFIGUSER="/homeassistant/gazpar_2_mqtt/config.yaml"
 
 mkdir -p -v /config/gazpar_2_mqtt
 
+
 if [ ! -f "$CONFIGUSER" ]; then
     echo "... no config basis file found. Copying template to $CONFIGUSER, please adapt and restart"
+	mkdir -p -v "$CONFIGUSERDIR"
 	cp -rf "$CONFIGTEMPLATE" "$CONFIGUSER"
 	exit 1
 fi
