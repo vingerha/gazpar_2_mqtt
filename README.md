@@ -15,12 +15,14 @@ Main differences are in the login method, now using virtual browser (old method 
 For installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
-- 0.3.0
+- 0.4.0
+  - introduce addon (initial version)
+- 0.3.0 (container only)
   - enable Influx also from docker-compose parameters
   - set log directory one step higher to avoid adding logs into /app
-- 0.2.0 :
+- 0.2.0 (container only)
   - add export to HA Long Term Statistic
-- 0.1.0 :
+- 0.1.0 (container only)
   - Basis from yukulehe/gazpar2mqtt
   - add login via selenium
   
