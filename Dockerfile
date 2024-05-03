@@ -9,6 +9,14 @@ RUN apt-get update && \
     apt-get install -y chromium -y  && \
     apt-get update && \	
     rm -rf /var/lib/apt/lists/*
+
+ARG BASHIO_VERSION="0.16.2"	
+RUN mkdir -p /data && \
+	mkdir -p /tmp/bashio && \
+	curl -f -L -s -S "https://github.com/hassio-addons/bashio/archive/v${BASHIO_VERSION}.tar.gz" | tar -xzf - --strip 1 -C /tmp/bashio && \
+	mv /tmp/bashio/lib /usr/lib/bashio && \
+	ln -s /usr/lib/bashio/bashio /usr/bin/bashio && \
+	rm -rf /tmp/bashio
 	    
 RUN mkdir -p /data
 

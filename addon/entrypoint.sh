@@ -19,12 +19,13 @@ CONFIGUSER="/homeassistant/gazpar_2_mqtt/config.yaml"
 mkdir -p -v /config/gazpar_2_mqtt
 
 if [ ! -f "$CONFIGUSER" ]; then
-    echo "... no config basis file found. Copying template to $CONFIGSOURCE, please adapt and restart"
+    echo "... no config basis file found. Copying template to $CONFIGUSER, please adapt and restart"
 	cp -rf "$CONFIGTEMPLATE" "$CONFIGUSER"
+	exit 1
 fi
 
 echo "Copying user-config to addon"
-cp -rf /homeassistant/gazpar_2_mqtt/* /config/gazpar_2_mqtt/
+cp -rf "$CONFIGUSER" "$CONFIGSOURCE"
 
 
 # Export all yaml entries as env variables
