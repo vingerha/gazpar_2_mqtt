@@ -709,12 +709,12 @@ class Pce:
     
     # Return PCE quality status
     def isOk(self):
-         # To be ok, the PCE must contains at least one valid informative measure
-         if not self.countMeasure(TYPE_I):
+        # To be ok, the PCE must contains at least one valid informative measure
+        if not self.countMeasure(TYPE_I):
             return False
-         elif not self.countMeasureOk(TYPE_I):
+        elif not self.countMeasureOk(TYPE_I):
             return False
-         else:
+        else:
             return True 
     
     # Return the last valid measure for the PCE and a type
@@ -1082,11 +1082,17 @@ class Measure:
         if self.isOk():
             deltaIndex = self.endIndex - self.startIndex
             if deltaIndex != self.volume and self.type == TYPE_I:
-                logging.debug("Gas consumption (%s m3) of measure %s has been replaced by the delta index (%s m3)",self.volume,self.gasDate,deltaIndex)
+                logging.debug("Gas consumption of type %s, volume (%s m3) of measure %s has been replaced by the delta index (%s m3)",self.type, self.volume,self.gasDate,deltaIndex)
                 self.volume = deltaIndex
                 self.isDeltaIndex = True
                 if self.conversionFactor:
                     self.energy = round(self.volume * self.conversionFactor)
+            if deltaIndex != self.volume and self.type == TYPE_P:
+                logging.debug("Gas consumption of type %s, volume (%s m3) of measure %s has been replaced by the delta index (%s m3)",self.type, self.volume,self.gasDate,deltaIndex)
+                self.volume = deltaIndex
+                self.isDeltaIndex = True
+                if self.conversionFactor:
+                    self.energy = round(self.volume * self.conversionFactor)                    
         
         
         
@@ -1108,7 +1114,7 @@ class Measure:
     # Return measure measure quality status
     def isOk(self):
         
-        if self.volume == None: return False
+        if (self.volume == None and self.volumeGross == None): return False
         elif self.energy == None: return False
         elif self.startIndex == None: return False
         elif self.endIndex == None: return False
