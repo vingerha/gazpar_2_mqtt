@@ -1,4 +1,4 @@
-![GitHub release (with filter)](https://img.shields.io/github/v/release/vingerha/gtfs2)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/vingerha/gazpar_2_mqtt)
 
 ## Introduction / status
 
