@@ -10,7 +10,8 @@ Main differences are in the login method, now using virtual browser (old method 
 - Not yet tested
   - Grafana dashboard template
   - Cost calculation from prices file
-For installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
+
+For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
 - 0.4.0
