@@ -13,7 +13,7 @@ For installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_m
 ## Changelogs :
 - 0.4.0
   - introduce addon (initial version)
-  - Documentaiton in French (thanks @Cazzoo)  
+  - Documentation in French (thanks @Cazzoo)  
 - 0.3.0 (container only)
   - enable Influx also from docker-compose parameters
   - set log directory one step higher to avoid adding logs into /app
@@ -26,7 +26,6 @@ For installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_m
 ## Roadmap :
 
 - Home assistant custom entity card (low prio)
-- Home assistan load of monthly GRDG figures as long term statistics
 
 ### Thanks
 The vast majority of the work was done by @yukulehe ... to which masisve thanks goes out !
