@@ -1,3 +1,5 @@
+![GitHub release (with filter)](https://img.shields.io/github/v/release/vingerha/gtfs2)
+
 ## Introduction / status
 
 Reworked from the great repo by yukulehe/gazpar2mqtt (who also provided a large part of the docu), now that GRDF is again without Captcha.
