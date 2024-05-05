@@ -1,5 +1,4 @@
-![GitHub release (with filter)](https://img.shields.io/github/v/release/vingerha/gazpar_2_mqtt) (https://img.shields.io/badge/add_star-you_like-blue)
-
+![GitHub release (with filter)](https://img.shields.io/github/v/release/vingerha/gazpar_2_mqtt)
 ## Introduction / status
 
 Reworked from the great repo by yukulehe/gazpar2mqtt (who also provided a large part of the docu), now that GRDF is again without Captcha.
