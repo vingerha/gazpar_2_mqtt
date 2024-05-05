@@ -13,6 +13,9 @@ Main differences are in the login method, now using virtual browser (old method 
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
+- 0.4.1
+  - initial fix to load also published (non-daily) data, may need a rebuild of the db
+  - reduce non-needed stuff for the addon
 - 0.4.0
   - introduce addon (initial version)
   - Documentation in French (thanks @Cazzoo)  
