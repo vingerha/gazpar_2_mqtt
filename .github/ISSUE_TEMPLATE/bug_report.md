@@ -15,15 +15,20 @@ labels: ''
 assignees: ''
 
 ---
+**Which type of installation/run**
+- container (docker run)
+- docker-compose
+- addon
+
+**Your configuration**
+Provide the config.yaml or the param.py (depending on which setup yo uhave, see above)
+Do omit passwords
 
 **Describe the bug**
 A clear and concise description of what the bug is.
 
 Steps/data to reproduce the behavior, e.g.
 ....
-
-**Release used**
-Which gazpar_2_mqtt release and HA type (HAOS/Container)
 
 **Additional**
 Please add logs if helpfull
