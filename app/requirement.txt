@@ -11,5 +11,6 @@ urllib3
 PyVirtualDisplay
 bs4
 webdriver_manager
+websocket-client=1.7.0
 
 

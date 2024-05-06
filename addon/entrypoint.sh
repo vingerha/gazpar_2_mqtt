@@ -27,9 +27,7 @@ if [ ! -f "$CONFIGUSER" ]; then
 	exit 1
 fi
 
-echo "Copying user-config to addon"
 cp -rf "$CONFIGUSER" "$CONFIGSOURCE"
-
 
 # Export all yaml entries as env variables
 
@@ -76,7 +74,6 @@ while IFS= read -r line; do
         echo "$line does not follow the correct structure. Please check your yaml file."
     fi
 done <"$CONFIGSOURCE"
-echo "End of config_yaml"
 
 ########################
 # LOAD CONFIG.YAML END #
@@ -114,10 +111,6 @@ fi
 # Autodiscover mqtt end #
 ####################
 
-
 APP="/app"
-
-
-# for the addon , no need to copy /app stuff
 
 exec "$@"

@@ -711,11 +711,11 @@ class Pce:
     def isOk(self):
         # To be ok, the PCE must contains at least one valid informative measure
         if not self.countMeasure(TYPE_I):
-            return False
+           return False
         elif not self.countMeasureOk(TYPE_I):
-            return False
+           return False
         else:
-            return True 
+           return True 
     
     # Return the last valid measure for the PCE and a type
     def getLastMeasureOk(self,type):
@@ -1092,10 +1092,8 @@ class Measure:
                 self.volume = deltaIndex
                 self.isDeltaIndex = True
                 if self.conversionFactor:
-                    self.energy = round(self.volume * self.conversionFactor)                    
-        
-        
-        
+                    self.energy = round(self.volume * self.conversionFactor)
+
     # Store measure to database
     def store(self,db):
 
