@@ -198,7 +198,7 @@ class Params:
     if "DB_INIT" in os.environ: self.dbInit = _isItTrue(os.environ["DB_INIT"])
     if "DB_PATH" in os.environ: self.dbPath = os.environ["DB_PATH"]
     
-    if "DEBUG_MODE" in os.environ: self.debug = _isItTrue(os.environ["DEBUG_MODE"])
+    if "DEBUG" in os.environ: self.debug = _isItTrue(os.environ["DEBUG"])
   
   
   # Get params from arguments in command line

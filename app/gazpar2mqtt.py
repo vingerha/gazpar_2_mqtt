@@ -377,7 +377,7 @@ def run(myParams):
             logging.info("-----------------------------------------------------------")
             logging.info("#           Stand alone publication mode                  #")
             logging.info("-----------------------------------------------------------")
-
+            
             # Loop on PCEs
             for myPce in myGrdf.pceList:
 
@@ -480,13 +480,14 @@ def run(myParams):
                     myMqtt.publish(mySa.histoTopic+"rolling_week_last_year_gas", myPce.gasR1WY1)
                     myMqtt.publish(mySa.histoTopic+"rolling_week_last_2_year_gas", myPce.gasR1WY2)
 
-                    ### Thresholds
-                    myMqtt.publish(mySa.thresholdTopic+"current_month_threshold", myPce.tshM0)
-                    myMqtt.publish(mySa.thresholdTopic+"current_month_threshold_percentage", myPce.tshM0Pct)
-                    myMqtt.publish(mySa.thresholdTopic+"current_month_threshold_warning", myPce.tshM0Warn)
-                    myMqtt.publish(mySa.thresholdTopic+"previous_month_threshold", myPce.tshM1)
-                    myMqtt.publish(mySa.thresholdTopic+"previous_month_threshold_percentage", myPce.tshM1Pct)
-                    myMqtt.publish(mySa.thresholdTopic+"previous_month_threshold_warning", myPce.tshM1Warn)
+                    ### Thresholds, only if existing
+                    if myPce.tshM0:
+                        myMqtt.publish(mySa.thresholdTopic+"current_month_threshold", myPce.tshM0)
+                        myMqtt.publish(mySa.thresholdTopic+"current_month_threshold_percentage", myPce.tshM0Pct)
+                        myMqtt.publish(mySa.thresholdTopic+"current_month_threshold_warning", myPce.tshM0Warn)
+                        myMqtt.publish(mySa.thresholdTopic+"previous_month_threshold", myPce.tshM1)
+                        myMqtt.publish(mySa.thresholdTopic+"previous_month_threshold_percentage", myPce.tshM1Pct)
+                        myMqtt.publish(mySa.thresholdTopic+"previous_month_threshold_warning", myPce.tshM1Warn)
 
                     logging.info("All measures published !")
 
