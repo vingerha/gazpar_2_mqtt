@@ -16,6 +16,7 @@ For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/
 ## Changelogs :
 - 0.5.0
   - Use webservice for loading data to Home Assistant, previously this was a spook (app) api
+  - collect published measures (periodically values registered by GRDF)
 - 0.4.1
   - initial fix to load also published (non-daily) data, may need a rebuild of the db
   - reduce non-needed stuff for the addon
