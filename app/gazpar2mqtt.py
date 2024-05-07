@@ -703,10 +703,10 @@ def run(myParams):
             
             logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {myParams.hassLtsSensorName}")
             HomeAssistantWs(myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, myParams.hassLtsSensorName, stats_array)
-                   
+
         except Exception as e:
             logging.error("Home Assistant Long Term Statistics : unable to publish LTS to Webservice HA with error: %s", e)
-            logging.error("Retrying witj API") 
+            logging.error("Retrying with API") 
 
             try:
                 logging.info("-----------------------------------------------------------")
