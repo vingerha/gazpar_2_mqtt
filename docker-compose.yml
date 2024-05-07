@@ -18,7 +18,7 @@ services:
       # Note that either STANDALONE_MODE ot HASS_DISCOVERY must be turned True to export to MQTT
       # Even though this is optional, recommend to start STANDALONE_MODE True
       STANDALONE_MODE: 'True'
-      #DEBUG: 'True'  
+      #DEBUG_MODE: 'True'  
       #SCHEDULE_TIME: '06:30'
       #MQTT_PORT: '1883'
       #MQTT_TOPIC: 'gazpar'
