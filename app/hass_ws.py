@@ -126,7 +126,7 @@ class HomeAssistantWs:
             "has_sum": True,
             "name": "gazpar m3",
             "statistic_id": (
-                self.sensor_name + "_delme_" + self.pce
+                self.sensor_name + "_" + self.pce
                     ),
             "unit_of_measurement": "m³",
             "source": "recorder",
