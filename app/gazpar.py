@@ -112,13 +112,12 @@ class Grdf:
             options.add_argument("--disable-login-animations")
             options.add_argument("--disable-renderer-backgrounding")
             options.add_argument("--disable-dev-shm-usage")
-        local_dir = "/app"
+
         # pylint: disable=condition-evals-to-constant
-        datadir = os.path.expanduser(f"{local_dir}.config/google-chrome")
+        datadir = os.path.expanduser(f"{self.location}.config/google-chrome")
         os.makedirs(datadir, exist_ok=True)
         options.add_argument(f"--user-data-dir={datadir}")
         logging.debug(f"Use {datadir} for Google Chrome user data.")
-        # options.add_argument('--user-data-dir=~/.config/google-chrome')
         options.add_argument("--mute-audio")
         # if self._use_display:
         #     Does not work well with veolia due to multiple "same" elements
@@ -250,9 +249,9 @@ class Grdf:
         #site_grdf_url = "https://monespace.grdf.fr/client/particulier/consommation"
         site_grdf_url = "https://monespace.grdf.fr/client/particulier/accueil"
    
+        self.location = download_folder #was: os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         self._verbose = verbose
         self.init()
-        self.location = download_folder #was: os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         isLoggedIn = False
         logging.debug("Get url")
         self.__browser.get(site_grdf_url)
