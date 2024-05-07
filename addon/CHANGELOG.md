@@ -1,3 +1,8 @@
+## 0.5.0 (03/04-05-2024) - addon + container
+
+Add webservice as main process to push Long Term Stats
+Fix issues, e.g standalone mode
+
 ## 0.4.0 (03/04-05-2024) - addon + container
 
 introduce addon, small modifications to the core code
