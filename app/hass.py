@@ -90,7 +90,7 @@ class Entity:
     
     # Constructor
     def __init__(self,device,type,id,name,deviceClass=None,stateClass=None,unit=None):
-        
+          
         logging.debug("Initialise hass device %s",id)
         
         # Variables
@@ -116,7 +116,8 @@ class Entity:
             self.configPayload["device_class"] = self.deviceClass
         if self.stateClass is not None:
             self.configPayload["state_class"] = self.stateClass
-        self.configPayload["name"] = f"{self.device.name} {self.name}"
+        #self.configPayload["name"] = f"{self.device.name} {self.name}"
+        self.configPayload["name"] = f"{self.name}"
         self.configPayload["unique_id"] = f"{self.device.id}_{self.id}"
         self.configPayload["state_topic"] = self.stateTopic
         if self.unit is not None:

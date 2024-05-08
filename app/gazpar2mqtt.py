@@ -560,10 +560,10 @@ def run(myParams):
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'index', 'index', hass.GAS_TYPE, hass.ST_TTI,
                                                'm³').setValue(myMeasure.endIndex)
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'conversion_factor', 'conversion factor',
-                                               hass.GAS_TYPE, hass.ST_MEAS, 'kWh/m³').setValue(myMeasure.conversionFactor)
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'gas', 'gas', hass.GAS_TYPE, hass.ST_MEAS,
+                                               hass.GAS_TYPE, None, 'CCF').setValue(myMeasure.conversionFactor)
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'gas', 'gas', hass.GAS_TYPE, hass.ST_TT,
                                                'm³').setValue(myMeasure.volume)
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'energy', 'energy', hass.ENERGY_TYPE, hass.ST_MEAS,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'energy', 'energy', hass.ENERGY_TYPE, hass.ST_TT,
                                                'kWh').setValue(myMeasure.energy)
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_date', 'consumption date',
                                                hass.NONE_TYPE, None, None).setValue(str(myMeasure.gasDate))
@@ -577,10 +577,10 @@ def run(myParams):
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'published_index', 'published index', hass.GAS_TYPE, hass.ST_TTI,
                                                'm³').setValue(myMeasure.endIndex)
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'published_conversion_factor', 'published conversion factor',
-                                               hass.GAS_TYPE, hass.ST_MEAS, 'kWh/m³').setValue(myMeasure.conversionFactor)
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'published_gas', 'published gas', hass.GAS_TYPE, hass.ST_MEAS,
+                                               hass.GAS_TYPE, None, 'CCF').setValue(myMeasure.conversionFactor)
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'published_gas', 'published gas', hass.GAS_TYPE, hass.ST_TT,
                                                'm³').setValue(myMeasure.volume)
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'published_energy', 'published energy', hass.ENERGY_TYPE, hass.ST_MEAS,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'published_energy', 'published energy', hass.ENERGY_TYPE, hass.ST_TT,
                                                'kWh').setValue(myMeasure.energy)
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'published_consumption_start_date', 'published consumption start date',
                                                hass.NONE_TYPE, None, None).setValue(str(myMeasure.startDateTime))
@@ -594,53 +594,53 @@ def run(myParams):
                     logging.debug("Creation of calendar entities")
 
                     ### Year
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_year_gas','current year gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasY0)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_year_gas','previous year gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasY1)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_2_year_gas','previous 2 years gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasY2)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_year_gas','current year gas',hass.GAS_TYPE,hass.ST_TTI,'m³').setValue(myPce.gasY0)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_year_gas','previous year gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasY1)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_2_year_gas','previous 2 years gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasY2)
 
                     ### Month
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_gas','current month gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasM0Y0)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_month_gas','previous month gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasM1Y0)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_last_year_gas','current month of last year gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasM0Y1)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_gas','current month gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasM0Y0)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_month_gas','previous month gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasM1Y0)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_last_year_gas','current month of last year gas',hass.GAS_TYPE,hass.ST_TTI,'m³').setValue(myPce.gasM0Y1)
 
                     ### Week
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_week_gas','current week gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasW0Y0)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_week_gas','previous week gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasW1Y0)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_week_last_year_gas','current week of last year gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasW0Y1)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_week_gas','current week gas',hass.GAS_TYPE,hass.ST_TTI,'m³').setValue(myPce.gasW0Y0)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_week_gas','previous week gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasW1Y0)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_week_last_year_gas','current week of last year gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasW0Y1)
 
                     ### Day
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_1_gas','day-1 gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasD1)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_2_gas','day-2 gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasD2)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_3_gas','day-3 gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasD3)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_4_gas','day-4 gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasD4)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_5_gas','day-5 gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasD5)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_6_gas','day-6 gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasD6)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_7_gas','day-7 gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasD7)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_1_gas','day-1 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD1)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_2_gas','day-2 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD2)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_3_gas','day-3 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD3)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_4_gas','day-4 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD4)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_5_gas','day-5 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD5)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_6_gas','day-6 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD6)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_7_gas','day-7 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD7)
 
                     ## Calculated rolling measures
                     logging.debug("Creation of rolling entities")
 
                     ### Rolling year
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_year_gas','rolling year gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR1Y)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_year_last_year_gas','rolling year of last year gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR2Y1Y)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_year_gas','rolling year gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR1Y)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_year_last_year_gas','rolling year of last year gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR2Y1Y)
 
                     ### Rolling month
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_month_gas','rolling month gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR1M)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_month_last_month_gas','rolling month of last month gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR2M1M)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_month_last_year_gas','rolling month of last year gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR1MY1)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_month_last_2_year_gas','rolling month of last 2 years gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR1MY2)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_month_gas','rolling month gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR1M)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_month_last_month_gas','rolling month of last month gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR2M1M)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_month_last_year_gas','rolling month of last year gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR1MY1)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_month_last_2_year_gas','rolling month of last 2 years gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR1MY2)
 
                     ### Rolling week
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_gas','rolling week gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR1W)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_last_week_gas','rolling week of last week gas',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR2W1W)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_last_year_gas','rolling week of last year',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR1WY1)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_last_2_year_gas','rolling week of last 2 years',hass.GAS_TYPE,hass.ST_MEAS,'m³').setValue(myPce.gasR1WY2)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_gas','rolling week gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR1W)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_last_week_gas','rolling week of last week gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR2W1W)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_last_year_gas','rolling week of last year',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR1WY1)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'rolling_week_last_2_year_gas','rolling week of last 2 years',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasR1WY2)
 
                     ### Threshold
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_threshold','threshold of current month',hass.ENERGY_TYPE,hass.ST_MEAS,'kWh').setValue(myPce.tshM0)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_threshold_percentage','threshold of current month percentage',hass.NONE_TYPE,hass.ST_MEAS,'%').setValue(myPce.tshM0Pct)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_threshold','threshold of current month',hass.ENERGY_TYPE,hass.ST_TT,'kWh').setValue(myPce.tshM0)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'current_month_threshold_percentage','threshold of current month percentage',hass.NONE_TYPE,hass.ST_TT,'%').setValue(myPce.tshM0Pct)
                     myEntity = hass.Entity(myDevice,hass.BINARY,'current_month_threshold_problem','threshold of current month problem',hass.PROBLEM_TYPE,None,None).setValue(myPce.tshM0Warn)
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_month_threshold','threshold of previous month',hass.ENERGY_TYPE,hass.ST_MEAS,'kWh').setValue(myPce.tshM1)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_month_threshold','threshold of previous month',hass.ENERGY_TYPE,hass.ST_TT,'kWh').setValue(myPce.tshM1)
                     myEntity = hass.Entity(myDevice,hass.SENSOR,'previous_month_threshold_percentage','threshold of previous month percentage',hass.NONE_TYPE,hass.ST_MEAS,'%').setValue(myPce.tshM1Pct)
                     myEntity = hass.Entity(myDevice,hass.BINARY,'previous_month_threshold_problem','threshld of previous month problem',hass.PROBLEM_TYPE,None,None).setValue(myPce.tshM1Warn)
 
@@ -703,11 +703,11 @@ def run(myParams):
             
             logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {myParams.hassLtsSensorName}")
             HomeAssistantWs(myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, myParams.hassLtsSensorName, stats_array)
-
+               
         except Exception as e:
             logging.error("Home Assistant Long Term Statistics : unable to publish LTS to Webservice HA with error: %s", e)
             logging.error("Retrying with API") 
-
+            
             try:
                 logging.info("-----------------------------------------------------------")
                 logging.info("#      Home assistant Long Term Statistics (API)          #")
@@ -751,10 +751,9 @@ def run(myParams):
                 logging.debug(f"Writing HA LTS for PCE: {myPce.pceId}, sensor name: {myParams.hassLtsSensorName}, data: {data}")
 
                 myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data)
+            
             except Exception as e:
-                logging.error("Home Assistant Long Term Statistics : unable to publish LTS to HA with error: %s", e)
-
-           
+                logging.error("Home Assistant Long Term Statistics : unable to publish LTS to HA with error: %s", e)            
 
     ####################################################################################################################
     # STEP 6 : Disconnect mqtt broker
