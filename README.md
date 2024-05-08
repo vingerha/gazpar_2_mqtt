@@ -14,6 +14,10 @@ Main differences are in the login method, now using virtual browser (old method 
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
+- 0.6.0
+  - Fix issue with double naming in the HA sensor
+  - Fix issue with incorrect device_classes for the sensors
+  - Fix issue with restarting due to non-copied hass_ws.py
 - 0.5.0
   - Use webservice for loading data to Home Assistant, previously this was a spook (app) api
   - collect published measures (periodically values registered by GRDF)
