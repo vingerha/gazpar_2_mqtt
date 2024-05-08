@@ -18,6 +18,7 @@ cp /app_temp/influxdb.py "$APP/influxdb.py"
 cp /app_temp/mqtt.py "$APP/mqtt.py"
 cp /app_temp/price.py "$APP/price.py"
 cp /app_temp/standalone.py "$APP/standalone.py"
+cp /app_temp/hass_ws.py "$APP/hass_ws.py"
 
 if [ ! -f "$APP/param.py" ]; then
     echo "param.py non existing, copying default to /app..."
