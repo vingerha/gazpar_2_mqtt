@@ -23,6 +23,7 @@ class Params:
     # Grdf params
     self.grdfUsername = 'xxx'
     self.grdfPassword = 'xxx'
+    self.grdfStartDate = '2020-01-01'
     
     # Mqtt params
     self.mqttHost = '192.168.x.y'
@@ -153,6 +154,8 @@ class Params:
     
     if "GRDF_USERNAME" in os.environ: self.grdfUsername = os.environ["GRDF_USERNAME"]
     if "GRDF_PASSWORD" in os.environ: self.grdfPassword = os.environ["GRDF_PASSWORD"]
+    if "GRDF_STARTDATE" in os.environ: self.grdfStartDate = os.environ["GRDF_STARTDATE"]
+
       
     if "MQTT_HOST" in os.environ: self.mqttHost = os.environ["MQTT_HOST"]
     if "MQTT_PORT" in os.environ: self.mqttPort = int(os.environ["MQTT_PORT"])

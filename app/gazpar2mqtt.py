@@ -220,10 +220,15 @@ def run(myParams):
 
 
                     # Set date range
-                    minDateTime = _getYearOfssetDate(datetime.datetime.now(), 3) # GRDF min date is 3 years ago
+                    minDateTimeLimit = _getYearOfssetDate(datetime.datetime.now(), 3) # GRDF min date is 3 years ago
+                    minDateTime = datetime.datetime.strptime(myParams.grdfStartDate, "%Y-%m-%d")
                     startDate = minDateTime.date()
                     endDate = datetime.date.today()
-                    logging.info("Range period : from %s (3 years ago) to %s (today) ...",startDate,endDate)
+                    if minDateTime < minDateTimeLimit:
+                        startDate = minDateTimeLimit.date()
+                        logging.info("Range period : from %s (3 years ago) to %s (today) ...",startDate,endDate)
+                    
+                    logging.info("Range period : from %s (self defined) to %s (today) ...",startDate,endDate)
 
                     # Get informative measures
                     logging.info("---------------")
