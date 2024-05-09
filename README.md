@@ -14,6 +14,9 @@ Main differences are in the login method, now using virtual browser (old method 
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
+- 0.6.5
+  - Allow import of published measures into Long Term Statistics
+  - Allow to delete Long Term Ststaistics for all PCE
 - 0.6.0
   - Fix issue with double naming in the HA sensor
   - Fix issue with incorrect device_classes for the sensors
