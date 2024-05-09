@@ -1,3 +1,8 @@
+## 0.6.5 (09-05-2024)
+
+Allow import of published measures into Long Term Statistics
+Allow to delete Long Term Ststaistics for all PCE
+  
 ## 0.6.0 (08-05-2024)
 
 Fix issue with double naming in the HA sensor
