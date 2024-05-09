@@ -11,6 +11,7 @@ For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/
 
 ## Changelogs :
 - 0.6.5
+  - Allow to select a date from which to collect data from GRDF (max 3y back in time)
   - Allow import of published measures into Long Term Statistics
   - Allow to delete Long Term Ststaistics for all PCE
 - 0.6.0
