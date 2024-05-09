@@ -546,7 +546,7 @@ def run(myParams):
                 if not myPce.isOk(): # Values when PCE is not correct
 
                     # Create entities and set values
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'connectivity','Connectivity',hass.CONNECTIVITY_TYPE,None,None).setValue('OFF')
+                    myEntity = hass.Entity(myDevice,hass.BINARY,'connectivity','Connectivity',hass.CONNECTIVITY_TYPE,None,None).setValue('OFF')
 
                 else: # Values when PCE is correct
 
