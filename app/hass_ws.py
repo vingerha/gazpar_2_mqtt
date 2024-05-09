@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import websocket
 
 class HomeAssistantWs:
-    def __init__(self, pce, url, ssl, ssl_data, token, sensor, data):
+    def __init__(self, action, pce, url, ssl, ssl_data, token, sensor, data):
         self.ws = None
         self.pce = pce
         self.url = url
@@ -15,13 +15,20 @@ class HomeAssistantWs:
         self.token = token
         self.sensor_name = sensor
         self.data = data
+        self.action = action
         self.id = 1
         self.current_stats = []
         if self.load_config():
-            if self.connect():
-                # self.list_data()
-                # self.clear_data()
+            if self.connect() and self.action == "import":
+                                  
+                                   
                 self.import_data()
+            elif self.connect() and self.action == "delete":
+                self.list_data()
+                logging.debug("Deleting current statistics: %s", self.current_stats)
+                self.clear_data()
+            else:
+                logging.critical("The configuration of the Websocket Home Assistant WebSocket is erroneous")
         else:
             logging.critical("The configuration of the Websocket Home Assistant WebSocket is erroneous")
         if self.ws.connected:
@@ -82,17 +89,17 @@ class HomeAssistantWs:
         return output
 
     def list_data(self):
-        logging.info("Data already in Home Assistant.")
+        logging.info("Collecting LTS data already in Home Assistant.")
         import_statistics = {
             "id": self.id,
             "type": "recorder/list_statistic_ids",
             "statistic_type": "sum",
         }
-        current_stats = self.send(import_statistics)
-        for stats in current_stats["result"]:
-            if stats["statistic_id"].startswith("myelectricaldata:"):
+        current_lts = self.send(import_statistics)
+        for stats in current_lts["result"]:
+            if stats["statistic_id"] == self.sensor_name:
                 self.current_stats.append(stats["statistic_id"])
-        return current_stats
+        return self.current_stats
 
     def clear_data(self):
         logging.info("Deleting Long Terms Statistics for gazpar.")
@@ -101,7 +108,7 @@ class HomeAssistantWs:
             "type": "recorder/clear_statistics",
             "statistic_ids": self.current_stats,
         }
-        logging.info("Clean :")
+        logging.info("Cleaning :")
         for data in self.current_stats:
             logging.info(f" - {data}")
         clear_stat = self.send(clear_statistics)
@@ -126,7 +133,7 @@ class HomeAssistantWs:
             "has_sum": True,
             "name": "gazpar m3",
             "statistic_id": (
-                self.sensor_name + "_" + self.pce
+                self.sensor_name
                     ),
             "unit_of_measurement": "m³",
             "source": "recorder",

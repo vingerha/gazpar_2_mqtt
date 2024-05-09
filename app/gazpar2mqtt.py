@@ -666,7 +666,8 @@ def run(myParams):
     # STEP 5C : Home Assistant Long Term statistics
     ####################################################################################################################
     if myParams.hassLts \
-        and myGrdf.isConnected:
+        and myGrdf.isConnected \
+        and not myParams.hassLtsDelete :
         
         try: 
             logging.info("-----------------------------------------------------------")
@@ -676,11 +677,19 @@ def run(myParams):
             # Load database in cache
             myDb.load()
 
+            data = {}
+            data_pub = {}
+            ssl_data= {
+                    "gateway": myParams.hassSslGateway,
+                    "certfile": myParams.hassSslCertfile,
+                    "keyfile": myParams.hassSslKeyfile
+                    }    
             # Loop on PCEs
             for myPce in myDb.pceList:
                 logging.info("Writing webservice information of PCE %s alias %s...", myPce.pceId, myPce.alias)
 
                 stats_array = []
+                stats_array_pub = []
                 for myMeasure in myPce.measureList:
                     date_with_timezone = myMeasure.date.replace(tzinfo=dt.timezone.utc)
                     date_formatted = date_with_timezone.strftime(
@@ -694,16 +703,17 @@ def run(myParams):
                     # Add the stat to the array
                     if myMeasure.type == 'informative':
                         stats_array.append(stat)
-            
-            ssl_data= {
-                "gateway": myParams.hassSslGateway,
-                "certfile": myParams.hassSslCertfile,
-                "keyfile": myParams.hassSslKeyfile
-                }
-            
-            logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {myParams.hassLtsSensorName}")
-            HomeAssistantWs(myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, myParams.hassLtsSensorName, stats_array)
-               
+                    else:
+                        stats_array_pub.append(stat)
+                        
+                
+                sensor_name = myParams.hassLtsSensorName + "_" + myPce.pceId
+                sensor_name_pub = myParams.hassLtsSensorName + "_pub_" + myPce.pceId
+                logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, stats_array)
+                logging.debug(f"Writing Websocket Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, stats_array_pub)            
+           
         except Exception as e:
             logging.error("Home Assistant Long Term Statistics : unable to publish LTS to Webservice HA with error: %s", e)
             logging.error("Retrying with API") 
@@ -718,11 +728,13 @@ def run(myParams):
                 
                 sensor_name = myParams.hassLtsSensorName
                 data = {}
+                data_pub = {}
                 # Loop on PCEs
                 for myPce in myDb.pceList:
                     logging.info("Writing api information of PCE %s alias %s...", myPce.pceId, myPce.alias)
 
                     stats_array = []
+                    stats_array_pub = []
                     for myMeasure in myPce.measureList:
                         date_with_timezone = myMeasure.date.replace(tzinfo=dt.timezone.utc)
                         date_formatted = date_with_timezone.strftime(
@@ -736,6 +748,8 @@ def run(myParams):
                         # Add the stat to the array
                         if myMeasure.type == 'informative':
                             stats_array.append(stat)
+                        else:
+                            stats_array_pub.append(stat)
                     
                     data = {
                         "has_mean": False,
@@ -747,13 +761,57 @@ def run(myParams):
                         "source": "recorder",
                         "stats": stats_array,
                     }
+                    data_pub = {
+                        "has_mean": False,
+                        "has_sum": True,
+                        "statistic_id": (
+                            sensor_name_pub + "_" + myPce.pceId
+                                ),
+                        "unit_of_measurement": "m³",
+                        "source": "recorder",
+                        "stats": stats_array_pub,
+                    }
                     
                 logging.debug(f"Writing HA LTS for PCE: {myPce.pceId}, sensor name: {myParams.hassLtsSensorName}, data: {data}")
 
                 myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data)
+                logging.debug(f"Writing HA LTS Published for PCE: {myPce.pceId}, sensor name: {myParams.hassLtsSensorName}, data: {data_pub}")
+                myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data_pub)
             
             except Exception as e:
-                logging.error("Home Assistant Long Term Statistics : unable to publish LTS to HA with error: %s", e)            
+                logging.error("Home Assistant Long Term Statistics : unable to publish LTS to HA with error: %s", e)    
+
+    ####################################################################################################################
+    # STEP 5D : Delete Home Assistant Long Term statistics
+    ####################################################################################################################
+    if myParams.hassLtsDelete :
+        
+        try: 
+            logging.info("------------------------------------------------------------------")
+            logging.info("#   Delete Home assistant Long Term Statistics (WebService)      #")
+            logging.info("------------------------------------------------------------------")
+            
+            # Load database in cache
+            myDb.load()
+            
+            ssl_data= {
+                    "gateway": myParams.hassSslGateway,
+                    "certfile": myParams.hassSslCertfile,
+                    "keyfile": myParams.hassSslKeyfile
+                    }  
+            # Loop on PCEs
+            for myPce in myDb.pceList:
+                sensor_name = myParams.hassLtsSensorName + "_" + myPce.pceId
+                sensor_name_pub = myParams.hassLtsSensorName + "_pub_" + myPce.pceId
+                logging.debug(f"Deleting Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, None)
+                logging.debug(f"Deleting Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, None)  
+
+            
+        except Exception as e:
+                logging.error("Home Assistant Long Term Statistics : unable to delete LTS with error: %s", e)               
+                
 
     ####################################################################################################################
     # STEP 6 : Disconnect mqtt broker

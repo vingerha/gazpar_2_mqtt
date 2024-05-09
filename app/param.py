@@ -46,6 +46,7 @@ class Params:
     
     # Publication in HA long term statistics 
     self.hassLts = False    
+    self.hassLtsDelete = False
     self.hassLtsSensorName = "sensor.gazpar2mqtt_total"
     self.hassToken = ""  # Long-Lived Access Token
     self.hassStatisticsUri = "/api/services/recorder/import_statistics"
@@ -170,7 +171,8 @@ class Params:
     if "HASS_PREFIX" in os.environ: self.hassPrefix = os.environ["HASS_PREFIX"]
     if "HASS_DEVICE_NAME" in os.environ: self.hassDeviceName = os.environ["HASS_DEVICE_NAME"]
     
-    if "HASS_LTS" in os.environ: self.hassLts = os.environ["HASS_LTS"]
+    if "HASS_LTS" in os.environ: self.hassLts = _isItTrue(os.environ["HASS_LTS"])
+    if "HASS_LTS_DELETE" in os.environ: self.hassLtsDelete = _isItTrue(os.environ["HASS_LTS_DELETE"])
     if "HASS_LTS_TOKEN" in os.environ: self.hassToken = os.environ["HASS_LTS_TOKEN"]
     if "HASS_LTS_URI" in os.environ: self.hassStatisticsUri = os.environ["HASS_LTS_URI"]
     if "HASS_LTS_HOST" in os.environ: self.hassHost = os.environ["HASS_LTS_HOST"]
