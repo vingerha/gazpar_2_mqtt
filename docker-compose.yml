@@ -33,6 +33,7 @@ services:
       #HASS_PREFIX: 'homeassistant'
       #HASS_DEVICE_NAME: 'gazpar'
       #HASS_LTS: 'False' # use when you want to load into HA Longtermstatistics (with below params)
+      #HASS_LTS_DELETE: 'False' # use when you want to delete LTS data for all your PCE
       #HASS_LTS_TOKEN: "" # Long Term Access token generated for accessing below LTS_HOST
       #HASS_LTS_URI: "/api/services/recorder/import_statistics" # donot change unless needed
       #HASS_LTS_HOST: "http://192.168.x.y:8123"
