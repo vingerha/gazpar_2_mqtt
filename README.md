@@ -2,9 +2,8 @@
 
 ## Introduction / status
 
-Reworked from the great repo by yukulehe/gazpar2mqtt (who also provided a large part of the docu), now that GRDF is again without Captcha.
-Main differences are in the login method, now using virtual browser (old method still does not work), and allowing to export to HA Long Term Statistics
-- It is working as a addon and container on collecting data in SQLite, MQTT, InfluxDb, Home Assistant sensor and HA energy-dashboard
+Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in the login method, now using virtual browser and allowing to export to HA Long Term Statistics
+- Tested as a addon and container; collecting data in SQLite, MQTT, InfluxDb, Home Assistant sensor and HA energy-dashboard (LTS)
 - no 100% verification if the now 2+-year old source from yukulehe/gazpar2mqtt is still valid **in its entirety**, bits and pieces may not work perfectly anylonger
 - Not yet tested: Grafana dashboard template / Cost calculation from prices file
 
