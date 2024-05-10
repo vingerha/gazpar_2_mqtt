@@ -1,16 +1,16 @@
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/vingerha/gazpar_2_mqtt)
 
 ## Introduction / status
-
 Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in the login method, now using virtual browser and allowing to export to HA Long Term Statistics
-- Tested as a addon and container; collecting data in SQLite, MQTT, InfluxDb, Home Assistant sensor and HA energy-dashboard (LTS)
+- Can be installed as an addon and container; collecting data in SQLite, MQTT, InfluxDb, Home Assistant sensor and HA energy-dashboard (LTS)
 - no 100% verification if the now 2+-year old source from yukulehe/gazpar2mqtt is still valid **in its entirety**, bits and pieces may not work perfectly anylonger
-- Not yet tested: Grafana dashboard template / Cost calculation from prices file
+- Not yet tested: Grafana dashboard template, Cost calculation from prices file
 
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
 - 0.6.5
+  - Allow to select a date from which to collect data from GRDF (max 3y back in time)
   - Allow import of published measures into Long Term Statistics
   - Allow to delete Long Term Ststaistics for all PCE
 - 0.6.0
