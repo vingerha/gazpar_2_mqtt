@@ -48,7 +48,6 @@ class Params:
     # Publication in HA long term statistics 
     self.hassLts = False    
     self.hassLtsDelete = False
-    self.hassLtsSensorName = "sensor.gazpar2mqtt_total"
     self.hassToken = ""  # Long-Lived Access Token
     self.hassStatisticsUri = "/api/services/recorder/import_statistics"
     self.hassHost = "http://192.168.x.y:8213"  

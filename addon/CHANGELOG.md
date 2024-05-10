@@ -1,3 +1,9 @@
+## 0.7.0 (10-05-2024)
+The LTS sensor name can no longer be chosen and is fixed to :
+
+sensor.[device]_[pce-alias]_consumption_stat : for daily figures
+sensor.[device]_[pce-alias]_consumption_stat_pub : for periodically 'published' figures 
+
 ## 0.6.5 (09-05-2024)
 
 Allow import of published measures into Long Term Statistics

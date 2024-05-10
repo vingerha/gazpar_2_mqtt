@@ -9,6 +9,13 @@ Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in th
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
+- 0.7.0 
+  The LTS sensor name can no longer be chosen and is fixed to 
+  - sensor.[device]_[pce-alias]_consumption_stat : for daily figures
+  - sensor.[device]_[pce-alias]_consumption_stat_pub : for periodically 'published' figures 
+  Reason: previously the LTS sensors were added without a regular sensor, this makes their use impossible for e.g. apexcharts who uses the regular sensor-name also for statistics.
+  These 2 sensors will appear both in HA as in HA statistics
+
 - 0.6.5
   - Allow to select a date from which to collect data from GRDF (max 3y back in time)
   - Allow import of published measures into Long Term Statistics
