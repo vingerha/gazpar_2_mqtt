@@ -229,6 +229,7 @@ def run(myParams):
                         logging.info("Range period : from %s (3 years ago) to %s (today) ...",startDate,endDate)
                     
                     logging.info("Range period : from %s (self defined) to %s (today) ...",startDate,endDate)
+                    
 
                     # Get informative measures
                     logging.info("---------------")
@@ -652,8 +653,14 @@ def run(myParams):
                     ## Other
                     logging.debug("Creation of other entities")
                     myEntity = hass.Entity(myDevice,hass.BINARY,'connectivity','connectivity',hass.CONNECTIVITY_TYPE,None,None).setValue('ON')
-
-
+                    
+                    if myParams.hassLts:
+                        logging.debug("Creation of dummy LTS sensors")                        
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat', 'consumption stat', hass.GAS_TYPE, hass.ST_TT,
+                                               'm³').setValue('1')
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat_pub', 'consumption stat pub', hass.GAS_TYPE, hass.ST_TT,
+                                               'm³').setValue('1')
+                                               
                 # Publish config, state (when value not none), attributes (when not none)
                 logging.info("Publishing devices...")
                 logging.info("You can retrieve published values subscribing topic %s",myDevice.hass.prefix + "/+/" + myDevice.id + "/#")
@@ -712,8 +719,8 @@ def run(myParams):
                         stats_array_pub.append(stat)
                         
                 
-                sensor_name = myParams.hassLtsSensorName + "_" + myPce.pceId
-                sensor_name_pub = myParams.hassLtsSensorName + "_pub_" + myPce.pceId
+                sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat'
+                sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_pub'
                 logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
                 HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, stats_array)
                 logging.debug(f"Writing Websocket Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
@@ -730,14 +737,13 @@ def run(myParams):
 
                 # Load database in cache
                 myDb.load()
-                
-                sensor_name = myParams.hassLtsSensorName
                 data = {}
                 data_pub = {}
                 # Loop on PCEs
                 for myPce in myDb.pceList:
                     logging.info("Writing api information of PCE %s alias %s...", myPce.pceId, myPce.alias)
-
+                    sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat'
+                    sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_pub'
                     stats_array = []
                     stats_array_pub = []
                     for myMeasure in myPce.measureList:
@@ -760,7 +766,7 @@ def run(myParams):
                         "has_mean": False,
                         "has_sum": True,
                         "statistic_id": (
-                            sensor_name + "_" + myPce.pceId
+                            sensor_name
                                 ),
                         "unit_of_measurement": "m³",
                         "source": "recorder",
@@ -770,17 +776,16 @@ def run(myParams):
                         "has_mean": False,
                         "has_sum": True,
                         "statistic_id": (
-                            sensor_name_pub + "_" + myPce.pceId
+                            sensor_name_pub
                                 ),
                         "unit_of_measurement": "m³",
                         "source": "recorder",
                         "stats": stats_array_pub,
                     }
                     
-                logging.debug(f"Writing HA LTS for PCE: {myPce.pceId}, sensor name: {myParams.hassLtsSensorName}, data: {data}")
-
+                logging.debug(f"Writing HA LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}, data: {data}")
                 myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data)
-                logging.debug(f"Writing HA LTS Published for PCE: {myPce.pceId}, sensor name: {myParams.hassLtsSensorName}, data: {data_pub}")
+                logging.debug(f"Writing HA LTS Published for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}, data: {data_pub}")
                 myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data_pub)
             
             except Exception as e:
@@ -806,8 +811,8 @@ def run(myParams):
                     }  
             # Loop on PCEs
             for myPce in myDb.pceList:
-                sensor_name = myParams.hassLtsSensorName + "_" + myPce.pceId
-                sensor_name_pub = myParams.hassLtsSensorName + "_pub_" + myPce.pceId
+                sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat'
+                sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_pub'
                 logging.debug(f"Deleting Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
                 HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, None)
                 logging.debug(f"Deleting Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
