@@ -66,12 +66,11 @@ class Prices():
 class Price():
 
     def __init__(self,data):
-
         self.pceId = str(data[0])
         self.startDate = _convertDate(data[1])
         self.endDate = _convertDate(data[2])
         self.kwhPrice = float(data[3])
         self.fixPrice = float(data[4])
 
-        logging.debug("Add price : pce = %s, startDate = %s, endDate = %s, price = %s", self.pceId, self.startDate,
+        logging.debug("Add price : pce = %s, startDate = %s, endDate = %s, pricekWh = %s, priceFix = %s", self.pceId, self.startDate,
                       self.endDate, self.kwhPrice, self.fixPrice)

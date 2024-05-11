@@ -201,7 +201,11 @@ class Params:
       
     if "DB_INIT" in os.environ: self.dbInit = _isItTrue(os.environ["DB_INIT"])
     if "DB_PATH" in os.environ: self.dbPath = os.environ["DB_PATH"]
-    
+
+    if "PRICE_KWH" in os.environ: self.priceKwhDefault = os.environ["PRICE_KWH"]    
+    if "PRICE_FIX" in os.environ: self.priceFixDefault = os.environ["PRICE_FIX"]     
+    if "PRICE_PATH" in os.environ: self.pricePath = os.environ["PRICE_PATH"]     
+
     if "DEBUG" in os.environ: self.debug = _isItTrue(os.environ["DEBUG"])
   
   

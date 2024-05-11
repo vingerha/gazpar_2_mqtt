@@ -14,6 +14,7 @@ GAS_TYPE = "gas"
 ENERGY_TYPE = "energy"
 CONNECTIVITY_TYPE = "connectivity"
 PROBLEM_TYPE = "problem"
+COST_TYPE = "monetary"
 NONE_TYPE = None
 
 # Hass state_class

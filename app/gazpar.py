@@ -332,12 +332,15 @@ class Grdf:
         logging.debug("Using Button 2: %s", re_btn)
         re_btn.click()   
         time.sleep(3)   
+        
+        if screenshot:
+            self.get_screenshot("04_screenshot_after_password_button.png")
 
         self.__browser.switch_to.default_content()
         time.sleep(3)
         
         if screenshot:
-            self.get_screenshot("03a_screenshot_after_switch_to_default_content.png")
+            self.get_screenshot("05_screenshot_after_switch_to_default_content.png")
             
         isLoggedIn = True
 
@@ -353,7 +356,7 @@ class Grdf:
             logging.debug("Using deny_btn: %s", deny_btn)
 
             if screenshot:
-                self.get_screenshot("05_screenshot_after_deny_button.png")                    
+                self.get_screenshot("06_screenshot_after_deny_button.png")                    
                 
             try:
                 self.click_in_view(
@@ -371,7 +374,7 @@ class Grdf:
                 pass
         
         if screenshot:
-            self.get_screenshot("06_screenshot_after_connexion_path.png")    
+            self.get_screenshot("07_screenshot_after_connexion_path.png")    
 
        
         # When everything is ok
@@ -509,11 +512,7 @@ class Grdf:
             time.sleep(5)
             
         measureList = resp
-        
-        # Update PCE range of date
-        #pce.dailyMeasureStart = startDate
-        #pce.dailyMeasureEnd = endDate
-        
+               
         if measureList:
 
             for measure in measureList[pce.pceId]["releves"]:
@@ -1053,7 +1052,10 @@ class Measure:
         self.volumeGross = None
         self.volumeInitial = None
         self.energy = None
+        self.energyGross = 0
         self.temperature = None
+        self.price = 0
+        self.priceKwh = 0
         self.conversionFactor = None
         self.pce = None
         self.isDeltaIndex = False
@@ -1073,6 +1075,8 @@ class Measure:
         if measure["energieConsomme"]: self.energy = int(measure["energieConsomme"])
         if measure["temperature"]: self.temperature = float(measure["temperature"])
         if measure["coeffConversion"]: self.conversionFactor = float(measure["coeffConversion"])
+        if measure["coeffConversion"] and measure["volumeBrutConsomme"]: 
+            self.energyGross = float(measure["volumeBrutConsomme"]) * float(measure["coeffConversion"])
         self.pce = pce
         
         # Fix informative volume and energy provided when required
@@ -1103,9 +1107,9 @@ class Measure:
             dbTable = "consumption_published"
 
         if self.isOk() and dbTable:
-            logging.debug("Store measure type %s, %s, %s, %s, %s m3, %s m3, %s kWh, %s kwh/m3",self.type,str(self.gasDate),str(self.startIndex),str(self.endIndex), str(self.volume), str(self.volumeGross), str(self.energy), str(self.conversionFactor))
-            measure_query = f"INSERT OR REPLACE INTO measures VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            db.cur.execute(measure_query, [self.pce.pceId, self.type, self.gasDate, self.startIndex, self.endIndex, self.volume, self.volumeGross, self.energy, self.conversionFactor])
+            logging.debug("Store measure type %s, %s,%s,%s, %s, %s, %s m3, %s m3, %s kWh, %s kWh, %s EUR, %s EUR/kwh, %s kwh/m3",self.type,str(self.gasDate),str(self.startDateTime), str(self.endDateTime),str(self.startIndex),str(self.endIndex), str(self.volume), str(self.volumeGross), str(self.energy), str(self.energyGross), self.price, self.priceKwh, str(self.conversionFactor))
+            measure_query = f"INSERT OR REPLACE INTO measures VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            db.cur.execute(measure_query, [self.pce.pceId, self.type, self.gasDate, self.startDateTime, self.endDateTime, self.startIndex, self.endIndex, self.volume, self.volumeGross, self.energy, self.energyGross, self.price, self.priceKwh, self.conversionFactor])
         
     
     # Return measure measure quality status

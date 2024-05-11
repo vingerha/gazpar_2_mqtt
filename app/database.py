@@ -77,11 +77,16 @@ class Database:
                         pce TEXT NOT NULL
                         , type TEXT NOT NULL
                         , date TEXT NOT NULL
+                        , periodStart TEXT NOT NULL
+                        , periodEnd TEXT NOT NULL
                         , start_index INTEGER NOT NULL
                         , end_index INTEGER NOT NULL
                         , volume INTEGER NOT NULL
                         , volumeGrossConsumed REAL NOT NULL
                         , energy INTEGER NOT NULL
+                        , energyGrossConsumed REAL NOT NULL
+                        , price REAL NOT NULL
+                        , priceKwh REAL NOT NULL
                         , conversion REAL)''')
     self.cur.execute('''CREATE UNIQUE INDEX IF NOT EXISTS idx_measures_measure
                     ON measures (pce,type,date)''')
@@ -313,12 +318,17 @@ class Measure():
     self.pce = pce
     self.type = result[1]
     self.date = _convertDate(result[2])
-    self.startIndex = result[3]
-    self.endIndex = result[4]
-    self.volume = result[5]
-    self.volumeGross = result[6]
-    self.energy = result[7]
-    self.conversionFactor = result[8]
+    self.periodStart = _convertDateTime(result[3])
+    self.periodEnd = _convertDateTime(result[4])
+    self.startIndex = result[5]
+    self.endIndex = result[6]
+    self.volume = result[7]
+    self.volumeGross = result[8]
+    self.energy = result[9]
+    self.energyGross = result[10]
+    self.price = result[11]
+    self.priceKwh = result[12]    
+    self.conversionFactor = result[13]
 
 # Class Measure
 class Threshold():
