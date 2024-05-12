@@ -1,3 +1,12 @@
+## 0.8.0 (12-05-2024)
+Extending LTS sensors with kWh and price
+sensor.[device]_[pce-alias]_consumption_stat : for daily figures in m3
+sensor.[device]_[pce-alias]_consumption_kwh_stat : for daily figures in kWh
+sensor.[device]_[pce-alias]_consumption_cost_stat : daily cost
+sensor.[device]_[pce-alias]_consumption_pub_stat : for periodic figures in m3
+sensor.[device]_[pce-alias]_consumption_kwh_pub_stat : for periodic figures in kWh
+sensor.[device]_[pce-alias]_consumption_cost_pub_stat : periodic cost
+
 ## 0.7.0 (10-05-2024)
 The LTS sensor name can no longer be chosen and is fixed to :
 
