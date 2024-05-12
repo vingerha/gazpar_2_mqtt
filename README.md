@@ -4,13 +4,13 @@
 Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in the login method, now using virtual browser and allowing to export to HA Long Term Statistics
 - Can be installed as an addon and container; collecting data in SQLite, MQTT, InfluxDb, Home Assistant sensor and HA energy-dashboard (LTS)
 - no 100% verification if the now 2+-year old source from yukulehe/gazpar2mqtt is still valid **in its entirety**, bits and pieces may not work perfectly anylonger
-- Not yet tested: Grafana dashboard template, Cost calculation from prices file
+- Not yet tested: Grafana dashboard template
 
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
 - 0.8.0
-  Extending LTS sensors with kWh and price:
+  Extending LTS sensors with kWh and price import:
   - sensor.[device]_[pce-alias]_consumption_stat : for daily figures in m3
   - sensor.[device]_[pce-alias]_consumption_kwh_stat : for daily figures in kWh
   - sensor.[device]_[pce-alias]_consumption_cost_stat : daily cost
