@@ -16,6 +16,8 @@ CONFIGTEMPLATE="/templates/config.yaml"
 CONFIGSOURCE="/config/gazpar_2_mqtt/config.yaml"
 CONFIGUSERDIR="/homeassistant/gazpar_2_mqtt"
 CONFIGUSER="/homeassistant/gazpar_2_mqtt/config.yaml"
+PRICESUSER="/homeassistant/gazpar_2_mqtt/prices.csv"
+PRICESSOURCE="/data/prices.csv"
 
 mkdir -p /config/gazpar_2_mqtt
 
@@ -27,6 +29,12 @@ if [ ! -f "$CONFIGUSER" ]; then
 	exit 1
 fi
 
+if [ -f "$PRICESUSER" ]; then
+    echo "Copying prices file to $PRICESSOURCE"
+	cp -rf "$PRICESUSER" "$PRICESSOURCE"
+fi
+
+echo "Copying config"
 cp -rf "$CONFIGUSER" "$CONFIGSOURCE"
 
 # Export all yaml entries as env variables
@@ -84,7 +92,7 @@ done <"$CONFIGSOURCE"
 #####################
 
 if bashio::config.true 'mqtt_autodiscover'; then
-    bashio::log.info "mqtt_autodiscover is defined in options, attempting autodiscovery..."
+    bashio::log.info "... mqtt_autodiscover is defined in options, attempting autodiscovery..."
     # Check if available
     if ! bashio::services.available "mqtt"; then bashio::exit.nok "No internal MQTT service found. Please install Mosquitto broker"; fi
     # Get variables
