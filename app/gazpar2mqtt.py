@@ -751,7 +751,7 @@ def run(myParams):
                     
                     for x in data:
                         try: 
-                            cursor.execute(f"UPDATE measures SET price= ( energyGrossConsumed * {myParams.priceKwhDefault} ) + {myParams.priceFixDefault} , priceKwh = 0") 
+                            cursor.execute(f"UPDATE measures SET price= ( energyGrossConsumed * {myParams.priceKwhDefault} ) + {myParams.priceFixDefault}") 
                             myDb.commit()
                         except Exception as e:
                             logging.error("Writing Prices with default values, error: %s", e)           
