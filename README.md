@@ -10,7 +10,7 @@ For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/
 
 ## Changelogs :
 - 0.8.0
-  Extending LTS sensors with kWh and price
+  Extending LTS sensors with kWh and price:
   - sensor.[device]_[pce-alias]_consumption_stat : for daily figures in m3
   - sensor.[device]_[pce-alias]_consumption_kwh_stat : for daily figures in kWh
   - sensor.[device]_[pce-alias]_consumption_cost_stat : daily cost
