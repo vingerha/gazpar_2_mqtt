@@ -9,10 +9,18 @@ Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in th
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
+- 0.8.0
+  Extending LTS sensors with kWh and price
+  - sensor.[device]_[pce-alias]_consumption_stat : for daily figures in m3
+  - sensor.[device]_[pce-alias]_consumption_kwh_stat : for daily figures in kWh
+  - sensor.[device]_[pce-alias]_consumption_cost_stat : daily cost
+  - sensor.[device]_[pce-alias]_consumption_pub_stat : for periodic figures in m3
+  - sensor.[device]_[pce-alias]_consumption_kwh_pub_stat : for periodic figures in kWh
+  - sensor.[device]_[pce-alias]_consumption_cost_pub_stat : periodic cost
 - 0.7.0 
   The LTS sensor name can no longer be chosen and is fixed to 
   - sensor.[device]_[pce-alias]_consumption_stat : for daily figures
-  - sensor.[device]_[pce-alias]_consumption_stat_pub : for periodically 'published' figures 
+  - sensor.[device]_[pce-alias]_consumption_pub_stat : for periodically 'published' figures 
   Reason: previously the LTS sensors were added without a regular sensor, this makes their use impossible for e.g. apexcharts who uses the regular sensor-name also for statistics.
   These 2 sensors will appear both in HA as in HA statistics
 
