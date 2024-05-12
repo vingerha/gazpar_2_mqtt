@@ -132,7 +132,7 @@ class HomeAssistantWs:
         metadata = {
             "has_mean": False,
             "has_sum": True,
-            "name": "gazpar m3",
+            "name": self.sensor_name,
             "statistic_id": (
                 self.sensor_name
                     ),

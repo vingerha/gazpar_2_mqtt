@@ -86,7 +86,6 @@ class Database:
                         , energy INTEGER NOT NULL
                         , energyGrossConsumed REAL NOT NULL
                         , price REAL NOT NULL
-                        , priceKwh REAL NOT NULL
                         , conversion REAL)''')
     self.cur.execute('''CREATE UNIQUE INDEX IF NOT EXISTS idx_measures_measure
                     ON measures (pce,type,date)''')
@@ -327,8 +326,7 @@ class Measure():
     self.energy = result[9]
     self.energyGross = result[10]
     self.price = result[11]
-    self.priceKwh = result[12]    
-    self.conversionFactor = result[13]
+    self.conversionFactor = result[12]
 
 # Class Measure
 class Threshold():

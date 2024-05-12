@@ -20,7 +20,7 @@ from hass_ws import HomeAssistantWs
 
 
 # gazpar2mqtt constants
-G2M_VERSION = '0.7.0'
+G2M_VERSION = '0.8.0'
 G2M_DB_VERSION = '0.4.0'
 G2M_INFLUXDB_VERSION = '0.1.0'
 
@@ -220,7 +220,7 @@ def run(myParams):
 
 
                     # Set date range
-                    if not myParams.grdfStartDate: myParams.grdfStartDate = '2020-01-01' 
+                    if not myParams.grdfStartDate: myParams.grdfStartDate = '2020-01-01' # can be omitted if param.py back to default
                     minDateTimeLimit = _getYearOfssetDate(datetime.datetime.now(), 3) # GRDF min date is 3 years ago
                     minDateTime = datetime.datetime.strptime(myParams.grdfStartDate, "%Y-%m-%d")
                     startDate = minDateTime.date()
@@ -357,10 +357,22 @@ def run(myParams):
                 logging.info("No PCE retrieved.")
 
 
- 
-
-
+                                                                                                                                                                                                                     
+                     
     ####################################################################################################################
+
+                                                                               
+                                                                                
+                                                                               
+
+                                
+                                                                                                    
+                                                                                                   
+                                
+                                                                               
+
+
+                                                                                                                                                                                                                     
     # STEP 5A : Standalone mode
     ####################################################################################################################
     if myMqtt.isConnected \
@@ -647,11 +659,15 @@ def run(myParams):
                         logging.debug("Creation of dummy LTS sensors")                        
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat', 'consumption stat', hass.GAS_TYPE, hass.ST_TT,
                                                'm³').setValue('1')
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat_pub', 'consumption stat pub', hass.GAS_TYPE, hass.ST_TT,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_stat', 'consumption kwh stat', hass.GAS_TYPE, hass.ST_TT,
+                                               'kWh').setValue('1')                                               
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_pub_stat', 'consumption pub stat', hass.GAS_TYPE, hass.ST_TT,
                                                'm³').setValue('1')
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat_cost', 'consumption stat cost', hass.COST_TYPE, hass.ST_TT,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_pub_stat', 'consumption kwh pub stat', hass.GAS_TYPE, hass.ST_TT,
+                                               'kWh').setValue('1')                                               
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_stat', 'consumption cost stat', hass.COST_TYPE, hass.ST_TT,
                                                'EUR').setValue('1')
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat_pub_cost', 'consumption stat pub cost', hass.COST_TYPE, hass.ST_TT,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_pub_stat', 'consumption cost pub stat', hass.COST_TYPE, hass.ST_TT,
                                                'EUR').setValue('1')                                               
                                                
                 # Publish config, state (when value not none), attributes (when not none)
@@ -701,29 +717,28 @@ def run(myParams):
                 myPcePrices = myPrices.getPricesByPce(myPce.pceId)
                 if myPcePrices:
                     # Loop on prices of the PCE and write the current price
-                    errorCount = 0
-                    writeCount = 0
                     for myPrice in myPcePrices:
                         #informative / daily values
-                        logging.debug(f"QUERY_I: SELECT pce, type, date, energy, price FROM measures where type = '{gazpar.TYPE_I}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
-                        cursor.execute(f"SELECT pce, type, date, energy, price FROM measures where type = '{gazpar.TYPE_I}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
+                        logging.debug(f"QUERY_I: SELECT pce, type, date, energy, price FROM measures where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_I}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
+                        cursor.execute(f"SELECT pce, type, date, energy, price FROM measures where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_I}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
+                        
                         data = cursor.fetchall()
                         
                         for x in data:
                             try: 
-                                cursor.execute(f"UPDATE measures SET price= ( energy * {myPrice.kwhPrice} ) + {myPrice.fixPrice} , priceKwh = 0") 
+                                cursor.execute(f"UPDATE measures SET price= ( energyGrossConsumed * {myPrice.kwhPrice} ) + {myPrice.fixPrice}") 
                                 myDb.commit()
                             except Exception as e:
                                 logging.error("Writing Prices error: %s", e)
                         
                         #published / periodic values
-                        logging.debug(f"QUERY_P: SELECT pce, type, date, energy, price FROM measures where type = '{gazpar.TYPE_P}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
-                        cursor.execute(f"SELECT pce, type, date, energy, price FROM measures where type = '{gazpar.TYPE_P}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
+                        logging.debug(f"QUERY_P: SELECT pce, type, date, energy, price FROM measures where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_P}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
+                        cursor.execute(f"SELECT pce, type, date, energy, price FROM measures where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_P}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
                         data = cursor.fetchall()
                         
                         for x in data:
                             try: 
-                                cursor.execute(f"UPDATE measures SET price= ( energy * {myPrice.kwhPrice} ) + ((JulianDay(periodEnd) - JulianDay(periodStart)) * {myPrice.fixPrice}), priceKwh = 0 ") 
+                                cursor.execute(f"UPDATE measures SET price= ( energyGrossConsumed * {myPrice.kwhPrice} ) + ((JulianDay(periodEnd) - JulianDay(periodStart)) * {myPrice.fixPrice})") 
                                 myDb.commit()
                             except Exception as e:
                                 logging.error("Writing Prices from file, error: %s", e)                                               
@@ -736,22 +751,11 @@ def run(myParams):
                     
                     for x in data:
                         try: 
-                            cursor.execute(f"UPDATE measures SET price= ( energy * {myParams.priceKwhDefault} ) + {myParams.priceFixDefault} , priceKwh = 0") 
+                            cursor.execute(f"UPDATE measures SET price= ( energyGrossConsumed * {myParams.priceKwhDefault} ) + {myParams.priceFixDefault} , priceKwh = 0") 
                             myDb.commit()
                         except Exception as e:
-                            logging.error("Writing Prices with default values, error: %s", e) 
-                
-            # now write average price per kWh
-            cursor.execute(f"SELECT pce, type, date, energy, price, priceKwh FROM measures")
-            data = cursor.fetchall()            
-            for x in data:
-                try:                  
-                    cursor.execute(f"UPDATE measures SET priceKwh = price / volumeGrossConsumed where volumeGrossConsumed > 0 ") 
-                    myDb.commit()
-                except Exception as e:
-                    logging.error("Writing average price/kwh, error: %s", e) 
-                
-                    
+                            logging.error("Writing Prices with default values, error: %s", e)           
+                        
         except Exception as e:
             logging.error("Home Assistant Prices error: %s", e)
             
@@ -763,140 +767,170 @@ def run(myParams):
         and myGrdf.isConnected \
         and not myParams.hassLtsDelete :
         
-        #try: 
-        logging.info("-----------------------------------------------------------")
-        logging.info("#   Home assistant Long Term Statistics (WebService)      #")
-        logging.info("-----------------------------------------------------------")
-
-        # Load database in cache
-        myDb.load()
-
-        data = {}
-        data_pub = {}
-        ssl_data= {
-                "gateway": myParams.hassSslGateway,
-                "certfile": myParams.hassSslCertfile,
-                "keyfile": myParams.hassSslKeyfile
-                }    
-        # Loop on PCEs
-        for myPce in myDb.pceList:
-            logging.info("Writing webservice information of PCE %s alias %s...", myPce.pceId, myPce.alias)
-
-            stats_array = []
-            stats_array_cost = []
-            stats_array_pub = []
-            stats_array_pub_cost = []
-            prev_price_sum = 0
-            prev_price_sum_pub = 0
-            for myMeasure in myPce.measureList:
-                date_with_timezone = myMeasure.date.replace(tzinfo=dt.timezone.utc)
-                date_formatted = date_with_timezone.strftime(
-                    "%Y-%m-%dT%H:%M:%S%z"
-                )
-                stat = {
-                    "start": date_formatted,  # formatted date
-                    "state": myMeasure.volumeGross,
-                    "sum": myMeasure.endIndex,
-                }
-                if myMeasure.type == gazpar.TYPE_I :
-                    stat_cost = {
-                        "start": date_formatted,  # formatted date
-                        "state": myMeasure.price,
-                        "sum": prev_price_sum + myMeasure.price,
-                    }
-                else:
-                    stat_cost_pub = {
-                        "start": date_formatted,  # formatted date
-                        "state": myMeasure.price,
-                        "sum": prev_price_sum_pub + myMeasure.price,
-                    }
-                
-                # Add the stat to the array
-                if myMeasure.type == 'informative':
-                    stats_array.append(stat)
-                    stats_array_cost.append(stat_cost)
-                    prev_price_sum =  prev_price_sum + myMeasure.price
-                else:
-                    stats_array_pub.append(stat)
-                    stats_array_pub_cost.append(stat_cost_pub)
-                    prev_price_sum_pub = prev_price_sum_pub + myMeasure.price
-                
-            
-            sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat'
-            sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_pub'
-            sensor_name_cost = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_cost'
-            sensor_name_pub_cost = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_pub_cost'                
-            logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
-            HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, 'm³', stats_array)
-            HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, 'EUR', stats_array_cost)                
-            logging.debug(f"Writing Websocket Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
-            HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, 'm³', stats_array_pub)
-            HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub_cost, 'EUR',  stats_array_pub_cost)                
-           
-        #except Exception as e:
-        #    logging.error("Home Assistant Long Term Statistics : unable to publish LTS to Webservice HA with error: %s", e)
-        #    logging.error("Retrying with API") 
-            
-        try:
+        try: 
             logging.info("-----------------------------------------------------------")
-            logging.info("#      Home assistant Long Term Statistics (API)          #")
+            logging.info("#   Home assistant Long Term Statistics (WebService)      #")
             logging.info("-----------------------------------------------------------")
 
             # Load database in cache
             myDb.load()
+
             data = {}
             data_pub = {}
+            ssl_data= {
+                    "gateway": myParams.hassSslGateway,
+                    "certfile": myParams.hassSslCertfile,
+                    "keyfile": myParams.hassSslKeyfile
+                    }    
             # Loop on PCEs
             for myPce in myDb.pceList:
-                logging.info("Writing api information of PCE %s alias %s...", myPce.pceId, myPce.alias)
-                sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat'
-                sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_pub'
+                logging.info("Writing webservice information of PCE %s alias %s...", myPce.pceId, myPce.alias)
+
                 stats_array = []
+                stats_array_kwh = []
+                stats_array_cost = []
                 stats_array_pub = []
+                stats_array_kwh_pub = []
+                stats_array_pub_cost = []
+                prev_stat_sum = 0
+                prev_stat_kwh_sum = 0
+                prev_stat_pub_sum = 0
+                prev_stat_kwh_pub_sum = 0
+                prev_price_sum = 0
+                prev_price_pub_sum = 0
                 for myMeasure in myPce.measureList:
                     date_with_timezone = myMeasure.date.replace(tzinfo=dt.timezone.utc)
                     date_formatted = date_with_timezone.strftime(
                         "%Y-%m-%dT%H:%M:%S%z"
                     )
-                    stat = {
-                        "start": date_formatted,  # formatted date
-                        "state": myMeasure.volumeGross,
-                        "sum": myMeasure.endIndex,
-                    }
-                    # Add the stat to the array
-                    if myMeasure.type == 'informative':
+                    if myMeasure.type == gazpar.TYPE_I :
+                        stat = {
+                            "start": date_formatted,  # formatted date
+                            "state": myMeasure.volumeGross,
+                            "sum": prev_stat_sum + myMeasure.volumeGross,
+                        }
+                        stat_kwh = {
+                            "start": date_formatted,  # formatted date
+                            "state": myMeasure.energyGross,
+                            "sum": prev_stat_kwh_sum + myMeasure.energyGross,
+                        }                        
+                        stat_cost = {
+                            "start": date_formatted,  # formatted date
+                            "state": myMeasure.price,
+                            "sum": prev_price_sum + myMeasure.price,
+                        }
                         stats_array.append(stat)
+                        stats_array_kwh.append(stat_kwh)                    
+                        stats_array_cost.append(stat_cost)
+                        prev_stat_sum = prev_stat_sum + myMeasure.volumeGross
+                        prev_stat_kwh_sum = prev_stat_kwh_sum + myMeasure.energyGross
+                        prev_price_sum =  prev_price_sum + myMeasure.price                
                     else:
-                        stats_array_pub.append(stat)
+                        stat_pub = {
+                            "start": date_formatted,  # formatted date
+                            "state": myMeasure.volumeGross,
+                            "sum": prev_stat_pub_sum + myMeasure.volumeGross,
+                        }   
+                        stat_kwh_pub = {
+                            "start": date_formatted,  # formatted date
+                            "state": myMeasure.energyGross,
+                            "sum": prev_stat_kwh_pub_sum + myMeasure.energyGross,
+                        }                       
+                        stat_cost_pub = {
+                            "start": date_formatted,  # formatted date
+                            "state": myMeasure.price,
+                            "sum": prev_price_pub_sum + myMeasure.price,
+                        }
+                        stats_array_pub.append(stat_pub)
+                        stats_array_kwh_pub.append(stat_kwh_pub)                    
+                        stats_array_pub_cost.append(stat_cost_pub)
+                        prev_stat_pub_sum = prev_stat_pub_sum + myMeasure.volumeGross
+                        prev_stat_kwh_pub_sum = prev_stat_kwh_pub_sum + myMeasure.energyGross
+                        prev_price_pub_sum = prev_price_pub_sum + myMeasure.price
+                    
                 
-                data = {
-                    "has_mean": False,
-                    "has_sum": True,
-                    "statistic_id": (
-                        sensor_name
-                            ),
-                    "unit_of_measurement": "m³",
-                    "source": "recorder",
-                    "stats": stats_array,
-                }
-                data_pub = {
-                    "has_mean": False,
-                    "has_sum": True,
-                    "statistic_id": (
-                        sensor_name_pub
-                            ),
-                    "unit_of_measurement": "m³",
-                    "source": "recorder",
-                    "stats": stats_array_pub,
-                }
+                sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat'
+                sensor_name_kwh = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_kwh_stat'
+                sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_pub_stat'
+                sensor_name_kwh_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_kwh_pub_stat'
+                sensor_name_cost = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_cost_stat'
+                sensor_name_cost_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_pub_cost_stat'                
                 
-            logging.debug(f"Writing HA LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}, data: {data}")
-            myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data)
-            logging.debug(f"Writing HA LTS Published for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}, data: {data_pub}")
-            myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data_pub)
-        
+                logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, 'm³', stats_array)
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, 'kWh', stats_array_kwh)
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, 'EUR', stats_array_cost)
+                
+                logging.debug(f"Writing Websocket Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, 'm³', stats_array_pub)
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, 'kWh', stats_array_kwh_pub)
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, 'EUR',  stats_array_pub_cost)                
+           
         except Exception as e:
-            logging.error("Home Assistant Long Term Statistics : unable to publish LTS to HA with error: %s", e)    
+            logging.error("Home Assistant Long Term Statistics : unable to publish LTS to Webservice HA with error: %s", e)
+            logging.error("Retrying with API") 
+                    
+            try:
+                logging.info("-----------------------------------------------------------")
+                logging.info("#      Home assistant Long Term Statistics (API)          #")
+                logging.info("-----------------------------------------------------------")
+
+                # Load database in cache
+                myDb.load()
+                data = {}
+                data_pub = {}
+                # Loop on PCEs
+                for myPce in myDb.pceList:
+                    logging.info("Writing api information of PCE %s alias %s...", myPce.pceId, myPce.alias)
+                    sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat'
+                    sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_pub_stat'
+                    stats_array = []
+                    stats_array_pub = []
+                    for myMeasure in myPce.measureList:
+                        date_with_timezone = myMeasure.date.replace(tzinfo=dt.timezone.utc)
+                        date_formatted = date_with_timezone.strftime(
+                            "%Y-%m-%dT%H:%M:%S%z"
+                        )
+                        stat = {
+                            "start": date_formatted,  # formatted date
+                            "state": myMeasure.volumeGross,
+                            "sum": myMeasure.endIndex,
+                        }
+                        # Add the stat to the array
+                        if myMeasure.type == 'informative':
+                            stats_array.append(stat)
+                        else:
+                            stats_array_pub.append(stat)
+                    
+                    data = {
+                        "has_mean": False,
+                        "has_sum": True,
+                        "statistic_id": (
+                            sensor_name
+                                ),
+                        "unit_of_measurement": "m³",
+                        "source": "recorder",
+                        "stats": stats_array,
+                    }
+                    data_pub = {
+                        "has_mean": False,
+                        "has_sum": True,
+                        "statistic_id": (
+                            sensor_name_pub
+                                ),
+                        "unit_of_measurement": "m³",
+                        "source": "recorder",
+                        "stats": stats_array_pub,
+                    }
+                    
+                logging.debug(f"Writing HA LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}, data: {data}")
+                myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data)
+                logging.debug(f"Writing HA LTS Published for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}, data: {data_pub}")
+                myGrdf.open_url(myParams.hassHost, myParams.hassStatisticsUri, myParams.hassToken, data_pub)
+            
+            except Exception as e:
+                logging.error("Home Assistant Long Term Statistics : unable to publish LTS to HA with error: %s", e)            
+        
 
     ####################################################################################################################
     # STEP 5D : Delete Home Assistant Long Term statistics
@@ -919,15 +953,19 @@ def run(myParams):
             # Loop on PCEs
             for myPce in myDb.pceList:
                 sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat'
-                sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_pub'
-                sensor_name_cost = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_cost'
-                sensor_name_pub_cost = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_stat_pub_cost'                
+                sensor_name_kwh = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_kwh_stat'
+                sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_pub_stat'
+                sensor_name_kwh_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_kwh_pub_stat'
+                sensor_name_cost = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_cost_stat'
+                sensor_name_cost_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower() + '_consumption_pub_cost_stat'                  
                 logging.debug(f"Deleting Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
                 HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, None, None)
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, None, None)
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, None, None)
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, None, None)      
                 logging.debug(f"Deleting Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
                 HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, None, None) 
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub_cost, None, None)                  
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, None, None)
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, None, None)                  
 
             
         except Exception as e:

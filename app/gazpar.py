@@ -1055,7 +1055,6 @@ class Measure:
         self.energyGross = 0
         self.temperature = None
         self.price = 0
-        self.priceKwh = 0
         self.conversionFactor = None
         self.pce = None
         self.isDeltaIndex = False
@@ -1107,9 +1106,9 @@ class Measure:
             dbTable = "consumption_published"
 
         if self.isOk() and dbTable:
-            logging.debug("Store measure type %s, %s,%s,%s, %s, %s, %s m3, %s m3, %s kWh, %s kWh, %s EUR, %s EUR/kwh, %s kwh/m3",self.type,str(self.gasDate),str(self.startDateTime), str(self.endDateTime),str(self.startIndex),str(self.endIndex), str(self.volume), str(self.volumeGross), str(self.energy), str(self.energyGross), self.price, self.priceKwh, str(self.conversionFactor))
-            measure_query = f"INSERT OR REPLACE INTO measures VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            db.cur.execute(measure_query, [self.pce.pceId, self.type, self.gasDate, self.startDateTime, self.endDateTime, self.startIndex, self.endIndex, self.volume, self.volumeGross, self.energy, self.energyGross, self.price, self.priceKwh, self.conversionFactor])
+            logging.debug("Store measure type %s, %s,%s,%s, %s, %s, %s m3, %s m3, %s kWh, %s kWh, %s EUR, %s kwh/m3",self.type,str(self.gasDate),str(self.startDateTime), str(self.endDateTime),str(self.startIndex),str(self.endIndex), str(self.volume), str(self.volumeGross), str(self.energy), str(self.energyGross), self.price, str(self.conversionFactor))
+            measure_query = f"INSERT OR REPLACE INTO measures VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            db.cur.execute(measure_query, [self.pce.pceId, self.type, self.gasDate, self.startDateTime, self.endDateTime, self.startIndex, self.endIndex, self.volume, self.volumeGross, self.energy, self.energyGross, self.price, self.conversionFactor])
         
     
     # Return measure measure quality status
