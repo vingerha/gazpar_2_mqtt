@@ -173,7 +173,7 @@ class Grdf:
         
             
         chromedriver_log = os.path.join(
-            "/app",
+            self.location,
             "chromedriver.log",
         )
 
