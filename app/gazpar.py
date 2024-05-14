@@ -324,7 +324,20 @@ class Grdf:
         # Type Password #####
         logging.debug("Enter Password")
         el_password.send_keys(password)
-
+        time.sleep(2)
+        
+        if screenshot:
+            self.get_screenshot("04a_screenshot_enter_password.png")
+        
+        re_btn = self.__browser.find_element(
+            By.CLASS_NAME, "eyeicon.visibility-16.button-show"
+        )
+        logging.debug("Using show password: %s", re_btn)
+        re_btn.click()              
+        time.sleep(2)
+        
+        if screenshot:
+            self.get_screenshot("04c_screenshot_after_show_password_button.png")
         
         re_btn = self.__browser.find_element(
             By.ID, "grdfButton"
@@ -334,7 +347,7 @@ class Grdf:
         time.sleep(3)   
         
         if screenshot:
-            self.get_screenshot("04_screenshot_after_password_button.png")
+            self.get_screenshot("04c_screenshot_after_password_button.png")
 
         self.__browser.switch_to.default_content()
         time.sleep(3)
