@@ -1,5 +1,3 @@
-![GitHub release (with filter)](https://img.shields.io/github/v/release/vingerha/gazpar_2_mqtt)
-
 ## Introduction / status
 Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in the login method, now using virtual browser and allowing to export to HA Long Term Statistics
 - Can be installed as an addon and container; collecting data in SQLite, MQTT, InfluxDb, Home Assistant sensor and HA energy-dashboard (LTS)
@@ -9,6 +7,8 @@ Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in th
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
+- 0.8.5
+  Removal of chromium for login, replaced by request.session
 - 0.8.0
   Extending LTS sensors with kWh and price import:
   - sensor.[device]_[pce-alias]_consumption_stat : for daily figures in m3
