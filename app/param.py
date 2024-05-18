@@ -56,14 +56,7 @@ class Params:
     self.hassSslGateway = True
     self.hassSslCertfile = ""
     self.hassSslKeyfile = ""
-    
-    # chromium / selenium
-    self.chromedriver = "/usr/bin/chromedriver"
-    self.download_folder = "./"
-    self.logs_folder = "./"
-    self.screenshots = False
-    self.verbose = False
-    
+       
     # Database params
     self.dbInit = False
     self.dbPath = '/data'
@@ -182,12 +175,7 @@ class Params:
     if "HASS_SSL" in os.environ: self.hassSsl = _isItTrue(os.environ["HASS_SSL"])
     if "HASS_SSL_GATEWAY" in os.environ: self.hassSslGateway = _isItTrue(os.environ["HASS_SSL_GATEWAY"])
     if "HASS_SSL_CERTFILE" in os.environ: self.hassSslCertfile = os.environ["HASS_SSL_CERTFILE"]
-    if "HASS_SSL_KEYFILE" in os.environ: self.hassSslKeyfile = os.environ["HASS_SSL_KEYFILE"]
-    
-    if "BROWSER_LOGS_FOLDER" in os.environ: self.logs_folder = os.environ["BROWSER_LOGS_FOLDER"]
-    if "BROWSER_DOWNLOAD_FOLDER" in os.environ: self.download_folder = os.environ["BROWSER_DOWNLOAD_FOLDER"]
-    if "BROWSER_SCREENSHOTS" in os.environ: self.screenshots = _isItTrue(os.environ["BROWSER_SCREENSHOTS"])
-    if "BROWSER_VERBOSE" in os.environ: self.verbose = _isItTrue(os.environ["BROWSER_VERBOSE"])    
+    if "HASS_SSL_KEYFILE" in os.environ: self.hassSslKeyfile = os.environ["HASS_SSL_KEYFILE"] 
          
     if "THRESHOLD_PERCENTAGE" in os.environ: self.thresholdPercentage = int(os.environ["THRESHOLD_PERCENTAGE"])
     
@@ -268,7 +256,6 @@ class Params:
                  self.mqttHost, self.mqttPort, self.mqttClientId,
                  self.mqttQos,self.mqttTopic,self.mqttRetain,
                  self.mqttSsl),
-    logging.info("Browser Logs folder: %s, download_folder: %s, chomedriver: %s, screenshots: %s", self.download_folder, self.logs_folder, self.chromedriver, self.screenshots)
     logging.info("Standlone mode : Enable = %s", self.standalone)
     logging.info("Home Assistant discovery : Enable = %s, Topic prefix = %s, Device name = %s",
                  self.hassDiscovery, self.hassPrefix, self.hassDeviceName)
