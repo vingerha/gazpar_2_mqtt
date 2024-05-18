@@ -157,10 +157,10 @@ def run(myParams):
                 # Create Grdf instance
                 logging.debug("Connexion to GRDF, try %s/%s...",tryCount,gazpar.GRDF_API_MAX_RETRIES)
                 myGrdf = gazpar.Grdf()
-                logging.debug("After myGrdf...")
+                logging.debug("After myGrdf")
                 # Connect to Grdf website
 
-                myGrdf.login(myParams.grdfUsername,myParams.grdfPassword, myParams.download_folder, myParams.screenshots, myParams.verbose)
+                myGrdf.login(myParams.grdfUsername,myParams.grdfPassword)
 
 
                 # Check connexion
