@@ -5,8 +5,6 @@ COPY ./app /app_temp
 
 RUN apt-get update && \ 
 	apt-get install -y curl unzip xvfb libxi6 libgconf-2-4  && \ 
-    apt-get update && \
-    apt-get install -y chromium -y  && \
     apt-get update && \	
     rm -rf /var/lib/apt/lists/*
 

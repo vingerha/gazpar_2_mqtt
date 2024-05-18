@@ -5,12 +5,8 @@ envparse
 schedule
 paho-mqtt==1.3.0
 influxdb-client
-selenium
 colorama
 urllib3
-PyVirtualDisplay
-bs4
-webdriver_manager
 websocket-client==1.7.0
 
 

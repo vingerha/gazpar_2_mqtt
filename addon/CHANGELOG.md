@@ -1,3 +1,6 @@
+## 0.8.5 (18-05-2024)
+Replace chromium for login, by session.request
+
 ## 0.8.0 (12-05-2024)
 Extending LTS sensors with kWh and price
 sensor.[device]_[pce-alias]_consumption_stat : for daily figures in m3
@@ -28,10 +31,6 @@ Fix issue with restarting due to non-copied hass_ws.py
 
 Add webservice as main process to push Long Term Stats
 Fix issues, e.g standalone mode
-
-## 0.4.0 (03/04-05-2024) - addon + container
-
-introduce addon, small modifications to the core code
 
 
 
