@@ -331,7 +331,7 @@ def run(myParams):
                         logging.info("%s thresholds found !",thresholdCount)
 
                     except:
-                        logging.error("Error to get PCE's thresholds from GRDF")
+                        logging.warning("Error to get PCE's thresholds, verify if you have setup thresholds for your PCE/account")
 
                     # Update database
                     if myPce.thresholdList:
