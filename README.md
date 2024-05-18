@@ -9,6 +9,8 @@ Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in th
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
+- 0.8.5
+  Removal of chromium for login, replaced by request.session
 - 0.8.0
   Extending LTS sensors with kWh and price import:
   - sensor.[device]_[pce-alias]_consumption_stat : for daily figures in m3
