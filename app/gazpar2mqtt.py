@@ -60,11 +60,11 @@ def run(myParams):
     # STEP 1 : Connect to database
     ####################################################################################################################
     logging.info("-----------------------------------------------------------")
-    logging.info("#        Connexion to SQLite database                     #")
+    logging.info("#        Connection to SQLite database                     #")
     logging.info("-----------------------------------------------------------")
 
     # Create/Update database
-    logging.info("Connexion to SQLite database...")
+    logging.info("Connection to SQLite database...")
     myDb = database.Database(myParams.dbPath)
 
 
@@ -117,7 +117,7 @@ def run(myParams):
     # STEP 2 : Log to MQTT broker
     ####################################################################################################################
     logging.info("-----------------------------------------------------------")
-    logging.info("#              Connexion to Mqtt broker                   #")
+    logging.info("#              Connection to Mqtt broker                   #")
     logging.info("-----------------------------------------------------------")
 
     try:
@@ -130,7 +130,7 @@ def run(myParams):
         # Connect mqtt broker
         myMqtt.connect(myParams.mqttHost,myParams.mqttPort)
 
-        # Wait for connexion callback
+        # Wait for connection callback
         time.sleep(2)
 
         if myMqtt.isConnected:
@@ -148,14 +148,14 @@ def run(myParams):
         logging.info("-----------------------------------------------------------")
 
         tryCount = 0
-        # Connexion
+        # Connection
         while tryCount < gazpar.GRDF_API_MAX_RETRIES :
             try:
 
                 tryCount += 1
 
                 # Create Grdf instance
-                logging.debug("Connexion to GRDF, try %s/%s...",tryCount,gazpar.GRDF_API_MAX_RETRIES)
+                logging.debug("Connection to GRDF, try %s/%s...",tryCount,gazpar.GRDF_API_MAX_RETRIES)
                 myGrdf = gazpar.Grdf()
                 logging.debug("After myGrdf")
                 # Connect to Grdf website
@@ -163,7 +163,7 @@ def run(myParams):
                 myGrdf.login(myParams.grdfUsername,myParams.grdfPassword)
 
 
-                # Check connexion
+                # Check connection
                 if myGrdf.isConnected:
                     logging.info("GRDF connected !")
                     break
@@ -978,7 +978,7 @@ def run(myParams):
     if myMqtt.isConnected:
 
         logging.info("-----------------------------------------------------------")
-        logging.info("#               Disconnexion from MQTT                    #")
+        logging.info("#               Disconnection from MQTT                    #")
         logging.info("-----------------------------------------------------------")
 
         try:
@@ -1104,7 +1104,7 @@ def run(myParams):
             logging.info("%s threshold(s) of PCE written successfully !",writeCount)
 
         # Disconnect
-        logging.info("Disconnexion of influxdb...")
+        logging.info("Disconnection of influxdb...")
         myInflux.close()
         logging.info("Influxdb disconnected.")
 
@@ -1115,7 +1115,7 @@ def run(myParams):
     # STEP 7 : Disconnect from database
     ####################################################################################################################
     logging.info("-----------------------------------------------------------")
-    logging.info("#          Disconnexion from SQLite database              #")
+    logging.info("#          Disconnection from SQLite database              #")
     logging.info("-----------------------------------------------------------")
 
     if myDb.isConnected() :

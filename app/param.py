@@ -250,7 +250,6 @@ class Params:
   # Display parameters in log
   def logParams(self):
     
-    logging.info("GRDF config : username = %s, password = %s", "******@****.**", "******")
     logging.debug("GRDF config : username = %s, password = %s", self.grdfUsername, self.grdfPassword)
     logging.info("MQTT broker config : host = %s, port = %s, clientId = %s, qos = %s, topic = %s, retain = %s, ssl = %s",
                  self.mqttHost, self.mqttPort, self.mqttClientId,
