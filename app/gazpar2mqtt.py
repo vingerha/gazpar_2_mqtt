@@ -359,20 +359,7 @@ def run(myParams):
 
                                                                                                                                                                                                                      
                      
-    ####################################################################################################################
-
-                                                                               
-                                                                                
-                                                                               
-
-                                
-                                                                                                    
-                                                                                                   
-                                
-                                                                               
-
-
-                                                                                                                                                                                                                     
+    ####################################################################################################################     
     # STEP 5A : Standalone mode
     ####################################################################################################################
     if myMqtt.isConnected \
@@ -623,6 +610,16 @@ def run(myParams):
                     myEntity = hass.Entity(myDevice,hass.SENSOR,'day_5_gas','day-5 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD5)
                     myEntity = hass.Entity(myDevice,hass.SENSOR,'day_6_gas','day-6 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD6)
                     myEntity = hass.Entity(myDevice,hass.SENSOR,'day_7_gas','day-7 gas',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasD7)
+                    
+                    ### Day Gross
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_1_gas_gross','day-1 gas gross',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasGrossD1)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_2_gas_gross','day-2 gas gross',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasGrossD2)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_3_gas_gross','day-3 gas gross',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasGrossD3)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_4_gas_gross','day-4 gas gross',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasGrossD4)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_5_gas_gross','day-5 gas gross',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasGrossD5)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_6_gas_gross','day-6 gas gross',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasGrossD6)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'day_7_gas_gross','day-7 gas gross',hass.GAS_TYPE,hass.ST_TT,'m³').setValue(myPce.gasGrossD7)
+
 
                     ## Calculated rolling measures
                     logging.debug("Creation of rolling entities")

@@ -585,6 +585,40 @@ class Pce:
             self.gasD7 = self._getDeltaCons(db,startStr,endStr,type)
             logging.debug("D-7 gas : %s m3",self.gasD7)
             
+            ## Calculate D1 gas gross
+            dateStr = f"'{dateNow}','-1 day'"
+            self.gasGrossD1 = self._getGrossCons(db,dateStr,type)
+            logging.debug("D-1 gasGross : %s m3",self.gasGrossD1)
+            
+            ## Calculate D2 gas gross
+            dateStr = f"'{dateNow}','-2 day'"
+            self.gasGrossD2 = self._getGrossCons(db,dateStr,type)
+            logging.debug("D-2 gasGross : %s m3",self.gasGrossD2)            
+
+            ## Calculate D3 gas gross
+            dateStr = f"'{dateNow}','-3 day'"
+            self.gasGrossD3 = self._getGrossCons(db,dateStr,type)
+            logging.debug("D-3 gasGross : %s m3",self.gasGrossD3)
+
+            ## Calculate D4 gas gross
+            dateStr = f"'{dateNow}','-4 day'"
+            self.gasGrossD4 = self._getGrossCons(db,dateStr,type)
+            logging.debug("D-4 gasGross : %s m3",self.gasGrossD4)              
+            
+            ## Calculate D5 gas gross
+            dateStr = f"'{dateNow}','-5 day'"
+            self.gasGrossD5 = self._getGrossCons(db,dateStr,type)
+            logging.debug("D-5 gasGross : %s m3",self.gasGrossD5)
+
+            ## Calculate D6 gas gross
+            dateStr = f"'{dateNow}','-6 day'"
+            self.gasGrossD6 = self._getGrossCons(db,dateStr,type)
+            logging.debug("D-6 gasGross : %s m3",self.gasGrossD6)
+
+            ## Calculate D7 gas gross
+            dateStr = f"'{dateNow}','-7 day'"
+            self.gasGrossD7 = self._getGrossCons(db,dateStr,type)
+            logging.debug("D-7 gasGross : %s m3",self.gasGrossD7)              
             
             # Rolling measures
             
@@ -723,6 +757,25 @@ class Pce:
         else:
             logging.debug("Delta conso could not be calculated")
             return 0
+            
+    def _getGrossCons(self,db,cDate,type):
+        
+        logging.debug("Retrieve gross conso for: %s",cDate)
+        
+        # We need to have at least 2 records to measure a delta index
+        query = f"SELECT volumeGrossConsumed FROM measures WHERE pce = '{self.pceId}' AND type = '{type}' AND date = date({cDate}) GROUP BY pce"
+        db.cur.execute(query)
+        queryResult = db.cur.fetchone()
+        if queryResult is not None:
+            valueResult = queryResult[0]
+            if valueResult >= 0:
+                return valueResult
+            else:
+                logging.debug("Gross conso value is not valid : %s",valueResult)
+                return 0
+        else:
+            logging.debug("Gross conso could not be calculated")
+            return 0            
     
     # Return the conversion factor max between 2 measures 
     def _getConversion(self,db,startStr,endStr,type):
