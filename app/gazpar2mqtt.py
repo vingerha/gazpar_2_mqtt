@@ -658,17 +658,17 @@ def run(myParams):
                     if myParams.hassLts:
                         logging.debug("Creation of dummy LTS sensors")                        
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat', 'consumption stat', hass.GAS_TYPE, hass.ST_TT,
-                                               'm³').setValue('1')
+                                               'm³').setValue('0')
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_stat', 'consumption kwh stat', hass.GAS_TYPE, hass.ST_TT,
-                                               'kWh').setValue('1')                                               
+                                               'kWh').setValue('0')                                               
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_pub_stat', 'consumption pub stat', hass.GAS_TYPE, hass.ST_TT,
-                                               'm³').setValue('1')
+                                               'm³').setValue('0')
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_pub_stat', 'consumption kwh pub stat', hass.GAS_TYPE, hass.ST_TT,
-                                               'kWh').setValue('1')                                               
+                                               'kWh').setValue('0')                                               
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_stat', 'consumption cost stat', hass.COST_TYPE, hass.ST_TT,
-                                               'EUR').setValue('1')
+                                               'EUR').setValue('0')
                         myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_pub_stat', 'consumption cost pub stat', hass.COST_TYPE, hass.ST_TT,
-                                               'EUR').setValue('1')                                               
+                                               'EUR').setValue('0')                                               
                                                
                 # Publish config, state (when value not none), attributes (when not none)
                 logging.info("Publishing devices...")
@@ -719,29 +719,19 @@ def run(myParams):
                     # Loop on prices of the PCE and write the current price
                     for myPrice in myPcePrices:
                         #informative / daily values
-                        logging.debug(f"QUERY_I: SELECT pce, type, date, energy, price FROM measures where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_I}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
-                        cursor.execute(f"SELECT pce, type, date, energy, price FROM measures where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_I}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
-                        
-                        data = cursor.fetchall()
-                        
-                        for x in data:
-                            try: 
-                                cursor.execute(f"UPDATE measures SET price= ( energyGrossConsumed * {myPrice.kwhPrice} ) + {myPrice.fixPrice}") 
-                                myDb.commit()
-                            except Exception as e:
-                                logging.error("Writing Prices error: %s", e)
-                        
+                        query = f"UPDATE measures SET price= ( energyGrossConsumed * {myPrice.kwhPrice} ) + {myPrice.fixPrice} where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_I}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'"
+                        logging.debug("Query_I: %s", query )
+                        cursor.execute(query) 
+                        myDb.commit()
+
                         #published / periodic values
-                        logging.debug(f"QUERY_P: SELECT pce, type, date, energy, price FROM measures where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_P}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
-                        cursor.execute(f"SELECT pce, type, date, energy, price FROM measures where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_P}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'")
-                        data = cursor.fetchall()
+                        query = f"UPDATE measures SET price= ( energyGrossConsumed * {myPrice.kwhPrice} ) + ((JulianDay(periodEnd) - JulianDay(periodStart)) * {myPrice.fixPrice}) where pce = '{myPce.pceId}' and type = '{gazpar.TYPE_P}' and date between '{myPrice.startDate}' and '{myPrice.endDate}'"
+                        logging.debug("Query_P: %s", query )
                         
-                        for x in data:
-                            try: 
-                                cursor.execute(f"UPDATE measures SET price= ( energyGrossConsumed * {myPrice.kwhPrice} ) + ((JulianDay(periodEnd) - JulianDay(periodStart)) * {myPrice.fixPrice})") 
-                                myDb.commit()
-                            except Exception as e:
-                                logging.error("Writing Prices from file, error: %s", e)                                               
+                        cursor.execute(query) 
+
+                        myDb.commit()
+                    cursor.close()
 
                 else:
                     logging.warning("No prices file found, using the default price (%s €/kWh and %s €/day).", myParams.priceKwhDefault, myParams.priceFixDefault)
