@@ -8,6 +8,10 @@ For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/
 
 ## Changelogs :
 - 0.8.5
+  - Add gross gas daily consumption as sensors, providing more detail
+  - Change default value for LTS dummy sensors to 0 (was 1)
+  - Improve on price calculation
+- 0.8.5
   Removal of chromium for login, replaced by request.session
 - 0.8.0
   Extending LTS sensors with kWh and price import:
@@ -23,7 +27,6 @@ For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/
   - sensor.[device]_[pce-alias]_consumption_pub_stat : for periodically 'published' figures 
   Reason: previously the LTS sensors were added without a regular sensor, this makes their use impossible for e.g. apexcharts who uses the regular sensor-name also for statistics.
   These 2 sensors will appear both in HA as in HA statistics
-
 - 0.6.5
   - Allow to select a date from which to collect data from GRDF (max 3y back in time)
   - Allow import of published measures into Long Term Statistics
@@ -41,9 +44,6 @@ For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/
 - 0.4.0
   - introduce addon (initial version)
   - Documentation in French (thanks @Cazzoo)  
-- 0.3.0 (container only)
-  - enable Influx also from docker-compose parameters
-  - set log directory one step higher to avoid adding logs into /app
 ... history removed
   
 ## Roadmap :
@@ -51,4 +51,4 @@ For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/
 - Home assistant custom entity card (low prio)
 
 ### Thanks
-The vast majority of the work was done by @yukulehe ... to which masisve thanks goes out !
+The vast majority of the work was done by @yukulehe ... to whom massive thanks goes out !
