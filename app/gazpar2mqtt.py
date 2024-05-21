@@ -742,7 +742,6 @@ def run(myParams):
                         except Exception as e:
                             logging.error("Writing Prices with default values, error: %s", e)  
                     
-            cursor.close()                            
                         
         except Exception as e:
             logging.error("Home Assistant Prices error: %s", e)
