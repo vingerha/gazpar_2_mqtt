@@ -27,7 +27,7 @@ CMD ["python3", "app/gazpar2mqtt.py"]
 ############
 
 LABEL \
-  io.hass.version="0.8.5" \
+  io.hass.version="0.8.6" \
   io.hass.type="addon" \
   io.hass.arch="armv7|amd64|arm64"
 

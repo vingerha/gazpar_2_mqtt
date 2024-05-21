@@ -1,3 +1,8 @@
+## 0.8.6 (21-05-2024)
+Add gross gas daily consumption as sensors, providing more detail
+Change default value for LTS dummy to 0 (was 1)
+Improve on price calculation
+
 ## 0.8.5 (18-05-2024)
 Replace chromium for login, by session.request
 
