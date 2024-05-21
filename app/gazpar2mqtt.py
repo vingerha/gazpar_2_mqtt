@@ -728,7 +728,6 @@ def run(myParams):
                         cursor.execute(query) 
 
                         myDb.commit()
-                    cursor.close()
 
                 else:
                     logging.warning("No prices file found, using the default price (%s €/kWh and %s €/day).", myParams.priceKwhDefault, myParams.priceFixDefault)
@@ -741,7 +740,9 @@ def run(myParams):
                             cursor.execute(f"UPDATE measures SET price= ( energyGrossConsumed * {myParams.priceKwhDefault} ) + {myParams.priceFixDefault}") 
                             myDb.commit()
                         except Exception as e:
-                            logging.error("Writing Prices with default values, error: %s", e)           
+                            logging.error("Writing Prices with default values, error: %s", e)  
+                    
+            cursor.close()                            
                         
         except Exception as e:
             logging.error("Home Assistant Prices error: %s", e)
