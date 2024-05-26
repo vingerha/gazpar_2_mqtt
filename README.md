@@ -7,6 +7,13 @@ Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in th
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki)
 
 ## Changelogs :
+- 0.8.7
+  - Align Long Term Statistics with HA Core
+  - As a result: loss of option to use Apexcharts for LTS, awaiting feature request
+- 0.8.6
+  - Add gross gas daily consumption as sensors, providing more detail
+  - Change default value for LTS dummy to 0 (was 1)
+  - Improve on price calculation
 - 0.8.5
   - Add gross gas daily consumption as sensors, providing more detail
   - Change default value for LTS dummy sensors to 0 (was 1)
