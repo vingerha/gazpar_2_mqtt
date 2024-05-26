@@ -17,6 +17,7 @@ class HomeAssistantWs:
         self.unit = unit
         self.data = data
         self.action = action
+        self.domain = "gazpar"
         self.id = 1
         self.current_stats = []
         if self.load_config():
@@ -137,7 +138,7 @@ class HomeAssistantWs:
                 self.sensor_name
                     ),
             "unit_of_measurement": self.unit,
-            "source": "recorder",
+            "source": self.domain,
             
             }
         statistics = {

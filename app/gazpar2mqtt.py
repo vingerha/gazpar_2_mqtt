@@ -836,12 +836,12 @@ def run(myParams):
                         prev_price_pub_sum = prev_price_pub_sum + myMeasure.price
                     
                 
-                sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_stat'
-                sensor_name_kwh = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_kwh_stat'
-                sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_stat'
-                sensor_name_kwh_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_kwh_pub_stat'
-                sensor_name_cost = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_cost_stat'
-                sensor_name_cost_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_cost_stat'                
+                sensor_name = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_stat'
+                sensor_name_kwh = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_kwh_stat'
+                sensor_name_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_stat'
+                sensor_name_kwh_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_kwh_pub_stat'
+                sensor_name_cost = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_cost_stat'
+                sensor_name_cost_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_cost_stat'                
                 
                 logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
                 HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, 'm³', stats_array)
@@ -869,8 +869,8 @@ def run(myParams):
                 # Loop on PCEs
                 for myPce in myDb.pceList:
                     logging.info("Writing api information of PCE %s alias %s...", myPce.pceId, myPce.alias)
-                    sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_stat'
-                    sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_stat'
+                    sensor_name = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_stat'
+                    sensor_name_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_stat'
                     stats_array = []
                     stats_array_pub = []
                     for myMeasure in myPce.measureList:
@@ -939,12 +939,12 @@ def run(myParams):
                     }  
             # Loop on PCEs
             for myPce in myDb.pceList:
-                sensor_name = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_stat'
-                sensor_name_kwh = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_kwh_stat'
-                sensor_name_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_stat'
-                sensor_name_kwh_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_kwh_pub_stat'
-                sensor_name_cost = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_cost_stat'
-                sensor_name_cost_pub = 'sensor.' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_cost_stat'                  
+                sensor_name = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_stat'
+                sensor_name_kwh = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_kwh_stat'
+                sensor_name_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_stat'
+                sensor_name_kwh_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_kwh_pub_stat'
+                sensor_name_cost = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_cost_stat'
+                sensor_name_cost_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_cost_stat'                  
                 logging.debug(f"Deleting Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
                 HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, None, None)
                 HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, None, None)
