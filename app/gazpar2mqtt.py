@@ -654,17 +654,17 @@ def run(myParams):
                     
                     if myParams.hassLts:
                         logging.debug("Creation of dummy LTS sensors")                        
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat', 'consumption stat', hass.GAS_TYPE, hass.ST_MEAS,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat', 'consumption stat', hass.GAS_TYPE, None,
                                                'm³').setValue('0')
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_stat', 'consumption kwh stat', hass.ENERGY_TYPE, hass.ST_MEAS,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_stat', 'consumption kwh stat', hass.ENERGY_TYPE, None,
                                                'kWh').setValue('0')                                               
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_pub_stat', 'consumption pub stat', hass.GAS_TYPE, hass.ST_MEAS,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_pub_stat', 'consumption pub stat', hass.GAS_TYPE, None,
                                                'm³').setValue('0')
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_pub_stat', 'consumption kwh pub stat', hass.ENERGY_TYPE, hass.ST_MEAS,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_pub_stat', 'consumption kwh pub stat', hass.ENERGY_TYPE, None,
                                                'kWh').setValue('0')                                               
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_stat', 'consumption cost stat', hass.COST_TYPE, hass.ST_MEAS,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_stat', 'consumption cost stat', hass.COST_TYPE, None,
                                                'EUR').setValue('0')
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_pub_stat', 'consumption cost pub stat', hass.COST_TYPE, hass.ST_MEAS,
+                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_pub_stat', 'consumption cost pub stat', hass.COST_TYPE, None,
                                                'EUR').setValue('0')                                               
                                                
                 # Publish config, state (when value not none), attributes (when not none)
