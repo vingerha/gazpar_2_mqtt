@@ -4,7 +4,7 @@ Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in th
 - no 100% verification if the now 2+-year old source from yukulehe/gazpar2mqtt is still valid **in its entirety**, bits and pieces may not work perfectly anylonger
 - Not yet tested: Grafana dashboard template
 
-For usage and installation etc. see [DOCUMENTAION]9https://github.com/vingerha/gazpar_2_mqtt/wiki/Home-fr-FR)
+For usage and installation etc. see [DOCUMENTAION](https://github.com/vingerha/gazpar_2_mqtt/wiki/Home-fr-FR)
 
 ## Changelogs :
 - 0.8.7
