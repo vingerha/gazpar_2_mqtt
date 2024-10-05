@@ -650,22 +650,7 @@ def run(myParams):
 
                     ## Other
                     logging.debug("Creation of other entities")
-                    myEntity = hass.Entity(myDevice,hass.BINARY,'connectivity','connectivity',hass.CONNECTIVITY_TYPE,None,None).setValue('ON')
-                    
-                    if myParams.hassLts:
-                        logging.debug("Creation of dummy LTS sensors")                        
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_stat', 'consumption stat', hass.GAS_TYPE, None,
-                                               'm³').setValue('0')
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_stat', 'consumption kwh stat', hass.ENERGY_TYPE, None,
-                                               'kWh').setValue('0')                                               
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_pub_stat', 'consumption pub stat', hass.GAS_TYPE, None,
-                                               'm³').setValue('0')
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_kwh_pub_stat', 'consumption kwh pub stat', hass.ENERGY_TYPE, None,
-                                               'kWh').setValue('0')                                               
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_stat', 'consumption cost stat', hass.COST_TYPE, None,
-                                               'EUR').setValue('0')
-                        myEntity = hass.Entity(myDevice, hass.SENSOR, 'consumption_cost_pub_stat', 'consumption cost pub stat', hass.COST_TYPE, None,
-                                               'EUR').setValue('0')                                               
+                    myEntity = hass.Entity(myDevice,hass.BINARY,'connectivity','connectivity',hass.CONNECTIVITY_TYPE,None,None).setValue('ON')                                      
                                                
                 # Publish config, state (when value not none), attributes (when not none)
                 logging.info("Publishing devices...")
