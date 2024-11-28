@@ -71,63 +71,92 @@ class Grdf:
 
     def login(self,username,password):
         SESSION_TOKEN_URL = "https://connexion.grdf.fr/api/v1/authn"
-        SESSION_TOKEN_PAYLOAD = """{{
-            "username": "{0}",
-            "password": "{1}",
-            "options": {{
-                "multiOptionalFactorEnroll": "false",
-                "warnBeforePasswordExpired": "false"
-            }}
-        }}"""
         AUTH_TOKEN_URL = "https://connexion.grdf.fr/login/sessionCookieRedirect"
-        AUTH_TOKEN_PARAMS = """{{
-            "checkAccountSetupComplete": "true",
-            "token": "{0}",
-            "redirectUrl": "https://monespace.grdf.fr"
-        }}"""
-        #self.session = Session()
-        self.session.headers.update({"domain": "grdf.fr"})
-        self.session.headers.update({"Content-Type": "application/json"})
-        self.session.headers.update({"X-Requested-With": "XMLHttpRequest"})
-
-        payload = SESSION_TOKEN_PAYLOAD.format(username, password)
-
-        response = self.session.post(SESSION_TOKEN_URL, data=payload)
-
-        if response.status_code != 200:
-            raise Exception(f"An error occurred while logging in. Status code: {response.status_code} - {response.text} - {response.payload}")
-            self.isConnected = False
-            return
-
-        # get auth token
-        session_token = response.json().get("sessionToken")
-        logging.debug("Session token: %s", session_token)
-        jar = http.cookiejar.CookieJar()
-        #self.session = Session()
-        self.session.headers.update({"Content-Type": "application/json"})
-        self.session.headers.update({"X-Requested-With": "XMLHttpRequest"})
-
-        params = json.loads(AUTH_TOKEN_PARAMS.format(session_token))
-   
-        response = self.session.get(AUTH_TOKEN_URL, params=params, allow_redirects=True, cookies=jar)
-
-        if response.status_code != 200:
-            raise Exception(f"An error occurred while getting the auth token. Status code: {response.status_code} - {response.text}")
-            self.isConnected = False
-            return
-
-        self.auth_token = self.session.cookies.get("auth_token", domain="monespace.grdf.fr")
         
-        # Create a session.
-        #self.session = Session()
-        self.session.headers.update({"Host": "monespace.grdf.fr"})
-        self.session.headers.update({"Domain": "grdf.fr"})
-        self.session.headers.update({"X-Requested-With": "XMLHttpRequest"})
-        self.session.headers.update({"Accept": "application/json"})
-        self.session.cookies.set("auth_token", self.auth_token, domain="monespace.grdf.fr")
-               
-        # When everything is ok
-        self.isConnected = True
+        logging.info("Starting GRDF login process...")
+        try:
+            self.session.headers.update({
+                "domain": "grdf.fr",
+                "Content-Type": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+            })
+
+            # Prepare payload
+            payload = {
+                "username": username,
+                "password": password,
+                "options": {
+                    "multiOptionalFactorEnroll": False,
+                    "warnBeforePasswordExpired": False
+                }
+            }
+            
+            logging.debug("Attempting to get session token...")
+            response = self.session.post(SESSION_TOKEN_URL, json=payload)
+            logging.debug("Session token response status: %s", response.status_code)
+            logging.debug("Session token response: %s", response.text)
+
+            if response.status_code != 200:
+                logging.error("Failed to get session token. Status code: %s", response.status_code)
+                logging.error("Response: %s", response.text)
+                self.isConnected = False
+                return
+
+            # get auth token
+            session_token = response.json().get("sessionToken")
+            if not session_token:
+                logging.error("No session token found in response")
+                self.isConnected = False
+                return
+                
+            logging.debug("Session token obtained: %s", session_token)
+            jar = http.cookiejar.CookieJar()
+            
+            # Prepare auth params
+            params = {
+                "checkAccountSetupComplete": True,
+                "token": session_token,
+                "redirectUrl": "https://monespace.grdf.fr"
+            }
+            
+            logging.debug("Attempting to get auth token...")
+           
+            response = self.session.get(AUTH_TOKEN_URL, params=params, allow_redirects=True, cookies=jar)
+            logging.debug("Auth token response status: %s", response.status_code)
+            logging.debug("Auth token response: %s", response.text)
+
+            if response.status_code != 200:
+                logging.error("Failed to get auth token. Status code: %s", response.status_code)
+                logging.error("Response: %s", response.text)
+                self.isConnected = False
+                return
+
+            self.auth_token = self.session.cookies.get("auth_token", domain="monespace.grdf.fr")
+            if not self.auth_token:
+                logging.error("No auth token found in cookies")
+                self.isConnected = False
+                return
+                
+            logging.debug("Auth token obtained")
+            
+            # Create a session.
+            self.session.headers.update({
+                "Host": "monespace.grdf.fr",
+                "Domain": "grdf.fr",
+                "X-Requested-With": "XMLHttpRequest",
+                "Accept": "application/json"
+            })
+            self.session.cookies.set("auth_token", self.auth_token, domain="monespace.grdf.fr")
+                   
+            # When everything is ok
+            logging.info("GRDF login successful")
+            self.isConnected = True
+            
+        except Exception as e:
+            logging.error("Login failed with exception: %s", str(e))
+            logging.error("Exception details:", exc_info=True)
+            self.isConnected = False
     
     # Return GRDF quality status
     def isOk(self):

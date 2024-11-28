@@ -1,60 +1,27 @@
 # assuming that you run this from a folder with sub gazpar_2_mqtt
-version: '3.5'
+version: '3.8'
 services:
   gazpar2mqtt:
     container_name: gazpar_2_mqtt
-    image: vingerha/gazpar_2_mqtt:latest
-    tty: true
+    image: gandulf78/gazpar_2_mqtt:0.8.7j
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     # network_mode can be used then you have connectivity issues, e.g. with Influx
     #network_mode: "host" 
+    env_file: gazpar.env
     environment:
-      # mandatory:
-      GRDF_USERNAME: gazou@email.com
-      GRDF_PASSWORD: password
-      MQTT_HOST: host
-      TZ: Europe/Paris
-      # Optional:
-      # Note that either STANDALONE_MODE ot HASS_DISCOVERY must be turned True to export to MQTT
-      # Even though this is optional, recommend to start STANDALONE_MODE True
-      STANDALONE_MODE: 'True'
-      #DEBUG: 'True'  
-      #SCHEDULE_TIME: '06:30'
-      #MQTT_PORT: '1883'
-      #MQTT_TOPIC: 'gazpar'
-      #MQTT_CLIENTID: 'gazou'
-      #MQTT_USERNAME: 'myMqttUsername'
-      #MQTT_PASSWORD: 'myMqttPassword'
-      #MQTT_QOS: '1'
-      #MQTT_RETAIN: 'True'
-      #MQTT_SSL: 'False'
-
-      #HASS_DISCOVERY: 'False'
-      #HASS_PREFIX: 'homeassistant'
-      #HASS_DEVICE_NAME: 'gazpar'
-      #HASS_LTS: 'False' # use when you want to load into HA Longtermstatistics (with below params)
-      #HASS_LTS_DELETE: 'False' # use when you want to delete LTS data for all your PCE
-      #HASS_LTS_TOKEN: "" # Long Term Access token generated for accessing below LTS_HOST
-      #HASS_LTS_URI: "/api/services/recorder/import_statistics" # donot change unless needed
-      #HASS_LTS_HOST: "http://192.168.x.y:8123"
-      #THRESOLD_PERCENTAGE: 80 # warn when consumptions is above this percentage of the thresold
-      #INFLUXDB_ENABLE: 'True'
-      #INFLUXDB_HOST: 'influxdb'
-      #INFLUXDB_PORT: '8086'
-      #INFLUXDB_ORG: 'myOrg'
-      #INFLUXDB_BUCKET: 'gazpar'
-      #INFLUXDB_TOKEN: 'myToken'
-      #INFLUXDB_HORIZON: '0' # Number of days in the past to write to influx
-      #PRICE_PATH: '/data'
-      #PRICE_KWH_DEFAULT: '0.04' # price in € per kWh
-      #PRICE_FIX_DEFAULT: '0.5' # fix price in € per day
-      #DB_INIT: 'False' # force the reinitialization of the database
-      #DB_PATH: '/data' # database path
-    # volumes are used to get to the data/code/settings outside of the container
-    # put this docker-comose in a folder and it will aut0 create/use this 
-    volumes:     
-      - ./:/data
-      - ./app:/app
-    #depends_on:  # to link influxdb
-    #  - mqtt     # name of your mqtt container
-    #  - influxdb # name of your influxdb container
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-Europe/Paris}
+    volumes:
+      - ./data:/data:rw
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep 'python3 /app/gazpar2mqtt.py' | grep -v grep || exit 1"]
+      interval: 5m
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    read_only: true
+    tmpfs:
+      - /tmp

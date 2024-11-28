@@ -169,16 +169,17 @@ def run(myParams):
                     break
                 else:
                     logging.info("Unable to login to GRDF website")
+                    myGrdf = None  # Reset to None on failed login
                     _waitBeforeRetry(tryCount)
 
-            except:
-                myGrdf.isConnected = False
-                logging.info("Unable to login to GRDF website")
+            except Exception as e:
+                logging.error("Error during GRDF login: %s", str(e))
+                myGrdf = None  # Reset to None on exception
                 _waitBeforeRetry(tryCount)
 
 
         # When GRDF is connected
-        if myGrdf.isConnected:
+        if myGrdf is not None and myGrdf.isConnected:
 
             # Sub-step 3A : Get account info
             try:
@@ -364,7 +365,7 @@ def run(myParams):
     ####################################################################################################################
     if myMqtt.isConnected \
         and myParams.standalone \
-        and myGrdf.isConnected:
+        and myGrdf is not None and myGrdf.isConnected:
 
         try:
 
@@ -502,7 +503,7 @@ def run(myParams):
     ####################################################################################################################
     if myMqtt.isConnected \
         and myParams.hassDiscovery \
-        and myGrdf.isConnected:
+        and myGrdf is not None and myGrdf.isConnected:
 
         try:
 
@@ -686,7 +687,7 @@ def run(myParams):
     logging.info("-----------------------------------------------------------")
     logging.info("#                    Write prices                         #")
     logging.info("-----------------------------------------------------------")
-    if myGrdf.isConnected \
+    if myGrdf is not None and myGrdf.isConnected \
         and myDb.isConnected() :
 
         try:
@@ -736,7 +737,7 @@ def run(myParams):
     # STEP 5C : Home Assistant Long Term statistics
     ####################################################################################################################
     if myParams.hassLts \
-        and myGrdf.isConnected \
+        and myGrdf is not None and myGrdf.isConnected \
         and not myParams.hassLtsDelete :
         
         try: 
@@ -829,14 +830,15 @@ def run(myParams):
                 sensor_name_cost_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_cost_stat'                
                 
                 logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, 'm³', stats_array)
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, 'kWh', stats_array_kwh)
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, 'EUR', stats_array_cost)
+                ha_host = myParams.hassHost.replace('http://', '').replace('https://', '')
+                HomeAssistantWs("import", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, 'm³', stats_array)
+                HomeAssistantWs("import", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, 'kWh', stats_array_kwh)
+                HomeAssistantWs("import", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, 'EUR', stats_array_cost)
                 
                 logging.debug(f"Writing Websocket Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, 'm³', stats_array_pub)
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, 'kWh', stats_array_kwh_pub)
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, 'EUR',  stats_array_pub_cost)                
+                HomeAssistantWs("import", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, 'm³', stats_array_pub)
+                HomeAssistantWs("import", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, 'kWh', stats_array_kwh_pub)
+                HomeAssistantWs("import", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, 'EUR',  stats_array_pub_cost)                
            
         except Exception as e:
             logging.error("Home Assistant Long Term Statistics : unable to publish LTS to Webservice HA with error: %s", e)
@@ -931,13 +933,14 @@ def run(myParams):
                 sensor_name_cost = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_cost_stat'
                 sensor_name_cost_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_cost_stat'                  
                 logging.debug(f"Deleting Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, None, None)
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, None, None)
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, None, None)      
+                ha_host = myParams.hassHost.replace('http://', '').replace('https://', '')
+                HomeAssistantWs("delete", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, None, None)
+                HomeAssistantWs("delete", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, None, None)
+                HomeAssistantWs("delete", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, None, None)      
                 logging.debug(f"Deleting Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, None, None) 
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, None, None)
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, None, None)                  
+                HomeAssistantWs("delete", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, None, None) 
+                HomeAssistantWs("delete", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, None, None)
+                HomeAssistantWs("delete", myPce.pceId, ha_host, myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, None, None)                  
 
             
         except Exception as e:
@@ -1158,13 +1161,25 @@ if __name__ == "__main__":
     if myParams.scheduleTime is not None:
         
         # Run once at lauch
-        run(myParams)
+        try:
+            run(myParams)
+        except Exception as e:
+            logging.error("Error during initial run: %s", str(e))
+            # Don't exit, continue with scheduling
 
         # Then run at scheduled time
-        schedule.every().day.at(myParams.scheduleTime).do(run,myParams)
+        schedule.every().day.at(myParams.scheduleTime).do(run, myParams)
+        
+        # Main scheduling loop with error handling
         while True:
-            schedule.run_pending()
-            time.sleep(1)
+            try:
+                schedule.run_pending()
+                time.sleep(60)  # Sleep for 1 minute instead of 1 second to reduce CPU usage
+            except Exception as e:
+                logging.error("Error in scheduling loop: %s", str(e))
+                # Wait a bit before retrying to avoid tight error loops
+                time.sleep(300)  # 5 minutes
+                continue
         
     else:
         
