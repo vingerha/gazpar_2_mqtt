@@ -3,7 +3,7 @@ version: '3.8'
 services:
   gazpar2mqtt:
     container_name: gazpar_2_mqtt
-    image: gandulf78/gazpar_2_mqtt:0.8.7j
+    image: gandulf78/gazpar_2_mqtt:0.8.8
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
