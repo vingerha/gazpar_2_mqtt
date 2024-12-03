@@ -1,6 +1,7 @@
 ## Introduction / status
 Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in the login method and allowing to export to HA Long Term Statistics
-- Can be installed as an addon and container; collecting data in SQLite, MQTT, InfluxDb, Home Assistant sensor and HA energy-dashboard (LTS)
+- Can be installed as an addon (not tested) and container; collecting data in SQLite, MQTT, InfluxDb, Home Assistant sensor and HA energy-dashboard (LTS)
+- Fixes (including schedule update) and Docker security improvements.
 - no 100% verification if the now 2+-year old source from yukulehe/gazpar2mqtt is still valid **in its entirety**, bits and pieces may not work perfectly anylonger
 - Not yet tested: Grafana dashboard template
 
