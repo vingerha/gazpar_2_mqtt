@@ -1,3 +1,6 @@
+## 0.8.8b (2-12-2024)
+Fixing Add on dockerfile
+
 ## 0.8.8 (2-12-2024)
 Various robustness fixes including scheduled update.
 
