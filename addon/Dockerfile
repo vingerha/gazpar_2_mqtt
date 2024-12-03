@@ -1,4 +1,4 @@
-FROM vingerha/gazpar_2_mqtt
+FROM gandulf78/gazpar_2_mqtt
 
 ##################
 #  Install apps  #
@@ -27,7 +27,7 @@ CMD ["python3", "app/gazpar2mqtt.py"]
 ############
 
 LABEL \
-  io.hass.version="0.8.7" \
+  io.hass.version="0.8.8" \
   io.hass.type="addon" \
   io.hass.arch="armv7|amd64|arm64"
 
