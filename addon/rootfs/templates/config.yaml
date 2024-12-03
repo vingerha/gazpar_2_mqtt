@@ -5,4 +5,11 @@ GRDF_PASSWORD=password #your GRDF password
 MQTT_HOST=127.0.0.1 #hostname or ip adress of the MQTT broker.
 #DEBUG=True
 
-#OPTIONAL VARIABLES : see https://github.com/vingerha/gazpar_2_mqtt
+# Home Assistant Integration
+HASS_LTS=True
+HASS_LTS_HOST=supervisor/core
+HASS_LTS_TOKEN=__SUPERVISOR__
+HASS_LTS_URI=/api/services/recorder/import_statistics
+HASS_LTS_DELETE=False
+
+#OPTIONAL VARIABLES : see https://github.com/Gandulf78/gazpar_2_mqtt

@@ -83,6 +83,18 @@ while IFS= read -r line; do
     fi
 done <"$CONFIGSOURCE"
 
+# Handle Home Assistant supervisor token
+if [ "${HASS_LTS_TOKEN}" = "__SUPERVISOR__" ]; then
+    if bashio::supervisor.token; then
+        HASS_LTS_TOKEN=$(bashio::supervisor.token)
+        export HASS_LTS_TOKEN
+        echo "Using supervisor token for Home Assistant WebSocket connection"
+    else
+        echo "Error: Could not get supervisor token"
+        exit 1
+    fi
+fi
+
 ########################
 # LOAD CONFIG.YAML END #
 ########################
