@@ -1,3 +1,7 @@
+## 0.8.8 (2-12-2024)
+Various robustness fixes including scheduled update.
+
+
 ## 0.8.7 (26-05-2024)
 Align Long Term Statistics with HA Core
 As a result: loss of option to use Apexcharts for LTS, awaiting feature request
