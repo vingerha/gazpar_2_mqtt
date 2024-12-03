@@ -20,7 +20,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["entrypoint.sh"]
 
-CMD ["python3", "app/gazpar2mqtt.py"]
+CMD ["python3", "/app/gazpar2mqtt.py"]
 
 ############
 # 5 Labels #
