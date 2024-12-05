@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# IDE files
+.idea/
+.DS_Store
+
+# Local data
+data/
+
+# IDE and local data files added to gitignore
