@@ -1,3 +1,6 @@
+## 0.8.8c (6-12-2024)
+Fixing Add on dockerfile
+
 ## 0.8.8b (2-12-2024)
 Fixing Add on dockerfile
 
