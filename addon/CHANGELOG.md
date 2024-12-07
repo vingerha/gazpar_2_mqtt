@@ -1,3 +1,6 @@
+## 0.8.8d (7-12-2024)
+Fixing Add on dockerfile + fix on volume extraction
+
 ## 0.8.8c (6-12-2024)
 Fixing Add on dockerfile
 
