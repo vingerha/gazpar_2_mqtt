@@ -1,9 +1,8 @@
 name: Docker Build and Publish
 
 on:
-  push:
-    tags:
-      - 'v*'  # Trigger on version tags
+  release:
+    types: [published]
 
 env:
   DOCKER_IMAGE: gandulf78/gazpar_2_mqtt
