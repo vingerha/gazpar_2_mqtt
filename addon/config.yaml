@@ -1,9 +1,11 @@
 name: "Gazpar 2 MQTT"
 description: "Extracts GRDF data into MQTT a.o."
-version: 0.8.7
+version: "0.8.8d"
 slug: "gazpar_2_mqtt"
 init: false
 homeassistant_api: true
+auth_api: true
+hassio_api: true
 arch:
   - aarch64
   - amd64
@@ -24,4 +26,3 @@ schema:
   verbose: bool?
   mqtt_autodiscover: bool?
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
-

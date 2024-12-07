@@ -1,4 +1,4 @@
-FROM vingerha/gazpar_2_mqtt
+FROM gandulf78/gazpar_2_mqtt
 
 ##################
 #  Install apps  #
@@ -7,8 +7,8 @@ FROM vingerha/gazpar_2_mqtt
 COPY rootfs/ /
 
 RUN apt-get update && \
-	apt-get install -y jq
-	
+    apt-get install -y jq
+    
 ################
 # 4 Entrypoint #
 ################
@@ -18,17 +18,13 @@ COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["entrypoint.sh"]
-
-CMD ["python3", "app/gazpar2mqtt.py"]
+CMD ["python3", "/app/gazpar2mqtt.py"]
 
 ############
 # 5 Labels #
 ############
 
 LABEL \
-  io.hass.version="0.8.7" \
+  io.hass.version="0.8.8d" \
   io.hass.type="addon" \
   io.hass.arch="armv7|amd64|arm64"
-
-
