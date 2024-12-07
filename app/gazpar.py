@@ -860,6 +860,15 @@ class Measure:
     # Constructor
     def __init__(self, pce, measure,type):
         
+        # Log the raw measure data for debugging
+        logging.debug("Measure data received: %s", json.dumps({
+            "volumeBrutConsomme": measure.get("volumeBrutConsomme"),
+            "volumeConverti": measure.get("volumeConverti"),
+            "indexDebut": measure.get("indexDebut"),
+            "indexFin": measure.get("indexFin"),
+            "type": type
+        }, indent=2))
+        
         # Init attributes
         self.type = type # Daily, Published
         self.startDateTime = None
@@ -888,14 +897,18 @@ class Measure:
         if measure["indexFin"]: self.endIndex = int(measure["indexFin"])
         if measure["volumeBrutConsomme"]: 
             self.volumeGross = float(measure["volumeBrutConsomme"])
-        if measure["volumeConverti"]:
+            self.volume = int(measure["volumeBrutConsomme"])
+            logging.debug("Volume extracted from volumeBrutConsomme: %s m3 (type: %s)", self.volume, type)
+        elif measure["volumeConverti"]:
             self.volume = int(measure["volumeConverti"])
+            logging.debug("Volume extracted from volumeConverti: %s m3 (type: %s)", self.volume, type)
         if measure["energieConsomme"]: self.energy = int(measure["energieConsomme"])
         if measure["temperature"]: self.temperature = float(measure["temperature"])
         if measure["coeffConversion"]: self.conversionFactor = float(measure["coeffConversion"])
         if measure["coeffConversion"] and measure["volumeBrutConsomme"]: 
             self.energyGross = float(measure["volumeBrutConsomme"]) * float(measure["coeffConversion"])
         self.pce = pce
+        
         
         # Fix informative volume and energy provided when required
         # When provided volume is not equal to delta index, we replace it by delta index
