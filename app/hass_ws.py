@@ -13,7 +13,7 @@ class HomeAssistantWs:
         self.ssl = ssl    
         self.ssl_data = ssl_data
         self.token = token
-        self.sensor_name = sensor
+        self.sensor_name = sensor.lower()
         self.unit = unit
         self.data = data
         self.action = action

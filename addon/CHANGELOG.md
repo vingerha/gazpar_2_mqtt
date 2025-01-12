@@ -1,3 +1,7 @@
+## 0.8.8 (2025-01-12)
+Fix some smaller issues
+Add gross cubic meters to the Influx output
+
 ## 0.8.7 (26-05-2024)
 Align Long Term Statistics with HA Core
 As a result: loss of option to use Apexcharts for LTS, awaiting feature request

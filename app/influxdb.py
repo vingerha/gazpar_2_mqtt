@@ -78,6 +78,7 @@ class InfluxDb:
                 "start_index": measure.startIndex,
                 "end_index" : measure.endIndex,
                 "gas_mcube": float(measure.volume),
+                "gas_mcube_gross": float(measure.volumeGross),
                 "energy_kWh" : float(measure.energy),
                 "conversion_factor": float(measure.conversionFactor),
                 "cost_eur" : float(myCost)

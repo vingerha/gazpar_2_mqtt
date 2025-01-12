@@ -7,6 +7,9 @@ Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in th
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki/Home-fr-FR)
 
 ## Changelogs :
+- 0.8.8
+  - Fix some smaller issues
+  - Add gross cubic meters to the Influx output
 - 0.8.7
   - Align Long Term Statistics with HA Core
   - As a result: loss of option to use Apexcharts for LTS, awaiting feature request

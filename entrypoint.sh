@@ -24,7 +24,7 @@ cp /app_temp/hass_ws.py "$APP/hass_ws.py"
 ##    echo "param.py non existing, copying default to /app..."
 ##    cp /app_temp/param.py "$APP/param.py"
 ##fi
-cp /app_temp/param.py "$APP/param.py"
+# cp /app_temp/param.py "$APP/param.py"
 
 
 exec "$@"
