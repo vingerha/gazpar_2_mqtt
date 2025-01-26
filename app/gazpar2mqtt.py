@@ -21,7 +21,7 @@ from hass_ws import HomeAssistantWs
 
 
 # gazpar2mqtt constants
-G2M_VERSION = '0.8.7'
+G2M_VERSION = '0.8.9'
 G2M_DB_VERSION = '0.4.0'
 G2M_INFLUXDB_VERSION = '0.1.0'
 
