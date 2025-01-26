@@ -91,8 +91,10 @@ class Entity:
     
     # Constructor
     def __init__(self,device,type,id,name,deviceClass=None,stateClass=None,unit=None):
-          
-        logging.debug("Initialise hass device %s",id)
+        
+        logging.debug("Initialise hass device id %s",id)
+        logging.debug("Initialise hass device self.id %s",id)
+        
         
         # Variables
         self.device = device
@@ -106,10 +108,13 @@ class Entity:
         self.value = None
         self.attributes = {}
         
+        logging.debug("Initialise hass device self.device.id %s",self.device.id)
+        
         # Set topics
         self.configTopic = f"{self.device.hass.prefix}/{type}/{self.device.id}/{self.id}/config"
         self.stateTopic = f"{self.device.hass.prefix}/{type}/{self.device.id}/{self.id}/state"
         self.attributesTopic = f"{self.device.hass.prefix}/{type}/{self.device.id}/{self.id}/attributes"
+
         
         # Set config payload
         self.configPayload = {}
@@ -117,12 +122,12 @@ class Entity:
             self.configPayload["device_class"] = self.deviceClass
         if self.stateClass is not None:
             self.configPayload["state_class"] = self.stateClass
-        #self.configPayload["name"] = f"{self.device.name} {self.name}"
+        if self.unit is not None:
+            self.configPayload["unit_of_measurement"] = self.unit
         self.configPayload["name"] = f"{self.name}"
         self.configPayload["unique_id"] = f"{self.device.id}_{self.id}"
         self.configPayload["state_topic"] = self.stateTopic
-        if self.unit is not None:
-            self.configPayload["unit_of_measurement"] = self.unit
+        self.configPayload["json_attributes_topic"] = f"{self.attributesTopic}"
         self.configPayload["device"] = self.device.configPayload
 
         # Add entity to device
@@ -140,7 +145,13 @@ class Entity:
     # Add attributes
     def addAttribute(self,key,value):
         self.attributes[key] = value
+
+    # Add attributes
+    def addAttributej(self,value):
+        self.attributes = value
         
     # Get attributes payload
     def getAttribute(self):
         return json.dumps(self.attributes)
+        
+

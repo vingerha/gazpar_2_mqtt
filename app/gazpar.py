@@ -757,7 +757,21 @@ class Pce:
         else:
             logging.debug("Delta conso could not be calculated")
             return 0
-            
+                
+    # Get measures
+    def _getMeasuresRange(self,db,pce,startStr,endStr,type):
+        logging.debug("Retrieve measures of conso between %s and %s",startStr,endStr)
+        query = f"SELECT * FROM measures WHERE pce = '{pce.pceId}' AND type = '{type}' AND date between '{startStr}' and '{endStr}'"
+        logging.debug("query: %s", query)
+        db.cur.execute(query)
+        queryResult = db.cur.fetchall()
+        measureList = []
+        for result in queryResult:
+            _myMeasure = myMeasure(result)
+            measureList.append(_myMeasure)          
+        return measureList
+        
+    # Return the index difference between 2 measures               
     def _getGrossCons(self,db,cDate,type):
         
         logging.debug("Retrieve gross conso for: %s",cDate)
@@ -823,6 +837,27 @@ class Pce:
             logging.debug("Threshold could not be calculated")
             return 0
         
+        
+        
+# Class Measure
+class myMeasure():
+
+  def __init__(self,result):
+
+    self.pce = result[0]
+    self.type = result[1]
+    self.date = _convertDate(result[2])
+    self.periodStart = _convertDateTime(result[3])
+    self.periodEnd = _convertDateTime(result[4])
+    self.startIndex = result[5]
+    self.endIndex = result[6]
+    self.volume = result[7]
+    self.volumeGross = result[8]
+    self.energy = result[9]
+    self.energyGross = result[10]
+    self.price = result[11]
+    self.conversionFactor = result[12]        
+
 #######################################################################
 #### Class Measure
 #######################################################################                

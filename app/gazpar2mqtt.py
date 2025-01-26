@@ -6,6 +6,7 @@ import schedule
 import time
 from dateutil.relativedelta import relativedelta
 import logging
+import json
 
 import gazpar
 import mqtt
@@ -502,7 +503,8 @@ def run(myParams):
     ####################################################################################################################
     if myMqtt.isConnected \
         and myParams.hassDiscovery \
-        and myGrdf.isConnected:
+        and myGrdf.isConnected \
+        and myDb.isConnected():
 
         try:
 
@@ -583,6 +585,34 @@ def run(myParams):
                                                hass.NONE_TYPE, None, None).setValue(str(myMeasure.endDateTime))
                     else:
                         logging.warning("Unable to publish last published measure infos.")
+
+                    ## List of informative measures
+                    attributes = {}
+                    logging.debug("Creation of period informative measures entities")
+                    startDate = (datetime.datetime.now() - relativedelta(days=100)).strftime("%Y-%m-%d")
+                    endDate = datetime.datetime.now().strftime("%Y-%m-%d")
+                    logging.debug("Start %s and End %s",startDate,endDate)     
+                    myMeasures = myPce._getMeasuresRange(myDb,myPce,startDate,endDate,gazpar.TYPE_I)
+                    attributes[f"dates"] = []
+                    attributes[f"volume"] = []
+                    attributes[f"volume_gross"] =[]
+                    attributes[f"energy"] = []
+                    attributes[f"energy_gross"] = []
+                    attributes[f"price"] = []
+                    attributes[f"conversion_factor"] = []
+                    
+                    for myMeasure in myMeasures:
+                        attributes[f"dates"].append(myMeasure.date.strftime("%Y-%m-%d"))
+                        attributes[f"volume"].append(myMeasure.volume)
+                        attributes[f"volume_gross"].append(myMeasure.volumeGross)
+                        attributes[f"energy"].append(myMeasure.energy)
+                        attributes[f"energy_gross"].append(round(myMeasure.energyGross,4))
+                        attributes[f"price"].append(myMeasure.price)
+                        attributes[f"conversion_factor"].append(myMeasure.conversionFactor)
+                                           
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'consumption','consumption}',hass.NONE_TYPE,None,None)
+                    myEntity.setValue(attributes["dates"][-1])
+                    myEntity.addAttributej(json.dumps(attributes))
 
                     ## Calculated calendar measures
                     logging.debug("Creation of calendar entities")
