@@ -8,7 +8,7 @@ For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/
 
 ## Changelogs :
 - 0.8.9
-  - Add new entity with data for the past 100 days (if loaded in db of course). This to bridge the gap on now having proper access to statistics (HA-issue)
+  - Add new entity with data for the past 100 days (if loaded in db of course). This to bridge the gap on lacking proper access to statistics (HA-issue)
 - 0.8.8
   - Fix some smaller issues
   - Add gross cubic meters to the Influx output
