@@ -7,6 +7,8 @@ Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in th
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki/Home-fr-FR)
 
 ## Changelogs :
+- 0.8.10
+  - Align with new authentication method by GRDF
 - 0.8.9
   - Add new entity with data for the past 100 days (if loaded in db of course). This to bridge the gap on lacking proper access to statistics (HA-issue)
 - 0.8.8
