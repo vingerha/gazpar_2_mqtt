@@ -4,6 +4,7 @@ import requests
 import json
 import datetime
 import os
+import re
 import sys
 import inspect
 import time
@@ -70,62 +71,81 @@ class Grdf:
         logging.debug("After init")
 
     def login(self,username,password):
-        SESSION_TOKEN_URL = "https://connexion.grdf.fr/api/v1/authn"
-        SESSION_TOKEN_PAYLOAD = """{{
-            "username": "{0}",
-            "password": "{1}",
-            "options": {{
-                "multiOptionalFactorEnroll": "false",
-                "warnBeforePasswordExpired": "false"
-            }}
+        SESSION_URL = "https://monespace.grdf.fr/"
+        USER_SESSION_TOKEN_URL = "https://connexion.grdf.fr/idp/idx/identify"
+        USER_SESSION_TOKEN_PAYLOAD = """{{
+            "identifier": "{0}",
+            "stateHandle": "{1}"
         }}"""
-        AUTH_TOKEN_URL = "https://connexion.grdf.fr/login/sessionCookieRedirect"
-        AUTH_TOKEN_PARAMS = """{{
-            "checkAccountSetupComplete": "true",
-            "token": "{0}",
-            "redirectUrl": "https://monespace.grdf.fr"
+        PWD_SESSION_TOKEN_URL = "https://connexion.grdf.fr/idp/idx/challenge/answer"
+        PWD_SESSION_TOKEN_PAYLOAD = """{{
+            "credentials": {{
+            "passcode": "{0}"
+            }},
+            "stateHandle": "{1}"
         }}"""
-        #self.session = Session()
-        self.session.headers.update({"domain": "grdf.fr"})
-        self.session.headers.update({"Content-Type": "application/json"})
-        self.session.headers.update({"X-Requested-With": "XMLHttpRequest"})
-
-        payload = SESSION_TOKEN_PAYLOAD.format(username, password)
-
-        response = self.session.post(SESSION_TOKEN_URL, data=payload)
-
-        if response.status_code != 200:
-            raise Exception(f"An error occurred while logging in. Status code: {response.status_code} - {response.text} - {response.payload}")
-            self.isConnected = False
-            return
-
-        # get auth token
-        session_token = response.json().get("sessionToken")
-        logging.debug("Session token: %s", session_token)
-        jar = http.cookiejar.CookieJar()
-        #self.session = Session()
-        self.session.headers.update({"Content-Type": "application/json"})
-        self.session.headers.update({"X-Requested-With": "XMLHttpRequest"})
-
-        params = json.loads(AUTH_TOKEN_PARAMS.format(session_token))
-   
-        response = self.session.get(AUTH_TOKEN_URL, params=params, allow_redirects=True, cookies=jar)
-
-        if response.status_code != 200:
-            raise Exception(f"An error occurred while getting the auth token. Status code: {response.status_code} - {response.text}")
-            self.isConnected = False
-            return
-
-        self.auth_token = self.session.cookies.get("auth_token", domain="monespace.grdf.fr")
+        self.session = Session()
+        self.session.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
         
-        # Create a session.
-        #self.session = Session()
-        self.session.headers.update({"Host": "monespace.grdf.fr"})
-        self.session.headers.update({"Domain": "grdf.fr"})
-        self.session.headers.update({"X-Requested-With": "XMLHttpRequest"})
-        self.session.headers.update({"Accept": "application/json"})
-        self.session.cookies.set("auth_token", self.auth_token, domain="monespace.grdf.fr")
-               
+        session_response = self.session.get(SESSION_URL)
+        if session_response.status_code != 200:
+            raise ServerError(
+                f"An error occurred while logging in start. Status code: {session_response.status_code} - {session_response.url}",
+                session_response.status_code,
+            )
+
+        # get user token
+        pattern = r'"stateToken"\s*:\s*"([^"]+)"'
+        match = re.search(pattern, session_response.text)
+        logging.debug("Session match: %s", match)
+        if match:
+            state_token_html = match.group(1)
+            state_token = state_token_html.replace("\\x2D", "-")
+        else:
+            raise ValueError("Cannot retrieve stateToken inside HTML response")        
+        
+        payload = USER_SESSION_TOKEN_PAYLOAD.format(username, state_token)
+        self.session.cookies.set("ln", username)
+        
+        user_response = self.session.post(
+            USER_SESSION_TOKEN_URL,
+            data=payload,
+            headers={"Accept": "application/json; okta-version=1.0.0", "Content-Type": "application/json"},
+        )        
+        
+        if user_response.status_code != 200:
+            raise ValueError(
+                f"An error occurred while logging in mail. Status code: {user_response.status_code} - {user_response.text}",
+                mail_response.status_code,
+            )
+
+        # get pwd token
+        
+        state_handle = user_response.json().get("stateHandle")
+
+        payload = PWD_SESSION_TOKEN_PAYLOAD.format(password, state_handle)
+
+        password_response = self.session.post(
+            PWD_SESSION_TOKEN_URL,
+            data=payload,
+            headers={"Accept": "application/json; okta-version=1.0.0", "Content-Type": "application/json"},
+        )
+
+        if password_response.status_code != 200:
+            raise ServerError(
+                f"An error occurred while logging in password. Status code: {password_response.status_code} - {password_response.text}",
+                password_response.status_code,
+            )
+        success_url = password_response.json()["success"]["href"]
+
+        response_redirect = self.session.get(success_url)
+
+        if response_redirect.status_code != 200:
+            raise ServerError(
+                f"An error occurred while logging in response_redirect. Status code: {response_redirect.status_code} - {response_redirect.url}",
+                response_redirect.status_code,
+            ) 
+
         # When everything is ok
         self.isConnected = True
     
