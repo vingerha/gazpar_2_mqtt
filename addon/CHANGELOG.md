@@ -1,4 +1,6 @@
-
+## 0.8.11 (2026-01-12)
+Align with new WebSocket requirements of HA
+  
 ## 0.8.10 (2025-07-16)
 Align with new authentication method by GRDF
 
