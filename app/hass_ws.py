@@ -132,7 +132,7 @@ class HomeAssistantWs:
     def import_data(self):
         logging.info(f"Exporting to HA Long Term Statistics : {self.pce}")
         metadata = {
-            "has_mean": False,
+            "mean_type": 0,
             "has_sum": True,
             "name": self.sensor_name,
             "statistic_id": (
