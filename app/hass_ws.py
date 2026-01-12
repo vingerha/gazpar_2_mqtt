@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import websocket
 
 class HomeAssistantWs:
-    def __init__(self, action, pce, url, ssl, ssl_data, token, sensor, unit, data):
+    def __init__(self, action, pce, url, ssl, ssl_data, token, sensor, unit, unit_class, data):
         self.ws = None
         self.pce = pce
         self.url = url
@@ -15,6 +15,7 @@ class HomeAssistantWs:
         self.token = token
         self.sensor_name = sensor.lower()
         self.unit = unit
+        self.unit_class = unit_class
         self.data = data
         self.action = action
         self.domain = "gazpar"
@@ -138,8 +139,8 @@ class HomeAssistantWs:
                 self.sensor_name
                     ),
             "unit_of_measurement": self.unit,
+            "unit_class": self.unit_class,
             "source": self.domain,
-            
             }
         statistics = {
                 "id": self.id,

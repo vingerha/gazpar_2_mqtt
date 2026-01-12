@@ -859,14 +859,14 @@ def run(myParams):
                 sensor_name_cost_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_cost_stat'                
                 
                 logging.debug(f"Writing Websocket Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, 'm³', stats_array)
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, 'kWh', stats_array_kwh)
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, 'EUR', stats_array_cost)
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, 'm³', 'volume', stats_array)
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, 'kWh', 'energy', stats_array_kwh)
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, 'EUR', null, stats_array_cost)
                 
                 logging.debug(f"Writing Websocket Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, 'm³', stats_array_pub)
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, 'kWh', stats_array_kwh_pub)
-                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, 'EUR',  stats_array_pub_cost)                
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, 'm³', 'volume', stats_array_pub)
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, 'kWh', 'energy', stats_array_kwh_pub)
+                HomeAssistantWs("import", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, 'EUR', null, stats_array_pub_cost)                
            
         except Exception as e:
             logging.error("Home Assistant Long Term Statistics : unable to publish LTS to Webservice HA with error: %s", e)
@@ -961,13 +961,13 @@ def run(myParams):
                 sensor_name_cost = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_cost_stat'
                 sensor_name_cost_pub = 'gazpar:' + myParams.hassDeviceName + '_' + myPce.alias.lower().strip().replace(" ", "_") + '_consumption_pub_cost_stat'                  
                 logging.debug(f"Deleting Home Assistant LTS for PCE: {myPce.pceId}, sensor name: {sensor_name}")
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, None, None)
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, None, None)
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, None, None)      
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name, None, None, None)
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh, None, None, None)
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost, None, None, None)      
                 logging.debug(f"Deleting Home Assistant Published LTS for PCE: {myPce.pceId}, sensor name: {sensor_name_pub}")
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, None, None) 
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, None, None)
-                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, None, None)                  
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_pub, None, None, None) 
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_kwh_pub, None, None, None)
+                HomeAssistantWs("delete", myPce.pceId, myParams.hassHost.split('//')[1], myParams.hassSsl, ssl_data, myParams.hassToken, sensor_name_cost_pub, None, None, None)                  
 
             
         except Exception as e:
