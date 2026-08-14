@@ -610,7 +610,7 @@ def run(myParams):
                         attributes[f"price"].append(myMeasure.price)
                         attributes[f"conversion_factor"].append(myMeasure.conversionFactor)
                                            
-                    myEntity = hass.Entity(myDevice,hass.SENSOR,'consumption','consumption}',hass.NONE_TYPE,None,None)
+                    myEntity = hass.Entity(myDevice,hass.SENSOR,'consumption','consumption',hass.NONE_TYPE,None,None)
                     if attributes["dates"]:
                         myEntity.setValue(attributes["dates"][-1])
                     else:
