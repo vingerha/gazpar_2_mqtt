@@ -21,7 +21,7 @@ from hass_ws import HomeAssistantWs
 
 
 # gazpar2mqtt constants
-G2M_VERSION = '0.8.11'
+G2M_VERSION = '0.8.12'
 G2M_DB_VERSION = '0.4.0'
 G2M_INFLUXDB_VERSION = '0.1.0'
 
@@ -611,7 +611,10 @@ def run(myParams):
                         attributes[f"conversion_factor"].append(myMeasure.conversionFactor)
                                            
                     myEntity = hass.Entity(myDevice,hass.SENSOR,'consumption','consumption}',hass.NONE_TYPE,None,None)
-                    myEntity.setValue(attributes["dates"][-1])
+                    if attributes["dates"]:
+                        myEntity.setValue(attributes["dates"][-1])
+                    else:
+                        logging.warning("No measures found in the last 100 days, 'consumption' entity will have no state value.")
                     myEntity.addAttributej(json.dumps(attributes))
 
                     ## Calculated calendar measures
@@ -692,8 +695,10 @@ def run(myParams):
             # Release memory
             del myHass
 
-        except:
+        except Exception as e:
             logging.error("Home Assistant discovery mode : unable to publish value to mqtt broker")
+            logging.error("Reason: %s", e)
+            logging.debug("Full traceback:", exc_info=True)
             
     ####################################################################################################################
     # STEP 4a : Prices
