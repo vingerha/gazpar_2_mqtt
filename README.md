@@ -7,6 +7,8 @@ Reworked from the great repo by yukulehe/gazpar2mqtt. Main differences are in th
 For usage and installation etc. see [DOCUMENTATION](https://github.com/vingerha/gazpar_2_mqtt/wiki/Home-fr-FR)
 
 ## Changelogs :
+- 0.8.12 (2026-08-14)
+  - Fix crash if no consumption data is collected (e.g. not used for a longer period)
 - 0.8.11
   - Align with new WebSocket requirements of HA
 - 0.8.10

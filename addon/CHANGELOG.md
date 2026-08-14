@@ -1,3 +1,6 @@
+## 0.8.12 (2026-08-14)
+Fix crash if no consumption data is collected (e.g. not used for a longer period)
+
 ## 0.8.11 (2026-01-12)
 Align with new WebSocket requirements of HA
   
