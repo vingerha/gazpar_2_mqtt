@@ -534,7 +534,7 @@ def run(myParams):
                 myEntity.addAttribute("pce_alias",myPce.alias)
                 myEntity.addAttribute("pce_id",myPce.pceId)
                 myEntity.addAttribute("freqence",myPce.freqenceReleve)
-                myEntity.addAttribute("activation_date ",myPce.activationDate)
+                myEntity.addAttribute("activation_date",myPce.activationDate.isoformat())
                 myEntity.addAttribute("owner_name",myPce.ownerName)
                 myEntity.addAttribute("postal_code",myPce.postalCode)
 
