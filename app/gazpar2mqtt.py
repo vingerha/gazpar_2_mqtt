@@ -615,7 +615,7 @@ def run(myParams):
                         myEntity.setValue(attributes["dates"][-1])
                     else:
                         logging.warning("No measures found in the last 100 days, 'consumption' entity will have no state value.")
-                    myEntity.addAttributej(json.dumps(attributes))
+                    myEntity.addAttributej(attributes)
 
                     ## Calculated calendar measures
                     logging.debug("Creation of calendar entities")

@@ -80,7 +80,7 @@ class Device:
             if myEntity.value is not None:
                 payload[myEntity.stateTopic]  = myEntity.value
             if myEntity.attributes:
-                payload[myEntity.attributesTopic] = myEntity.attributes
+                payload[myEntity.attributesTopic] = myEntity.getAttribute()
         
         # Return json formatted
         return payload
